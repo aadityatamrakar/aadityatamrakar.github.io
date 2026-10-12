@@ -6,8 +6,8 @@ window.PORTFOLIO = {
   profile: {
     name: "Aaditya Tamrakar",
     handle: "aadityatamrakar",
-    title: "Full Stack Engineer · ML · Algo Trading",
-    tagline: "Born to a family of computer and software engineers, hacking and building applications since high school.",
+    title: "Software Engineer · Quant Developer",
+    tagline: "Software engineer and quant developer. Trade execution systems, market data pipelines and options analytics in Go, Python and TypeScript.",
     location: "India / Boston, MA",
     email: "aaditya.span@gmail.com",
     links: {
@@ -84,12 +84,12 @@ window.PORTFOLIO = {
 
   /* Skill groups. `tags` map to project tech so hovering a skill lights up matching projects. */
   skills: [
-    { group: "Languages", items: ["JavaScript", "TypeScript", "Python", "PHP", "Go", "C", "SQL"] },
-    { group: "Frontend", items: ["React", "AngularJS", "Angular", "Bootstrap", "jQuery", "Handlebars", "PWA"] },
-    { group: "Backend", items: ["Node.js", "Express", "Laravel", "Lumen", "Loopback", "REST API", "Socket.io"] },
-    { group: "Mobile", items: ["Ionic", "Cordova", "Android"] },
-    { group: "Data & ML", items: ["scikit-learn", "matplotlib", "Data Analysis", "MongoDB", "MySQL", "Firebase"] },
-    { group: "Trading", items: ["NSE Data", "Options", "Kite Connect", "XTS API", "5paisa", "Hummingbot"] }
+    { group: "Languages", items: ["Go", "Python", "TypeScript", "JavaScript", "C++", "C", "PHP", "SQL", "Java"] },
+    { group: "Trading systems", items: ["Order Execution", "Market Making", "WebSockets", "NSE Data", "Options", "Option Pricing", "Kite Connect", "XTS API", "5paisa", "Hummingbot"] },
+    { group: "Data & infra", items: ["AWS", "CloudFormation", "Snowflake", "Apache Airflow", "Kafka", "Spark", "Docker", "Kubernetes", "Redis", "MongoDB", "MySQL", "Linux"] },
+    { group: "Backend", items: ["Node.js", "Express", "REST API", "Socket.io", "Laravel", "Lumen", "Loopback"] },
+    { group: "Frontend & mobile", items: ["React", "Angular", "AngularJS", "Bootstrap", "PWA", "Ionic", "Cordova"] },
+    { group: "ML", items: ["scikit-learn", "matplotlib", "Data Analysis"] }
   ],
 
   /* Project categories used by the filter bar. */
