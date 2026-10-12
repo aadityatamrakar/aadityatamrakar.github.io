@@ -17,7 +17,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 ROOT = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), ".."))
-BASE = "https://aadityatamrakar.github.io"
+BASE = "https://aadityatamrakar.in"
 SKIP_DIRS = {"docs", ".git", "node_modules"}
 
 HEAD_CHECKS = [

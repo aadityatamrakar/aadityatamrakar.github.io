@@ -4,7 +4,7 @@ Repo: `aadityatamrakar/aadityatamrakar.github.io`, static site on GitHub Pages, 
 Existing: `index.html`, `assets/style.css`, `assets/app.js`, `assets/data.js`, `404.html`, `.nojekyll`.
 Design tokens: see `assets/style.css` `:root` (IBM Plex Mono for code, Rubik for prose, ink `#303055`, lavender `#e8e8f2`). Light theme only. No shadows except code blocks. Radius 4px / 8px.
 
-Site URL: `https://aadityatamrakar.github.io` (canonical base). Author: Aaditya Tamrakar, handle `aadityatamrakar`, email `aaditya.span@gmail.com`, X `@t_aaditya`.
+Site URL: `https://aadityatamrakar.in` (canonical base). Author: Aaditya Tamrakar, handle `aadityatamrakar`, email `aaditya.span@gmail.com`, X `@t_aaditya`.
 
 ## 1. Profile updates (owner: main session)
 
@@ -18,7 +18,7 @@ Files: `index.html`, `404.html`, new `robots.txt`, `sitemap.xml`, `feed.xml`, `a
 Requirements for every HTML page (home, blog index, each article):
 - `<title>` ≤ 60 chars, unique; `<meta name="description">` 120–160 chars, unique.
 - `<link rel="canonical">` absolute URL.
-- Open Graph: `og:type`, `og:title`, `og:description`, `og:url`, `og:image` (absolute `https://aadityatamrakar.github.io/assets/og.png`), `og:site_name`.
+- Open Graph: `og:type`, `og:title`, `og:description`, `og:url`, `og:image` (absolute `https://aadityatamrakar.in/assets/og.png`), `og:site_name`.
 - Twitter: `twitter:card=summary_large_image`, `twitter:site=@t_aaditya`, `twitter:creator`, title, description, image.
 - `<meta name="author">`, `<meta name="robots" content="index,follow">`, `theme-color #303055`.
 - JSON-LD: home = `Person` (name, url, sameAs [github, linkedin, x, aadityatamrakar.in], jobTitle, knowsAbout) + `WebSite`; article = `BlogPosting` (headline, datePublished, dateModified, author Person, image, mainEntityOfPage, keywords); blog index = `Blog` with `blogPost` list.

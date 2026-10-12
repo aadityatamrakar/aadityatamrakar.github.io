@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aadityatamrakar.github.io/sitemap.xml
+Sitemap: https://aadityatamrakar.in/sitemap.xml

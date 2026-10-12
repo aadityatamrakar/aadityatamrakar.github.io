@@ -2,105 +2,105 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>Aaditya Tamrakar · Blog</title>
-  <link>https://aadityatamrakar.github.io/blog/</link>
+  <link>https://aadityatamrakar.in/blog/</link>
   <description>Writing on algorithmic trading tools, machine learning, web development and open source SDKs by Aaditya Tamrakar.</description>
   <language>en</language>
   <lastBuildDate>Mon, 12 Oct 2026 09:00:00 +0000</lastBuildDate>
-  <atom:link href="https://aadityatamrakar.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+  <atom:link href="https://aadityatamrakar.in/feed.xml" rel="self" type="application/rss+xml"/>
   <managingEditor>aaditya.span@gmail.com (Aaditya Tamrakar)</managingEditor>
   <webMaster>aaditya.span@gmail.com (Aaditya Tamrakar)</webMaster>
   <item>
     <title>Building an NSE option chain analyser in Node.js</title>
-    <link>https://aadityatamrakar.github.io/blog/nse-option-chain-analysis/</link>
-    <guid isPermaLink="true">https://aadityatamrakar.github.io/blog/nse-option-chain-analysis/</guid>
+    <link>https://aadityatamrakar.in/blog/nse-option-chain-analysis/</link>
+    <guid isPermaLink="true">https://aadityatamrakar.in/blog/nse-option-chain-analysis/</guid>
     <pubDate>Mon, 12 Oct 2026 09:00:00 +0000</pubDate>
     <description>How I built a Node.js app that pulls the live NSE Nifty option chain, classifies every strike by price and OI change, and renders sentiment on one page.</description>
     <category>Trading</category>
   </item>
   <item>
     <title>How to read open interest: long buildup, short covering and friends</title>
-    <link>https://aadityatamrakar.github.io/blog/reading-open-interest-buildups/</link>
-    <guid isPermaLink="true">https://aadityatamrakar.github.io/blog/reading-open-interest-buildups/</guid>
+    <link>https://aadityatamrakar.in/blog/reading-open-interest-buildups/</link>
+    <guid isPermaLink="true">https://aadityatamrakar.in/blog/reading-open-interest-buildups/</guid>
     <pubDate>Sun, 11 Oct 2026 09:00:00 +0000</pubDate>
     <description>A practical guide to reading open interest with price change: long buildup, short buildup, short covering and long liquidation, and what each implies.</description>
     <category>Trading · How-to</category>
   </item>
   <item>
     <title>Charting the cash vs futures spread for NSE stocks</title>
-    <link>https://aadityatamrakar.github.io/blog/cash-futures-spread-chart/</link>
-    <guid isPermaLink="true">https://aadityatamrakar.github.io/blog/cash-futures-spread-chart/</guid>
+    <link>https://aadityatamrakar.in/blog/cash-futures-spread-chart/</link>
+    <guid isPermaLink="true">https://aadityatamrakar.in/blog/cash-futures-spread-chart/</guid>
     <pubDate>Sat, 10 Oct 2026 09:00:00 +0000</pubDate>
     <description>Building a small Node and Express tool that computes and charts the daily spread between the cash price and the futures price of NSE stocks.</description>
     <category>Trading</category>
   </item>
   <item>
     <title>What I built and maintain for the open source trading community</title>
-    <link>https://aadityatamrakar.github.io/blog/broker-sdks-open-source/</link>
-    <guid isPermaLink="true">https://aadityatamrakar.github.io/blog/broker-sdks-open-source/</guid>
+    <link>https://aadityatamrakar.in/blog/broker-sdks-open-source/</link>
+    <guid isPermaLink="true">https://aadityatamrakar.in/blog/broker-sdks-open-source/</guid>
     <pubDate>Fri, 09 Oct 2026 09:00:00 +0000</pubDate>
     <description>The broker SDKs and bots I forked, adapted and use in my own tooling: Kite Connect in Go, XTS and 5paisa in Node, Hummingbot in Python, option pricing.</description>
     <category>Open Source</category>
   </item>
   <item>
     <title>Solving captchas with scikit-learn: a 99.7% pipeline</title>
-    <link>https://aadityatamrakar.github.io/blog/captcha-solver-scikit-learn/</link>
-    <guid isPermaLink="true">https://aadityatamrakar.github.io/blog/captcha-solver-scikit-learn/</guid>
+    <link>https://aadityatamrakar.in/blog/captcha-solver-scikit-learn/</link>
+    <guid isPermaLink="true">https://aadityatamrakar.in/blog/captcha-solver-scikit-learn/</guid>
     <pubDate>Thu, 08 Oct 2026 09:00:00 +0000</pubDate>
     <description>A captcha solving pipeline in Python: trim, split letters, rotate, resize to pixels and classify with a scikit-learn model, served through a PHP API.</description>
     <category>ML</category>
   </item>
   <item>
     <title>A fantasy cricket team optimiser is a constraint solver</title>
-    <link>https://aadityatamrakar.github.io/blog/fantasy-cricket-team-optimiser/</link>
-    <guid isPermaLink="true">https://aadityatamrakar.github.io/blog/fantasy-cricket-team-optimiser/</guid>
+    <link>https://aadityatamrakar.in/blog/fantasy-cricket-team-optimiser/</link>
+    <guid isPermaLink="true">https://aadityatamrakar.in/blog/fantasy-cricket-team-optimiser/</guid>
     <pubDate>Wed, 07 Oct 2026 09:00:00 +0000</pubDate>
     <description>Treating fantasy cricket team selection as a constraint problem: top 18 players by pick rate, enumerate every valid 11, then pick by points from JSON data.</description>
     <category>ML · Data</category>
   </item>
   <item>
     <title>How to build an offline-first notes app with a service worker</title>
-    <link>https://aadityatamrakar.github.io/blog/offline-first-notes-pwa/</link>
-    <guid isPermaLink="true">https://aadityatamrakar.github.io/blog/offline-first-notes-pwa/</guid>
+    <link>https://aadityatamrakar.in/blog/offline-first-notes-pwa/</link>
+    <guid isPermaLink="true">https://aadityatamrakar.in/blog/offline-first-notes-pwa/</guid>
     <pubDate>Tue, 06 Oct 2026 09:00:00 +0000</pubDate>
     <description>Step by step: an installable, offline-first notes app using localStorage for data, a service worker for caching and a web manifest for Android install.</description>
     <category>Web · How-to</category>
   </item>
   <item>
     <title>How to broadcast live video to a room with Socket.io</title>
-    <link>https://aadityatamrakar.github.io/blog/realtime-distress-alarm-socketio/</link>
-    <guid isPermaLink="true">https://aadityatamrakar.github.io/blog/realtime-distress-alarm-socketio/</guid>
+    <link>https://aadityatamrakar.in/blog/realtime-distress-alarm-socketio/</link>
+    <guid isPermaLink="true">https://aadityatamrakar.in/blog/realtime-distress-alarm-socketio/</guid>
     <pubDate>Mon, 05 Oct 2026 09:00:00 +0000</pubDate>
     <description>How a panic alarm system streams live browser video to everyone in a Socket.io room: capturing frames, naming rooms and fanning out events in Node.js.</description>
     <category>Web · How-to</category>
   </item>
   <item>
     <title>Shipping a food delivery product solo: Laravel, Ionic and lessons</title>
-    <link>https://aadityatamrakar.github.io/blog/shipping-food-delivery-solo/</link>
-    <guid isPermaLink="true">https://aadityatamrakar.github.io/blog/shipping-food-delivery-solo/</guid>
+    <link>https://aadityatamrakar.in/blog/shipping-food-delivery-solo/</link>
+    <guid isPermaLink="true">https://aadityatamrakar.in/blog/shipping-food-delivery-solo/</guid>
     <pubDate>Sun, 04 Oct 2026 09:00:00 +0000</pubDate>
     <description>What it took to ship a food delivery product alone: a Laravel and MySQL backend with admin and SMS, a Bootstrap 3 web frontend and an Ionic mobile app.</description>
     <category>Web · Lessons</category>
   </item>
   <item>
     <title>Reporting engines for small businesses: cron, email and AdminLTE</title>
-    <link>https://aadityatamrakar.github.io/blog/dealership-reporting-laravel-cron/</link>
-    <guid isPermaLink="true">https://aadityatamrakar.github.io/blog/dealership-reporting-laravel-cron/</guid>
+    <link>https://aadityatamrakar.in/blog/dealership-reporting-laravel-cron/</link>
+    <guid isPermaLink="true">https://aadityatamrakar.in/blog/dealership-reporting-laravel-cron/</guid>
     <pubDate>Sat, 03 Oct 2026 09:00:00 +0000</pubDate>
     <description>Lessons from building Laravel reporting engines for a car dealership and other small businesses: cron schedulers, emailed reports and AdminLTE dashboards.</description>
     <category>Web · Lessons</category>
   </item>
   <item>
     <title>Designing an options trading UI for beginners (CS615 project)</title>
-    <link>https://aadityatamrakar.github.io/blog/options-ui-for-beginners-cs615/</link>
-    <guid isPermaLink="true">https://aadityatamrakar.github.io/blog/options-ui-for-beginners-cs615/</guid>
+    <link>https://aadityatamrakar.in/blog/options-ui-for-beginners-cs615/</link>
+    <guid isPermaLink="true">https://aadityatamrakar.in/blog/options-ui-for-beginners-cs615/</guid>
     <pubDate>Fri, 02 Oct 2026 09:00:00 +0000</pubDate>
     <description>Designing an options trading interface for beginners as a CS615 UI design project at UMass Boston: goals, prototype on GitHub Pages and what I learned.</description>
     <category>Academic · Design</category>
   </item>
   <item>
     <title>Ten years of public code: what changed from 2016 to 2026</title>
-    <link>https://aadityatamrakar.github.io/blog/ten-years-of-public-code/</link>
-    <guid isPermaLink="true">https://aadityatamrakar.github.io/blog/ten-years-of-public-code/</guid>
+    <link>https://aadityatamrakar.in/blog/ten-years-of-public-code/</link>
+    <guid isPermaLink="true">https://aadityatamrakar.in/blog/ten-years-of-public-code/</guid>
     <pubDate>Thu, 01 Oct 2026 09:00:00 +0000</pubDate>
     <description>A look back at ten years of public repositories, from a CSS video player in 2016 to trading SDKs in 2026, and how my tools and habits changed along the way.</description>
     <category>Career</category>
