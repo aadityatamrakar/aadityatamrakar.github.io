@@ -76,12 +76,13 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+<div class="progress" id="progress" aria-hidden="true"></div>
 
 <header class="site-header">
   <div class="container header-row">
     <a href="#top" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
-    <nav class="nav" id="nav">
-      <a href="#about">About</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="#work">Work</a>
       <a href="#journey">Journey</a>
       <a href="#skills">Skills</a>
       <a href="#timeline">Timeline</a>
@@ -108,7 +109,7 @@
         <span class="dot"></span><span class="dot"></span><span class="dot"></span>
         <span class="code-file">aaditya.config.ts</span>
       </div>
-<pre><code><span class="c-mist">// who</span>
+<pre><code id="hero-lines"><span class="c-mist">// who</span>
 <span class="c-teal">export default</span> {
   <span class="c-cobalt">name</span>: <span class="c-plum">"Aaditya Tamrakar"</span>,
   <span class="c-cobalt">role</span>: [<span class="c-plum">"full-stack"</span>, <span class="c-plum">"ml"</span>, <span class="c-plum">"algo-trading"</span>],
@@ -128,85 +129,90 @@
     </div>
 
     <div class="hero-text">
-      <p class="eyebrow">Full stack · machine learning · algo trading</p>
+      <p class="status-badge"><span class="pulse"></span>Open to full time and contract roles</p>
       <h1 class="display">Aaditya Tamrakar</h1>
-      <p class="lead">I build web products end to end, train models when a problem needs one, and write code that reads the market. Ten years of public work, from a CSS video player in 2016 to trading SDKs today.</p>
+      <p class="lead">I build <span class="rotator" id="rotator"><span>trading tools</span></span><br>and write about how they work.</p>
       <div class="cta-row">
-        <a class="text-link" href="#projects">Browse projects <span class="chev">&gt;</span></a>
+        <a class="text-link" href="#work">See the work <span class="chev">&gt;</span></a>
+        <a class="text-link" href="mailto:aaditya.span@gmail.com">Email me <span class="chev">&gt;</span></a>
         <a class="text-link" href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener">LinkedIn <span class="chev">&gt;</span></a>
-        <a class="text-link" href="mailto:aaditya.span@gmail.com">Email <span class="chev">&gt;</span></a>
       </div>
       <div class="stat-row" id="stat-row">
-        <div class="stat"><span class="stat-num" data-stat="repos">38</span><span class="stat-label">public repos</span></div>
-        <div class="stat"><span class="stat-num" data-stat="stars">139</span><span class="stat-label">stars earned</span></div>
-        <div class="stat"><span class="stat-num" data-stat="followers">48</span><span class="stat-label">followers</span></div>
-        <div class="stat"><span class="stat-num" data-stat="years">10</span><span class="stat-label">years shipping</span></div>
+        <div class="stat"><span class="stat-num" data-stat="years" data-to="10">0</span><span class="stat-label">years shipping</span></div>
+        <div class="stat"><span class="stat-num" data-stat="projects" data-to="27">0</span><span class="stat-label">projects</span></div>
+        <div class="stat"><span class="stat-num" data-stat="stars" data-to="139">0</span><span class="stat-label">GitHub stars</span></div>
+        <div class="stat"><span class="stat-num" data-stat="posts" data-to="12">0</span><span class="stat-label">articles</span></div>
       </div>
     </div>
   </section>
 
-  <!-- LOGO / TRUST STRIP -->
-  <section class="strip container">
-    <p class="eyebrow mist">Built with</p>
-    <div class="logo-row" id="logo-row"></div>
+  <!-- MARQUEE -->
+  <section class="marquee-wrap" aria-label="Technologies">
+    <div class="marquee" id="marquee"></div>
   </section>
 
-  <!-- ABOUT -->
-  <section id="about" class="container section">
+  <!-- FEATURED WORK -->
+  <section id="work" class="container narrow section reveal">
     <div class="section-head">
-      <p class="eyebrow">01 · About</p>
-      <h2>Techie, by profile and by habit.</h2>
+      <p class="eyebrow">01 · Featured work</p>
+      <h2>Three things worth clicking.</h2>
     </div>
-    <div class="two-col">
-      <div>
-        <p>I started publishing code in 2016 while freelancing: PHP and Laravel backends, Node.js APIs, and Ionic hybrid apps for food delivery, dealerships and small accounting shops. Each one shipped to a real customer.</p>
-        <p>Around 2019 the work turned toward markets. The option chain analyser for NSE Nifty became my most used project, followed by spread charts, broker SDKs and a fantasy cricket optimiser that is really a constraint solver in disguise.</p>
-        <p>A master's in computer science at UMass Boston added the systems depth: UI design research, C programming support for CS240, and a trading interface built for beginners. After two and a half years as a software engineer at Viasat, I went independent in 2026 to build trading tools, broker SDKs and write about what I learn.</p>
+    <div class="featured-grid" id="featured"></div>
+  </section>
+
+  <!-- ABOUT (compact) -->
+  <section id="about" class="container narrow section reveal">
+    <div class="facts">
+      <div class="fact">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z M4 10h16" /></svg>
+        <strong>Web since 2016</strong>
+        <span>Laravel, Node, React, Ionic. Shipped to real customers.</span>
       </div>
-      <div class="code-block small">
-        <div class="code-head"><span class="code-file">interests.json</span></div>
-<pre><code>{
-  <span class="c-cobalt">"web"</span>: <span class="c-plum">"performance, responsive design, usability"</span>,
-  <span class="c-cobalt">"ml"</span>: <span class="c-plum">"image recognition, scoring models"</span>,
-  <span class="c-cobalt">"markets"</span>: <span class="c-plum">"options, open interest, spreads"</span>,
-  <span class="c-cobalt">"fuel"</span>: <span class="c-plum">"a good cheese burger"</span>
-}</code></pre>
+      <div class="fact">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18l5-6 4 3 7-9" /></svg>
+        <strong>Markets since 2019</strong>
+        <span>NSE option chains, spreads, broker SDKs.</span>
+      </div>
+      <div class="fact">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l9 4-9 4-9-4z M5 10v5c0 2 14 2 14 0v-5" /></svg>
+        <strong>M.S. CS, UMass Boston</strong>
+        <span>UI design, systems, C programming support.</span>
       </div>
     </div>
   </section>
 
   <!-- JOURNEY -->
-  <section id="journey" class="container section">
+  <section id="journey" class="container narrow section reveal">
     <div class="section-head">
       <p class="eyebrow">02 · Journey</p>
       <h2>Where the years went.</h2>
     </div>
-    <ol class="journey" id="journey-list"></ol>
+    <ol class="journey-cards" id="journey-list"></ol>
   </section>
 
   <!-- SKILLS -->
-  <section id="skills" class="container section">
+  <section id="skills" class="container narrow section reveal">
     <div class="section-head">
       <p class="eyebrow">03 · Skills</p>
-      <h2>Tools I reach for. <span class="hint">Hover a tag to count the projects that use it.</span></h2>
+      <h2>Click a tag to see the projects. <span class="hint">Size = how often I used it.</span></h2>
     </div>
-    <div class="skills" id="skills-grid"></div>
+    <div class="cloud" id="skills-grid"></div>
   </section>
 
   <!-- TIMELINE -->
-  <section id="timeline" class="container section">
+  <section id="timeline" class="container narrow section reveal">
     <div class="section-head">
       <p class="eyebrow">04 · Timeline</p>
-      <h2>Every public project, 2016 to today. <span class="hint">Click a year to filter, click again to clear.</span></h2>
+      <h2>Every public repo, 2016 to today. <span class="hint">Click a year to filter.</span></h2>
     </div>
     <div class="timeline" id="timeline-chart"></div>
   </section>
 
   <!-- PROJECTS -->
-  <section id="projects" class="container section">
+  <section id="projects" class="container narrow section reveal">
     <div class="section-head">
-      <p class="eyebrow">05 · Projects</p>
-      <h2>The work, in detail.</h2>
+      <p class="eyebrow">05 · All projects</p>
+      <h2>The full archive.</h2>
     </div>
 
     <div class="toolbar">
@@ -226,7 +232,8 @@
       </div>
     </div>
     <p class="result-count" id="result-count"></p>
-    <div class="grid" id="grid"></div>
+    <div class="grid compact" id="grid"></div>
+    <p class="show-more-row"><button class="chip show-more" id="show-more" type="button">Show all projects</button></p>
     <noscript>
       <ul class="noscript-projects">
         <li><a href="https://github.com/aadityatamrakar/option_chain_analysis" rel="noopener">Option Chain Analysis</a> (2019) — Live NSE Nifty option chain fetched, analysed and rendered on one page to read market sentiment at a glance.</li>
@@ -258,58 +265,55 @@
         <li><a href="https://github.com/aadityatamrakar/cs240-lecture-programs" rel="noopener">CS240 Lecture Programs</a> (2022) — Sample C programs from CS240 lectures, Fall 2022 at UMass Boston.</li>
       </ul>
     </noscript>
-
-    <div class="forks-head">
-      <h3>Forks and SDKs I work with</h3>
-      <p class="muted">Broker clients and bots kept in the profile for trading work.</p>
-    </div>
-    <ul class="forks" id="forks"></ul>
+    <details class="forks-details">
+      <summary>Forks and SDKs I work with <span class="mono muted" id="forks-count"></span></summary>
+      <ul class="forks" id="forks"></ul>
+    </details>
   </section>
 
   <!-- WRITING -->
-  <section id="writing" class="container section">
+  <section id="writing" class="container narrow section reveal">
     <div class="section-head">
-      <p class="eyebrow">07 · Writing</p>
-      <h2>Recent posts. <span class="hint">Trading tools, ML and web, written with the code.</span></h2>
+      <p class="eyebrow">06 · Writing</p>
+      <h2>Latest from the blog.</h2>
     </div>
-    <ul class="writing-list">
-      <li>
-        <h3><a href="/blog/nse-option-chain-analysis/">Building an NSE option chain analyser in Node.js</a></h3>
-        <p>How a Node.js app fetches the NSE Nifty option chain on each visit, filters by expiry and classifies every strike by price and open interest change.</p>
-        <p class="post-meta"><time datetime="2026-10-12">Oct 12, 2026</time> · Trading</p>
-      </li>
-      <li>
-        <h3><a href="/blog/reading-open-interest-buildups/">How to read open interest: long buildup, short covering and friends</a></h3>
-        <p>A how-to on the four price change × OI change cases, which way each leans, and the actions the option chain analyser suggests for each.</p>
-        <p class="post-meta"><time datetime="2026-10-11">Oct 11, 2026</time> · Trading · How-to</p>
-      </li>
-      <li>
-        <h3><a href="/blog/cash-futures-spread-chart/">Charting the cash vs futures spread for NSE stocks</a></h3>
-        <p>A Node and Express app that computes the daily cash vs futures spread for NSE stocks in spreadData.js and plots it on a single chart page.</p>
-        <p class="post-meta"><time datetime="2026-10-10">Oct 10, 2026</time> · Trading</p>
-      </li>
-      <li>
-        <h3><a href="/blog/broker-sdks-open-source/">What I built and maintain for the open source trading community</a></h3>
-        <p>The broker SDKs and bots I forked, adapted and use in my own tooling: Kite Connect in Go, XTS and 5paisa in Node, Hummingbot in Python, option pricing.</p>
-        <p class="post-meta"><time datetime="2026-10-09">Oct 9, 2026</time> · Open Source</p>
-      </li>
-    </ul>
-    <p style="margin-top:16px"><a class="text-link" href="/blog/">All posts <span class="chev">&gt;</span></a></p>
+    <div class="post-cards">
+      <a class="post-card" href="/blog/nse-option-chain-analysis/">
+        <span class="eyebrow">Trading</span>
+        <strong>Building an NSE option chain analyser in Node.js</strong>
+        <span class="post-meta"><time datetime="2026-10-12">Oct 12, 2026</time> · 6 min</span>
+      </a>
+      <a class="post-card" href="/blog/reading-open-interest-buildups/">
+        <span class="eyebrow">Trading · How-to</span>
+        <strong>How to read open interest: long buildup, short covering and friends</strong>
+        <span class="post-meta"><time datetime="2026-10-11">Oct 11, 2026</time> · 7 min</span>
+      </a>
+      <a class="post-card" href="/blog/captcha-solver-scikit-learn/">
+        <span class="eyebrow">ML</span>
+        <strong>Solving captchas with scikit-learn: a 99.7% pipeline</strong>
+        <span class="post-meta"><time datetime="2026-10-08">Oct 8, 2026</time> · 6 min</span>
+      </a>
+    </div>
+    <p style="margin-top:16px"><a class="text-link" href="/blog/">All 12 posts <span class="chev">&gt;</span></a></p>
   </section>
 
   <!-- CONTACT -->
-  <section id="contact" class="container section">
-    <div class="section-head">
-      <p class="eyebrow">06 · Contact</p>
-      <h2>Say hello.</h2>
-    </div>
-    <div class="code-block contact-code">
-      <div class="code-head"><span class="code-file">contact.sh</span></div>
-<pre><code><span class="c-mist">$</span> <b>open</b> <a href="mailto:aaditya.span@gmail.com">mailto:aaditya.span@gmail.com</a>
-<span class="c-mist">$</span> <b>open</b> <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">https://github.com/aadityatamrakar</a>
-<span class="c-mist">$</span> <b>open</b> <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener">https://linkedin.com/in/aadityatamrakar</a>
-<span class="c-mist">$</span> <b>open</b> <a href="https://x.com/t_aaditya" target="_blank" rel="noopener">https://x.com/t_aaditya</a>
-<span class="c-mist">$</span> <b>open</b> <a href="https://aadityatamrakar.in" target="_blank" rel="noopener">https://aadityatamrakar.in</a></code></pre>
+  <section id="contact" class="container narrow section reveal">
+    <div class="contact-card">
+      <p class="eyebrow">07 · Contact</p>
+      <h2 class="contact-title">Let's build something.</h2>
+      <p class="muted">Full stack, quant tooling or ML. I reply within a day.</p>
+      <div class="contact-actions">
+        <a class="text-link big" href="mailto:aaditya.span@gmail.com">aaditya.span@gmail.com <span class="chev">&gt;</span></a>
+        <button class="chip" id="copy-email" type="button" data-email="aaditya.span@gmail.com">Copy email</button>
+      </div>
+      <div class="socials">
+        <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://x.com/t_aaditya" target="_blank" rel="noopener">X</a>
+        <a href="https://aadityatamrakar.in" target="_blank" rel="noopener">aadityatamrakar.in</a>
+        <a href="/feed.xml">RSS</a>
+      </div>
     </div>
   </section>
 </main>
@@ -318,7 +322,7 @@
   <div class="container footer-row">
     <span class="copy">© <span id="year"></span> Aaditya Tamrakar</span>
     <div class="footer-links">
-      <a href="#about">About</a>
+      <a href="#work">Work</a>
       <a href="#projects">Projects</a>
       <a href="/blog/">Blog</a>
       <a href="https://github.com/aadityatamrakar/aadityatamrakar.github.io" target="_blank" rel="noopener">Source</a>

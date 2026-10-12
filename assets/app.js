@@ -6,7 +6,7 @@
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const gh = (repo) => `https://github.com/${D.profile.handle}/${repo}`;
 
-  const state = { cat: 'all', year: null, q: '', sort: 'newest' };
+  const state = { cat: 'all', year: null, q: '', sort: 'newest', expanded: false };
 
   /* ---------- typed terminal ---------- */
   const lines = [
@@ -31,15 +31,104 @@
     tick();
   })();
 
-  /* ---------- logo strip ---------- */
-  $('#logo-row').innerHTML = ['Node.js', 'React', 'Laravel', 'Python', 'scikit-learn', 'Ionic', 'MySQL', 'MongoDB', 'Socket.io', 'Go']
-    .map((n) => `<span>${esc(n)}</span>`).join('');
+  /* ---------- hero: line-by-line build, rotating word ---------- */
+  (function buildHero() {
+    const code = $('#hero-lines');
+    if (!code) return;
+    const html = code.innerHTML.split('\n').map((l, i) => `<span class="line" style="animation-delay:${i * 90}ms">${l}</span>`).join('');
+    code.innerHTML = html;
+  })();
+  (function rotate() {
+    const r = $('#rotator');
+    if (!r) return;
+    const words = ['trading tools', 'ML pipelines', 'web products', 'broker SDKs', 'things that ship'];
+    let i = 0;
+    setInterval(() => {
+      const cur = r.firstElementChild;
+      cur.classList.add('out');
+      setTimeout(() => {
+        i = (i + 1) % words.length;
+        r.innerHTML = `<span>${esc(words[i])}</span>`;
+      }, 330);
+    }, 2600);
+  })();
 
-  /* ---------- journey ---------- */
-  $('#journey-list').innerHTML = D.journey.map((j) => `
-    <li class="${j.type}">
+  /* ---------- marquee ---------- */
+  (function marquee() {
+    const el = $('#marquee');
+    if (!el) return;
+    const items = ['Node.js', 'React', 'TypeScript', 'Python', 'scikit-learn', 'Laravel', 'PHP', 'Go', 'Ionic', 'MySQL', 'MongoDB', 'Socket.io', 'Express', 'NSE data', 'Kite Connect', 'PWA'];
+    el.innerHTML = items.concat(items).map((n) => `<span>${esc(n)}</span>`).join('');
+  })();
+
+  /* ---------- scroll progress + reveal ---------- */
+  const prog = $('#progress');
+  const onScroll = () => {
+    if (!prog) return;
+    const h = document.documentElement;
+    prog.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  };
+  document.addEventListener('scroll', onScroll, { passive: true });
+  const rio = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        $$('.stat-num[data-to], .count[data-to]', en.target).forEach((n) => countUp(n, Number(n.dataset.to)));
+        rio.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  $$('.reveal').forEach((el) => rio.observe(el));
+  // Safety: anything already in view (or if IO misbehaves) gets revealed.
+  const revealVisible = () => $$('.reveal:not(.in)').forEach((el) => { if (el.getBoundingClientRect().top < window.innerHeight * 1.1) el.classList.add('in'); });
+  setTimeout(revealVisible, 800);
+  document.addEventListener('scroll', revealVisible, { passive: true });
+
+  /* ---------- featured work with mini visuals ---------- */
+  const VIZ = {
+    option_chain_analysis: () => {
+      const bars = [30, 45, 60, 80, 100, 85, 55, 70, 40, 25].map((h, i) =>
+        `<rect class="bar ${i === 4 ? 'ink' : ''}" x="${12 + i * 22}" y="${110 - h}" width="14" height="${h}" rx="2" style="transition-delay:${i * 60}ms"/>`).join('');
+      return `<svg viewBox="0 0 240 120">${bars}<line class="spot" x1="112" y1="6" x2="112" y2="114"/></svg>`;
+    },
+    captcha_ai: () => {
+      const letters = ['7', 'K', 'p', 'X', '4'];
+      return `<svg viewBox="0 0 240 120">${letters.map((c, i) =>
+        `<rect class="box" x="${28 + i * 40}" y="34" width="32" height="52" rx="3" style="transition-delay:${0.6 + i * 0.1}s"/>
+         <text class="glyph" x="${44 + i * 40}" y="76" text-anchor="middle" style="transform:rotate(${(i % 2 ? 1 : -1) * 18}deg);transform-origin:${44 + i * 40}px 60px;transition-delay:${i * 120}ms">${c}</text>`).join('')}</svg>`;
+    },
+    'dream11-cricket-team-builder': () => {
+      const pos = [[120, 18], [60, 40], [180, 40], [40, 70], [120, 60], [200, 70], [80, 95], [160, 95], [120, 100], [30, 105], [210, 105]];
+      return `<svg viewBox="0 0 240 120"><ellipse class="pitch" cx="120" cy="62" rx="110" ry="54"/><rect class="pitch" x="110" y="30" width="20" height="64"/>${pos.map(([x, y], i) =>
+        `<circle class="player ${i > 7 ? 'sub' : ''}" cx="${x}" cy="${y}" r="6" style="transition-delay:${i * 70}ms"/>`).join('')}</svg>`;
+    }
+  };
+  const feat = $('#featured');
+  if (feat) {
+    const picks = ['option_chain_analysis', 'captcha_ai', 'dream11-cricket-team-builder'];
+    feat.innerHTML = picks.map((r) => {
+      const p = D.projects.find((x) => x.repo === r);
+      return `<article class="feat" data-repo="${esc(p.repo)}" tabindex="0">
+        <div class="viz">${VIZ[r]()}</div>
+        <h3>${esc(p.name)}</h3>
+        <p>${esc(p.summary)}</p>
+        <div class="meta"><span>${esc(p.tech.slice(0, 2).join(' · '))}</span><span data-stars="${esc(p.repo)}">★ ${p.stars} · ⑂ ${p.forks}</span></div>
+      </article>`;
+    }).join('');
+    feat.addEventListener('click', (e) => { const c = e.target.closest('.feat'); if (c) openModal(c.dataset.repo); });
+    feat.addEventListener('keydown', (e) => { const c = e.target.closest('.feat'); if (c && e.key === 'Enter') openModal(c.dataset.repo); });
+  }
+
+  /* ---------- journey cards ---------- */
+  const JICON = {
+    work: '<svg class="jicon" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5h8v2"/></svg>',
+    education: '<svg class="jicon" viewBox="0 0 24 24"><path d="M12 4l9 4-9 4-9-4z"/><path d="M5 10v5c0 2 14 2 14 0v-5"/></svg>'
+  };
+  $('#journey-list').innerHTML = D.journey.map((j, i) => `
+    <li class="${j.type} ${i === 0 ? 'now' : ''}">
+      ${JICON[j.type] || JICON.work}
       <div class="when">${esc(j.when)}</div>
-      <div class="role">${esc(j.role)}<span class="type-pill">${j.type}</span></div>
+      <div class="role">${esc(j.role)}</div>
       <div class="org">${esc(j.org)}</div>
       <p class="notes">${esc(j.notes)}</p>
     </li>`).join('');
@@ -47,14 +136,16 @@
   /* ---------- skills (with project counts) ---------- */
   const techCount = {};
   D.projects.forEach((p) => p.tech.forEach((t) => { techCount[t.toLowerCase()] = (techCount[t.toLowerCase()] || 0) + 1; }));
-  $('#skills-grid').innerHTML = D.skills.map((g) => `
-    <div class="skill-group">
-      <h4>${esc(g.group)}</h4>
-      <div class="tags">${g.items.map((t) => {
-        const n = techCount[t.toLowerCase()] || 0;
-        return `<span class="tag" ${n ? `data-count="${n}"` : ''} data-tech="${esc(t)}">${esc(t)}</span>`;
-      }).join('')}</div>
-    </div>`).join('');
+  const allSkills = [];
+  D.skills.forEach((g) => g.items.forEach((t) => { if (!allSkills.includes(t)) allSkills.push(t); }));
+  const maxCount = Math.max(...allSkills.map((t) => techCount[t.toLowerCase()] || 0));
+  $('#skills-grid').innerHTML = allSkills
+    .sort((a, b) => (techCount[b.toLowerCase()] || 0) - (techCount[a.toLowerCase()] || 0))
+    .map((t) => {
+      const n = techCount[t.toLowerCase()] || 0;
+      const size = n === 0 ? 1 : n >= maxCount * 0.6 ? 4 : n >= 3 ? 3 : 2;
+      return `<span class="tag s${size}" data-tech="${esc(t)}" ${n ? `data-count="${n}"` : ''}>${esc(t)}${n ? `<small>${n}</small>` : ''}</span>`;
+    }).join('');
   $('#skills-grid').addEventListener('click', (e) => {
     const t = e.target.closest('.tag');
     if (!t) return;
@@ -150,8 +241,9 @@
       $$('.tl-year').forEach((el) => el.classList.remove('active'));
       render();
     });
+    const limit = state.expanded ? Infinity : 6;
     $('#grid').innerHTML = list.length ? list.map((p, i) => `
-      <article class="card ${p.featured ? 'featured' : ''}" data-repo="${esc(p.repo)}" style="animation-delay:${Math.min(i, 12) * 30}ms" tabindex="0">
+      <article class="card ${p.featured ? 'featured' : ''} ${i >= limit ? 'hidden-more' : ''}" data-repo="${esc(p.repo)}" style="animation-delay:${Math.min(i, 12) * 30}ms" tabindex="0">
         <div class="card-top">
           <span class="card-name">${esc(p.name)}</span>
           <span class="card-year">${esc(p.started)}</span>
@@ -163,7 +255,11 @@
           <span class="stars" data-stars="${esc(p.repo)}">★ ${p.stars} · ⑂ ${p.forks}</span>
         </div>
       </article>`).join('') : `<p class="empty">// no projects match. try clearing filters.</p>`;
+    const more = $('#show-more');
+    if (more) { more.hidden = list.length <= limit; more.textContent = `Show all ${list.length} projects`; }
   }
+  const moreBtn = $('#show-more');
+  if (moreBtn) moreBtn.addEventListener('click', () => { state.expanded = true; render(); });
   $('#grid').addEventListener('click', (e) => { const c = e.target.closest('.card'); if (c) openModal(c.dataset.repo); });
   $('#grid').addEventListener('keydown', (e) => { const c = e.target.closest('.card'); if (c && e.key === 'Enter') openModal(c.dataset.repo); });
 
@@ -171,6 +267,12 @@
   $('#forks').innerHTML = D.forks.map((f) => `
     <li><div><a href="${gh(f.repo)}" target="_blank" rel="noopener">${esc(f.repo)}</a><small>${esc(f.desc)}</small></div>
     <span class="lang">${esc(f.lang)} · ${f.year}</span></li>`).join('');
+
+  const fc = $('#forks-count'); if (fc) fc.textContent = `(${D.forks.length})`;
+  const copyBtn = $('#copy-email');
+  if (copyBtn) copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(copyBtn.dataset.email).then(() => { copyBtn.textContent = 'Copied'; setTimeout(() => (copyBtn.textContent = 'Copy email'), 1500); }).catch(() => {});
+  });
 
   /* ---------- modal ---------- */
   const modal = $('#modal');
@@ -210,7 +312,7 @@
   sections.forEach((s) => io.observe(s));
 
   /* ---------- live GitHub stats (graceful fallback to static) ---------- */
-  const countUp = (el, to) => {
+  function countUp(el, to) {
     const from = Number(el.textContent) || 0;
     if (from === to) return;
     const t0 = performance.now();
@@ -220,12 +322,13 @@
       if (k < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
-  };
+  }
   const setStat = (key, v) => { const el = $(`[data-stat="${key}"]`); if (el) countUp(el, v); };
-  setStat('years', new Date().getFullYear() - 2016);
+  $('[data-stat="years"]').dataset.to = new Date().getFullYear() - 2016;
+  $('[data-stat="projects"]').dataset.to = D.projects.length;
   fetch(`https://api.github.com/users/${D.profile.handle}`)
     .then((r) => (r.ok ? r.json() : Promise.reject()))
-    .then((u) => { setStat('repos', u.public_repos); setStat('followers', u.followers); $('#code-repos').textContent = u.public_repos; })
+    .then((u) => { $('#code-repos').textContent = u.public_repos; })
     .catch(() => {});
   fetch(`https://api.github.com/users/${D.profile.handle}/repos?per_page=100`)
     .then((r) => (r.ok ? r.json() : Promise.reject()))
@@ -236,12 +339,13 @@
         const p = D.projects.find((x) => x.repo === r.name);
         if (p) { p.stars = r.stargazers_count; p.forks = r.forks_count; }
       });
-      setStat('stars', stars);
+      $('[data-stat="stars"]').dataset.to = stars; setStat('stars', stars);
       $('#code-stars').textContent = stars;
       render();
     })
     .catch(() => {});
 
+  $$('#stat-row .stat-num[data-to]').forEach((n) => countUp(n, Number(n.dataset.to)));
   $('#year').textContent = new Date().getFullYear();
   render();
 })();
