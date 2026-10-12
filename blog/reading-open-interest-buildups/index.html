@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to read open interest</title>
+  <meta name="description" content="A practical guide to reading open interest on an option chain: the four buildup types, worked examples from Nifty, and how to turn them into a market bias.">
+  <meta name="author" content="Aaditya Tamrakar">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#303055">
+  <link rel="canonical" href="https://aadityatamrakar.github.io/blog/reading-open-interest-buildups/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Aaditya Tamrakar">
+  <meta property="og:title" content="How to read open interest: long buildup, short covering and friends">
+  <meta property="og:description" content="A practical guide to reading open interest on an option chain: the four buildup types, worked examples from Nifty, and how to turn them into a market bias.">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/blog/reading-open-interest-buildups/">
+  <meta property="og:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <meta property="article:published_time" content="2026-10-11">
+  <meta property="article:author" content="https://aadityatamrakar.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@t_aaditya">
+  <meta name="twitter:creator" content="@t_aaditya">
+  <meta name="twitter:title" content="How to read open interest: long buildup, short covering and friends">
+  <meta name="twitter:description" content="A practical guide to reading open interest on an option chain: the four buildup types, worked examples from Nifty, and how to turn them into a market bias.">
+  <meta name="twitter:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <link rel="alternate" type="application/rss+xml" title="Aaditya Tamrakar · Blog" href="/feed.xml">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How to read open interest: long buildup, short covering and friends",
+    "description": "A practical guide to reading open interest on an option chain: the four buildup types, worked examples from Nifty, and how to turn them into a market bias.",
+    "datePublished": "2026-10-11",
+    "dateModified": "2026-10-11",
+    "keywords": "open interest, long buildup, short buildup, short covering, long liquidation, option chain, Nifty options, how to, trading tutorial",
+    "image": "https://aadityatamrakar.github.io/assets/og.png",
+    "mainEntityOfPage": "https://aadityatamrakar.github.io/blog/reading-open-interest-buildups/",
+    "author": { "@type": "Person", "name": "Aaditya Tamrakar", "url": "https://aadityatamrakar.github.io/" },
+    "publisher": { "@type": "Person", "name": "Aaditya Tamrakar" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#journey">Journey</a>
+      <a href="/#skills">Skills</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="post container">
+    <p class="eyebrow">Trading · How-to</p>
+    <h1>How to read open interest: long buildup, short covering and friends</h1>
+    <p class="post-meta"><time datetime="2026-10-11">11 Oct 2026</time> · <span class="reading-time"></span> · <span class="tags"><span class="tag">Trading</span><span class="tag">How-to</span><span class="tag">Options</span></span></p>
+
+    <!-- ARTICLE BODY START -->
+    <p>Open interest is the one number on an option chain that tells you what other people are doing rather than what the price is doing. Price is the result; open interest is part of the cause. Once I understood how to read the two together, the chain stopped being a wall of numbers and started being a map of where positions were being added and removed. This is the mental model behind my <a class="text-link" href="/blog/nse-option-chain-analysis/">option chain analyser</a>, written out in full.</p>
+
+    <p>This is an educational guide. Nothing here is a trading recommendation.</p>
+
+    <h2>What open interest actually is</h2>
+    <p>Open interest is the number of contracts that are currently open, meaning they have been bought by someone and sold by someone else, and neither side has closed out. It is not volume. Volume counts every trade in a day; open interest counts the positions that still exist at the end of it.</p>
+
+    <p>That distinction gives you a simple rule. If open interest goes up, new positions were created: a buyer and a seller who were not there before. If open interest goes down, existing positions were closed: a buyer and a seller who were there before have both left. On its own this tells you nothing about direction. For that you need the price.</p>
+
+    <h2>The four buildup types</h2>
+    <p>Combine the sign of the price change with the sign of the open interest change and you get four cells. Every contract on the chain lands in exactly one of them.</p>
+
+    <table>
+      <thead>
+        <tr><th>Price</th><th>Open interest</th><th>Name</th><th>What it means</th><th>Bias</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Up</td><td>Up</td><td>Long buildup</td><td>New buyers are entering and paying up for it</td><td>Bullish</td></tr>
+        <tr><td>Down</td><td>Up</td><td>Short buildup</td><td>New sellers are entering and pushing the price down</td><td>Bearish</td></tr>
+        <tr><td>Up</td><td>Down</td><td>Short covering</td><td>Existing sellers are buying back to exit</td><td>Bullish</td></tr>
+        <tr><td>Down</td><td>Down</td><td>Long liquidation</td><td>Existing buyers are selling to exit</td><td>Bearish</td></tr>
+      </tbody>
+    </table>
+
+    <p>The naming can feel backwards at first, so here is the logic. "Buildup" means open interest is rising: positions are being built. Whether they are long or short positions is inferred from which way the price went while they were built. "Covering" and "liquidation" mean open interest is falling: positions are being unwound. Short covering pushes price up because shorts have to buy; long liquidation pushes price down because longs have to sell.</p>
+
+    <p>In code this is two sign checks, and that is genuinely all the analyser does per contract:</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">classify.js</span></div>
+<pre><code><span class="c-teal">function</span> <span class="c-cobalt">classify</span>(<span class="c-cobalt">priceChg</span>, <span class="c-cobalt">oiChg</span>) {
+  <span class="c-teal">const</span> <span class="c-cobalt">up</span> = <span class="c-cobalt">priceChg</span> &gt; <span class="c-rust">0</span>;
+  <span class="c-teal">const</span> <span class="c-cobalt">more</span> = <span class="c-cobalt">oiChg</span> &gt; <span class="c-rust">0</span>;
+  <span class="c-teal">if</span> (<span class="c-cobalt">up</span> &amp;&amp; <span class="c-cobalt">more</span>)   <span class="c-teal">return</span> <span class="c-plum">"Long Buildup"</span>;      <span class="c-mist">// bullish</span>
+  <span class="c-teal">if</span> (!<span class="c-cobalt">up</span> &amp;&amp; <span class="c-cobalt">more</span>)  <span class="c-teal">return</span> <span class="c-plum">"Short Buildup"</span>;     <span class="c-mist">// bearish</span>
+  <span class="c-teal">if</span> (<span class="c-cobalt">up</span> &amp;&amp; !<span class="c-cobalt">more</span>)  <span class="c-teal">return</span> <span class="c-plum">"Short Covering"</span>;    <span class="c-mist">// bullish</span>
+  <span class="c-teal">return</span> <span class="c-plum">"Long Liquidation"</span>;                     <span class="c-mist">// bearish</span>
+}</code></pre>
+    </div>
+
+    <h2>Calls and puts read differently</h2>
+    <p>Here is the part that trips people up. The table above describes the contract itself. A long buildup in a call is bullish for the underlying, because people are buying calls. A long buildup in a put is also "bullish" for the put contract, but that means people are buying puts, which is bearish for the underlying.</p>
+
+    <p>So when you read a chain you have to flip the put side. The analyser keeps the raw label on each contract and then derives the market view from the combination. A simple way to hold it in your head:</p>
+
+    <ul>
+      <li>Rising call OI with rising call price: buyers want upside. Bullish.</li>
+      <li>Rising call OI with falling call price: writers are selling calls, they expect a ceiling. Bearish, or at least capped.</li>
+      <li>Rising put OI with rising put price: buyers want downside protection or a drop. Bearish.</li>
+      <li>Rising put OI with falling put price: writers are selling puts, they expect a floor. Bullish, or at least supported.</li>
+    </ul>
+
+    <p>Call writers and put writers are usually the larger, better capitalised side of the market, so heavy OI additions on a falling premium tend to mark levels the market is not expected to cross. That is why the strike with the highest call OI is often called resistance, and the strike with the highest put OI is called support.</p>
+
+    <h2>Worked examples</h2>
+    <p>The numbers below are illustrative, not from any particular day. What matters is the pattern.</p>
+
+    <h3>Example 1: a clean long buildup in calls</h3>
+    <p>Nifty is at 24,500. The 24,600 call closed yesterday at 80 with 1,200,000 contracts open. Today it is at 110 with 1,600,000 open. Price up, OI up: long buildup. Someone is paying more for upside and more people are doing it. On its own this reads bullish for the index.</p>
+
+    <h3>Example 2: short covering in puts</h3>
+    <p>Same day, the 24,400 put went from 70 to 95 while OI dropped from 2,000,000 to 1,500,000. Price up, OI down: short covering. Put writers who were comfortable with a floor at 24,400 are buying back their shorts. For the underlying this is bearish, because the people who were betting the index would hold above 24,400 are leaving.</p>
+
+    <p>Put the two examples together and you have a conflict: calls say up, puts say the floor is weakening. That is normal. The chain rarely agrees with itself, and the job is to weigh which side is bigger and which strikes are closest to the current price.</p>
+
+    <h3>Example 3: reading a whole chain</h3>
+    <p>To go from strike-level labels to one view, I sum the OI changes on each side within a few strikes of the spot and compare them. Here is the shape of that in code:</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">bias.js</span></div>
+<pre><code><span class="c-mist">// rows: [{ strike, ce: { oiChg, priceChg }, pe: { oiChg, priceChg } }]</span>
+<span class="c-teal">function</span> <span class="c-cobalt">marketBias</span>(<span class="c-cobalt">rows</span>, <span class="c-cobalt">spot</span>, <span class="c-cobalt">window</span> = <span class="c-rust">5</span>) {
+  <span class="c-teal">const</span> <span class="c-cobalt">near</span> = <span class="c-cobalt">rows</span>
+    .<span class="c-cobalt">sort</span>((<span class="c-cobalt">a</span>, <span class="c-cobalt">b</span>) =&gt; <span class="c-cobalt">Math</span>.<span class="c-cobalt">abs</span>(<span class="c-cobalt">a</span>.<span class="c-cobalt">strike</span> - <span class="c-cobalt">spot</span>) - <span class="c-cobalt">Math</span>.<span class="c-cobalt">abs</span>(<span class="c-cobalt">b</span>.<span class="c-cobalt">strike</span> - <span class="c-cobalt">spot</span>))
+    .<span class="c-cobalt">slice</span>(<span class="c-rust">0</span>, <span class="c-cobalt">window</span> * <span class="c-rust">2</span>);
+
+  <span class="c-teal">let</span> <span class="c-cobalt">callWriting</span> = <span class="c-rust">0</span>, <span class="c-cobalt">putWriting</span> = <span class="c-rust">0</span>;
+  <span class="c-teal">for</span> (<span class="c-teal">const</span> <span class="c-cobalt">r</span> <span class="c-teal">of</span> <span class="c-cobalt">near</span>) {
+    <span class="c-mist">// writers add OI while the premium falls</span>
+    <span class="c-teal">if</span> (<span class="c-cobalt">r</span>.<span class="c-cobalt">ce</span>.<span class="c-cobalt">oiChg</span> &gt; <span class="c-rust">0</span> &amp;&amp; <span class="c-cobalt">r</span>.<span class="c-cobalt">ce</span>.<span class="c-cobalt">priceChg</span> &lt; <span class="c-rust">0</span>) <span class="c-cobalt">callWriting</span> += <span class="c-cobalt">r</span>.<span class="c-cobalt">ce</span>.<span class="c-cobalt">oiChg</span>;
+    <span class="c-teal">if</span> (<span class="c-cobalt">r</span>.<span class="c-cobalt">pe</span>.<span class="c-cobalt">oiChg</span> &gt; <span class="c-rust">0</span> &amp;&amp; <span class="c-cobalt">r</span>.<span class="c-cobalt">pe</span>.<span class="c-cobalt">priceChg</span> &lt; <span class="c-rust">0</span>) <span class="c-cobalt">putWriting</span>  += <span class="c-cobalt">r</span>.<span class="c-cobalt">pe</span>.<span class="c-cobalt">oiChg</span>;
+  }
+  <span class="c-teal">if</span> (<span class="c-cobalt">putWriting</span> &gt; <span class="c-cobalt">callWriting</span>) <span class="c-teal">return</span> <span class="c-plum">"bullish"</span>;  <span class="c-mist">// buy calls / sell puts</span>
+  <span class="c-teal">if</span> (<span class="c-cobalt">callWriting</span> &gt; <span class="c-cobalt">putWriting</span>) <span class="c-teal">return</span> <span class="c-plum">"bearish"</span>;  <span class="c-mist">// sell calls / buy puts</span>
+  <span class="c-teal">return</span> <span class="c-plum">"neutral"</span>;
+}</code></pre>
+    </div>
+
+    <p>The suggested actions follow directly: a bullish read maps to buying calls or selling puts; a bearish read maps to selling calls or buying puts. The analyser prints exactly that line at the top of the page.</p>
+
+    <h2>How to do this yourself</h2>
+    <ol>
+      <li>Open the option chain for your index and pick the nearest expiry. Far expiries have thin OI and the changes are noise.</li>
+      <li>Find the spot price and look five strikes above and below it. Ignore the rest for now.</li>
+      <li>For each call and put in that range, note the sign of the premium change and the sign of the OI change, and label the cell using the table above.</li>
+      <li>Flip the put side when thinking about the underlying.</li>
+      <li>Find the largest OI additions on falling premiums. Those are the writers, and their strikes are your support and resistance.</li>
+      <li>Compare the total put writing to the total call writing near the spot. That difference is your bias.</li>
+      <li>Repeat at the same time each day so the changes are comparable. The NSE numbers are deltas versus the previous close, so mid-session reads drift as the day goes on.</li>
+    </ol>
+
+    <p>If you would rather not do the arithmetic by hand, <code>option_chain_analysis</code> fetches the Nifty chain on each visit and prints the labels for you. It has an expiry selector and can be pointed at FINNIFTY with one constant in <code>app.js</code>.</p>
+
+    <h2>Things that will mislead you</h2>
+    <ul>
+      <li>Expiry day. OI collapses across the board as contracts settle, and every cell looks like liquidation or covering. Do not read the chain on expiry day.</li>
+      <li>Rollovers. In the last week of a monthly series, OI moves from the near month to the next month. That is not a view, it is housekeeping.</li>
+      <li>Tiny strikes. A 300 percent OI increase on a far out-of-the-money strike with 500 contracts is not a signal.</li>
+      <li>One snapshot. A single read tells you about one day. Trends in OI over several days are far more informative than any single cell.</li>
+    </ul>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li>The four-cell table is the entire framework. Everything else is about which cells to weight and which to ignore.</li>
+      <li>Writers matter more than buyers. The largest OI additions on falling premiums tell you where the market expects price to stall.</li>
+      <li>Conflicting signals are the norm. A tool that forces a single answer is lying; one that shows all the labels and lets you weigh them is honest.</li>
+      <li>Reading the chain at the same time every day was the single biggest improvement to how useful it was.</li>
+    </ul>
+
+    <p><a class="text-link" href="https://github.com/aadityatamrakar/option_chain_analysis" target="_blank" rel="noopener">Source on GitHub <span class="chev">&gt;</span></a></p>
+    <!-- ARTICLE BODY END -->
+
+    <nav class="post-nav" aria-label="More posts">
+      <a href="/blog/cash-futures-spread-chart/" rel="prev">&lt; Charting the cash vs futures spread for NSE stocks</a>
+      <a href="/blog/nse-option-chain-analysis/" rel="next">Building an NSE option chain analyser in Node.js &gt;</a>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year">2026</span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="/#about">About</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/blog.js"></script>
+</body>
+</html>

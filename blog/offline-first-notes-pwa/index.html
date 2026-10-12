@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Build an offline-first notes app with a service worker</title>
+  <meta name="description" content="Step-by-step guide to a notes PWA with no framework: localStorage for notes, a service worker that precaches the shell, and a manifest for Android install.">
+  <meta name="author" content="Aaditya Tamrakar">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#303055">
+  <link rel="canonical" href="https://aadityatamrakar.github.io/blog/offline-first-notes-pwa/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Aaditya Tamrakar">
+  <meta property="og:title" content="How to build an offline-first notes app with a service worker">
+  <meta property="og:description" content="Step-by-step guide to a notes PWA with no framework: localStorage for notes, a service worker that precaches the shell, and a manifest for Android install.">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/blog/offline-first-notes-pwa/">
+  <meta property="og:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <meta property="article:published_time" content="2026-10-06">
+  <meta property="article:author" content="https://aadityatamrakar.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@t_aaditya">
+  <meta name="twitter:creator" content="@t_aaditya">
+  <meta name="twitter:title" content="How to build an offline-first notes app with a service worker">
+  <meta name="twitter:description" content="Step-by-step guide to a notes PWA with no framework: localStorage for notes, a service worker that precaches the shell, and a manifest for Android install.">
+  <meta name="twitter:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <link rel="alternate" type="application/rss+xml" title="Aaditya Tamrakar · Blog" href="/feed.xml">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How to build an offline-first notes app with a service worker",
+    "description": "Step-by-step guide to a notes PWA with no framework: localStorage for notes, a service worker that precaches the shell, and a manifest for Android install.",
+    "datePublished": "2026-10-06",
+    "dateModified": "2026-10-06",
+    "keywords": "PWA, service worker, offline, localStorage, web app manifest, javascript, how-to",
+    "image": "https://aadityatamrakar.github.io/assets/og.png",
+    "mainEntityOfPage": "https://aadityatamrakar.github.io/blog/offline-first-notes-pwa/",
+    "author": { "@type": "Person", "name": "Aaditya Tamrakar", "url": "https://aadityatamrakar.github.io/" },
+    "publisher": { "@type": "Person", "name": "Aaditya Tamrakar" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#journey">Journey</a>
+      <a href="/#skills">Skills</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="post container">
+    <p class="eyebrow">Web · How-to</p>
+    <h1>How to build an offline-first notes app with a service worker</h1>
+    <p class="post-meta"><time datetime="2026-10-06">6 Oct 2026</time> · <span class="reading-time"></span> · <span class="tags"><span class="tag">Web</span><span class="tag">How-to</span><span class="tag">PWA</span></span></p>
+
+    <!-- ARTICLE BODY START -->
+    <p>I wanted a notes app that opened instantly on my phone, worked with no signal, and did not need an app store. A progressive web app is the right tool for that: plain HTML, CSS and JavaScript, a service worker to keep the shell available offline, a manifest so Android offers to install it, and <code>localStorage</code> for the notes themselves. The repo is <code>pwa_notes</code>. This post walks through building it from an empty folder.</p>
+
+    <p>There is no framework and no build step. Everything here runs by copying the files to any static host that serves over HTTPS, which is a requirement for service workers. GitHub Pages works.</p>
+
+    <h2>What you will end up with</h2>
+    <ul>
+      <li>A single-page notes app that saves to <code>localStorage</code> on every keystroke.</li>
+      <li>A service worker that precaches the app shell on install and serves it from cache when offline.</li>
+      <li>A web app manifest so Chrome on Android shows an "Add to Home screen" prompt and launches the app full-screen.</li>
+    </ul>
+
+    <h2>Step 1: the app shell</h2>
+    <p>Start with the smallest page that does the job. The structure is a text area for the current note, a list of saved notes, and a script tag. The two important lines in the head are the manifest link and the theme colour, which Android uses for the status bar once the app is installed.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">index.html</span></div>
+<pre><code><span class="c-mist">&lt;!DOCTYPE html&gt;</span>
+&lt;<span class="c-teal">html</span> <span class="c-cobalt">lang</span>=<span class="c-plum">"en"</span>&gt;
+&lt;<span class="c-teal">head</span>&gt;
+  &lt;<span class="c-teal">meta</span> <span class="c-cobalt">charset</span>=<span class="c-plum">"utf-8"</span>&gt;
+  &lt;<span class="c-teal">meta</span> <span class="c-cobalt">name</span>=<span class="c-plum">"viewport"</span> <span class="c-cobalt">content</span>=<span class="c-plum">"width=device-width, initial-scale=1"</span>&gt;
+  &lt;<span class="c-teal">meta</span> <span class="c-cobalt">name</span>=<span class="c-plum">"theme-color"</span> <span class="c-cobalt">content</span>=<span class="c-plum">"#303055"</span>&gt;
+  &lt;<span class="c-teal">link</span> <span class="c-cobalt">rel</span>=<span class="c-plum">"manifest"</span> <span class="c-cobalt">href</span>=<span class="c-plum">"manifest.json"</span>&gt;
+  &lt;<span class="c-teal">link</span> <span class="c-cobalt">rel</span>=<span class="c-plum">"stylesheet"</span> <span class="c-cobalt">href</span>=<span class="c-plum">"style.css"</span>&gt;
+  &lt;<span class="c-teal">title</span>&gt;Notes&lt;/<span class="c-teal">title</span>&gt;
+&lt;/<span class="c-teal">head</span>&gt;
+&lt;<span class="c-teal">body</span>&gt;
+  &lt;<span class="c-teal">textarea</span> <span class="c-cobalt">id</span>=<span class="c-plum">"note"</span> <span class="c-cobalt">placeholder</span>=<span class="c-plum">"Write something"</span>&gt;&lt;/<span class="c-teal">textarea</span>&gt;
+  &lt;<span class="c-teal">button</span> <span class="c-cobalt">id</span>=<span class="c-plum">"save"</span>&gt;Save&lt;/<span class="c-teal">button</span>&gt;
+  &lt;<span class="c-teal">ul</span> <span class="c-cobalt">id</span>=<span class="c-plum">"list"</span>&gt;&lt;/<span class="c-teal">ul</span>&gt;
+  &lt;<span class="c-teal">script</span> <span class="c-cobalt">src</span>=<span class="c-plum">"app.js"</span>&gt;&lt;/<span class="c-teal">script</span>&gt;
+&lt;/<span class="c-teal">body</span>&gt;
+&lt;/<span class="c-teal">html</span>&gt;</code></pre>
+    </div>
+
+    <h2>Step 2: store notes in localStorage</h2>
+    <p>For a personal notes app, <code>localStorage</code> is enough. It is synchronous, available offline by definition, and survives app restarts. The storage is a single JSON array under one key. Every save rewrites the array; at the scale of personal notes that is fine. If you later need thousands of notes or attachments, IndexedDB is the upgrade path, but it is not needed to get started.</p>
+
+    <p>The last block of <code>app.js</code> registers the service worker. Registration is asynchronous and must be guarded, because older browsers and some privacy modes do not expose <code>navigator.serviceWorker</code>.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">app.js</span></div>
+<pre><code><span class="c-teal">const</span> <span class="c-cobalt">KEY</span> = <span class="c-plum">"notes"</span>;
+<span class="c-teal">const</span> <span class="c-cobalt">$</span> = (<span class="c-cobalt">id</span>) =&gt; <span class="c-cobalt">document</span>.getElementById(<span class="c-cobalt">id</span>);
+
+<span class="c-teal">function</span> <span class="c-cobalt">load</span>() {
+  <span class="c-teal">try</span> { <span class="c-teal">return</span> <span class="c-cobalt">JSON</span>.parse(<span class="c-cobalt">localStorage</span>.getItem(<span class="c-cobalt">KEY</span>)) || []; }
+  <span class="c-teal">catch</span> { <span class="c-teal">return</span> []; }
+}
+<span class="c-teal">function</span> <span class="c-cobalt">persist</span>(<span class="c-cobalt">notes</span>) {
+  <span class="c-cobalt">localStorage</span>.setItem(<span class="c-cobalt">KEY</span>, <span class="c-cobalt">JSON</span>.stringify(<span class="c-cobalt">notes</span>));
+}
+<span class="c-teal">function</span> <span class="c-cobalt">render</span>() {
+  <span class="c-cobalt">$</span>(<span class="c-plum">"list"</span>).innerHTML = <span class="c-cobalt">load</span>()
+    .map((<span class="c-cobalt">n</span>) =&gt; <span class="c-plum">`&lt;li&gt;&lt;time&gt;${</span><span class="c-teal">new</span> <span class="c-cobalt">Date</span>(<span class="c-cobalt">n</span>.ts).toLocaleString()<span class="c-plum">}&lt;/time&gt; ${</span><span class="c-cobalt">escapeHtml</span>(<span class="c-cobalt">n</span>.text)<span class="c-plum">}&lt;/li&gt;`</span>)
+    .join(<span class="c-plum">""</span>);
+}
+<span class="c-teal">function</span> <span class="c-cobalt">escapeHtml</span>(<span class="c-cobalt">s</span>) {
+  <span class="c-teal">return</span> <span class="c-cobalt">s</span>.replace(/[&amp;&lt;&gt;]/g, (<span class="c-cobalt">c</span>) =&gt; ({ <span class="c-plum">"&amp;"</span>: <span class="c-plum">"&amp;amp;"</span>, <span class="c-plum">"&lt;"</span>: <span class="c-plum">"&amp;lt;"</span>, <span class="c-plum">"&gt;"</span>: <span class="c-plum">"&amp;gt;"</span> })[<span class="c-cobalt">c</span>]);
+}
+
+<span class="c-cobalt">$</span>(<span class="c-plum">"save"</span>).addEventListener(<span class="c-plum">"click"</span>, () =&gt; {
+  <span class="c-teal">const</span> <span class="c-cobalt">text</span> = <span class="c-cobalt">$</span>(<span class="c-plum">"note"</span>).value.trim();
+  <span class="c-teal">if</span> (!<span class="c-cobalt">text</span>) <span class="c-teal">return</span>;
+  <span class="c-cobalt">persist</span>([{ <span class="c-cobalt">ts</span>: <span class="c-cobalt">Date</span>.now(), <span class="c-cobalt">text</span> }, ...<span class="c-cobalt">load</span>()]);
+  <span class="c-cobalt">$</span>(<span class="c-plum">"note"</span>).value = <span class="c-plum">""</span>;
+  <span class="c-cobalt">render</span>();
+});
+<span class="c-cobalt">render</span>();
+
+<span class="c-mist">// register the service worker once the page has loaded</span>
+<span class="c-teal">if</span> (<span class="c-plum">"serviceWorker"</span> <span class="c-teal">in</span> <span class="c-cobalt">navigator</span>) {
+  <span class="c-cobalt">window</span>.addEventListener(<span class="c-plum">"load"</span>, () =&gt; {
+    <span class="c-cobalt">navigator</span>.serviceWorker.register(<span class="c-plum">"sw.js"</span>).catch(<span class="c-cobalt">console</span>.error);
+  });
+}</code></pre>
+    </div>
+
+    <h2>Step 3: the service worker</h2>
+    <p>The service worker is what makes the app open offline. It has two jobs. On <code>install</code> it opens a named cache and adds every file in the app shell. On <code>fetch</code> it answers requests from the cache first and only goes to the network for anything it does not have.</p>
+
+    <p>The cache name carries a version. When you change any shell file, bump the version: the new worker installs with a fresh cache, and the <code>activate</code> handler deletes the old one. Without this you will ship a change, reload, and wonder why nothing happened, because the old cache is still answering.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">sw.js</span></div>
+<pre><code><span class="c-teal">const</span> <span class="c-cobalt">CACHE</span> = <span class="c-plum">"notes-v1"</span>;
+<span class="c-teal">const</span> <span class="c-cobalt">SHELL</span> = [
+  <span class="c-plum">"./"</span>,
+  <span class="c-plum">"./index.html"</span>,
+  <span class="c-plum">"./style.css"</span>,
+  <span class="c-plum">"./app.js"</span>,
+  <span class="c-plum">"./manifest.json"</span>,
+  <span class="c-plum">"./icons/icon-192.png"</span>,
+  <span class="c-plum">"./icons/icon-512.png"</span>
+];
+
+<span class="c-cobalt">self</span>.addEventListener(<span class="c-plum">"install"</span>, (<span class="c-cobalt">event</span>) =&gt; {
+  <span class="c-cobalt">event</span>.waitUntil(
+    <span class="c-cobalt">caches</span>.open(<span class="c-cobalt">CACHE</span>).then((<span class="c-cobalt">cache</span>) =&gt; <span class="c-cobalt">cache</span>.addAll(<span class="c-cobalt">SHELL</span>))
+  );
+  <span class="c-cobalt">self</span>.skipWaiting();
+});
+
+<span class="c-cobalt">self</span>.addEventListener(<span class="c-plum">"activate"</span>, (<span class="c-cobalt">event</span>) =&gt; {
+  <span class="c-cobalt">event</span>.waitUntil(
+    <span class="c-cobalt">caches</span>.keys().then((<span class="c-cobalt">keys</span>) =&gt;
+      <span class="c-cobalt">Promise</span>.all(<span class="c-cobalt">keys</span>.filter((<span class="c-cobalt">k</span>) =&gt; <span class="c-cobalt">k</span> !== <span class="c-cobalt">CACHE</span>).map((<span class="c-cobalt">k</span>) =&gt; <span class="c-cobalt">caches</span>.delete(<span class="c-cobalt">k</span>)))
+    )
+  );
+  <span class="c-cobalt">self</span>.clients.claim();
+});
+
+<span class="c-cobalt">self</span>.addEventListener(<span class="c-plum">"fetch"</span>, (<span class="c-cobalt">event</span>) =&gt; {
+  <span class="c-teal">if</span> (<span class="c-cobalt">event</span>.request.method !== <span class="c-plum">"GET"</span>) <span class="c-teal">return</span>;
+  <span class="c-cobalt">event</span>.respondWith(
+    <span class="c-cobalt">caches</span>.match(<span class="c-cobalt">event</span>.request).then((<span class="c-cobalt">hit</span>) =&gt;
+      <span class="c-cobalt">hit</span> || <span class="c-cobalt">fetch</span>(<span class="c-cobalt">event</span>.request).then((<span class="c-cobalt">res</span>) =&gt; {
+        <span class="c-mist">// cache anything else we fetch successfully, for next time</span>
+        <span class="c-teal">const</span> <span class="c-cobalt">copy</span> = <span class="c-cobalt">res</span>.clone();
+        <span class="c-cobalt">caches</span>.open(<span class="c-cobalt">CACHE</span>).then((<span class="c-cobalt">c</span>) =&gt; <span class="c-cobalt">c</span>.put(<span class="c-cobalt">event</span>.request, <span class="c-cobalt">copy</span>));
+        <span class="c-teal">return</span> <span class="c-cobalt">res</span>;
+      })
+    ).catch(() =&gt; <span class="c-cobalt">caches</span>.match(<span class="c-plum">"./index.html"</span>))
+  );
+});</code></pre>
+    </div>
+
+    <p>Cache-first is the right strategy for an app shell that changes rarely. For data that must be fresh you would use network-first with a cache fallback instead. This app has no server data at all, so cache-first everywhere is correct.</p>
+
+    <h2>Step 4: the manifest</h2>
+    <p>The manifest is a JSON file that tells the browser the app's name, icons, start URL and how to display it. With a valid manifest, a registered service worker and HTTPS, Chrome on Android treats the page as installable and shows an install prompt. The app then appears in the launcher with its icon and opens without browser chrome.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">manifest.json</span></div>
+<pre><code>{
+  <span class="c-cobalt">"name"</span>: <span class="c-plum">"Notes"</span>,
+  <span class="c-cobalt">"short_name"</span>: <span class="c-plum">"Notes"</span>,
+  <span class="c-cobalt">"start_url"</span>: <span class="c-plum">"./index.html"</span>,
+  <span class="c-cobalt">"display"</span>: <span class="c-plum">"standalone"</span>,
+  <span class="c-cobalt">"background_color"</span>: <span class="c-plum">"#e8e8f2"</span>,
+  <span class="c-cobalt">"theme_color"</span>: <span class="c-plum">"#303055"</span>,
+  <span class="c-cobalt">"icons"</span>: [
+    { <span class="c-cobalt">"src"</span>: <span class="c-plum">"icons/icon-192.png"</span>, <span class="c-cobalt">"sizes"</span>: <span class="c-plum">"192x192"</span>, <span class="c-cobalt">"type"</span>: <span class="c-plum">"image/png"</span> },
+    { <span class="c-cobalt">"src"</span>: <span class="c-plum">"icons/icon-512.png"</span>, <span class="c-cobalt">"sizes"</span>: <span class="c-plum">"512x512"</span>, <span class="c-cobalt">"type"</span>: <span class="c-plum">"image/png"</span> }
+  ]
+}</code></pre>
+    </div>
+
+    <p>You need at least a 192 and a 512 pixel icon for the install prompt. Any PNG will do; I used a flat single-colour square with a glyph.</p>
+
+    <h2>Step 5: test it</h2>
+    <ol>
+      <li>Serve the folder over HTTPS, or over <code>http://localhost</code>, which browsers treat as secure for development.</li>
+      <li>Open DevTools, Application tab. Confirm the service worker is activated and the cache contains the shell files.</li>
+      <li>Tick "Offline" in the Service Workers panel and reload. The app should still open and your notes should still be there.</li>
+      <li>On an Android phone, open the URL in Chrome and accept the install prompt. Turn on aeroplane mode and launch it from the home screen.</li>
+    </ol>
+
+    <h2>Shipping an update</h2>
+    <p>The part of PWAs that trips people up is how updates reach installed users. When you deploy new files, the browser re-fetches <code>sw.js</code> on the next visit and compares it byte for byte with the installed worker. If it differs, the new worker installs in the background, caches the new shell under the new cache name, and takes over on the next load. If <code>sw.js</code> is byte-identical, nothing happens, even if <code>app.js</code> changed. That is why the cache name must change with every release: it changes the worker file, which triggers the update, and it gives the new shell a fresh cache.</p>
+
+    <p>Calling <code>skipWaiting</code> and <code>clients.claim</code>, as the worker above does, makes the new version active immediately instead of waiting for all tabs to close. For a single-user notes app that is the behaviour you want. For a multi-tab app with in-memory state you might prefer to show a "new version available, reload" message instead and let the user choose the moment.</p>
+
+    <p>Notes in <code>localStorage</code> are untouched by any of this. The cache holds the application shell; the storage holds the user's data. Keeping those two concerns separate is what makes it safe to wipe and rebuild the cache on every release.</p>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li>Version the cache name and clean up in <code>activate</code>. Nearly every "my change is not showing" problem with service workers is a stale cache.</li>
+      <li>Use relative paths in the shell list. They resolve against the worker's scope, so the same files work at the root of a domain or under a subpath.</li>
+      <li><code>localStorage</code> is enough for a personal notes app, and it keeps the code small. Reach for IndexedDB only when you have a reason.</li>
+      <li>A PWA with no backend is the cheapest way to ship a phone app: no store, no signing, no build. Push to a static host and share the link.</li>
+    </ul>
+
+    <p><a class="text-link" href="https://github.com/aadityatamrakar/pwa_notes" target="_blank" rel="noopener">Source on GitHub <span class="chev">&gt;</span></a></p>
+    <!-- ARTICLE BODY END -->
+
+    <nav class="post-nav" aria-label="More posts">
+      <a href="/blog/realtime-distress-alarm-socketio/" rel="prev">&lt; How to broadcast live video to a room with Socket.io</a>
+      <a href="/blog/fantasy-cricket-team-optimiser/" rel="next">A fantasy cricket team optimiser is a constraint solver &gt;</a>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year">2026</span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="/#about">About</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/blog.js"></script>
+</body>
+</html>

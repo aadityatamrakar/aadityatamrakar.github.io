@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Charting the cash vs futures spread for NSE stocks</title>
+  <meta name="description" content="How I built futures_spread_chart, a small Node and Express app that computes the daily cash vs futures spread for NSE stocks and plots it at /chart.html.">
+  <meta name="author" content="Aaditya Tamrakar">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#303055">
+  <link rel="canonical" href="https://aadityatamrakar.github.io/blog/cash-futures-spread-chart/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Aaditya Tamrakar">
+  <meta property="og:title" content="Charting the cash vs futures spread for NSE stocks">
+  <meta property="og:description" content="How I built futures_spread_chart, a small Node and Express app that computes the daily cash vs futures spread for NSE stocks and plots it at /chart.html.">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/blog/cash-futures-spread-chart/">
+  <meta property="og:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <meta property="article:published_time" content="2026-10-10">
+  <meta property="article:author" content="https://aadityatamrakar.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@t_aaditya">
+  <meta name="twitter:creator" content="@t_aaditya">
+  <meta name="twitter:title" content="Charting the cash vs futures spread for NSE stocks">
+  <meta name="twitter:description" content="How I built futures_spread_chart, a small Node and Express app that computes the daily cash vs futures spread for NSE stocks and plots it at /chart.html.">
+  <meta name="twitter:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <link rel="alternate" type="application/rss+xml" title="Aaditya Tamrakar · Blog" href="/feed.xml">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Charting the cash vs futures spread for NSE stocks",
+    "description": "How I built futures_spread_chart, a small Node and Express app that computes the daily cash vs futures spread for NSE stocks and plots it at /chart.html.",
+    "datePublished": "2026-10-10",
+    "dateModified": "2026-10-10",
+    "keywords": "futures spread, cash futures basis, NSE, Node.js, Express, charting, premium discount, stock futures, trading tools",
+    "image": "https://aadityatamrakar.github.io/assets/og.png",
+    "mainEntityOfPage": "https://aadityatamrakar.github.io/blog/cash-futures-spread-chart/",
+    "author": { "@type": "Person", "name": "Aaditya Tamrakar", "url": "https://aadityatamrakar.github.io/" },
+    "publisher": { "@type": "Person", "name": "Aaditya Tamrakar" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#journey">Journey</a>
+      <a href="/#skills">Skills</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="post container">
+    <p class="eyebrow">Trading</p>
+    <h1>Charting the cash vs futures spread for NSE stocks</h1>
+    <p class="post-meta"><time datetime="2026-10-10">10 Oct 2026</time> · <span class="reading-time"></span> · <span class="tags"><span class="tag">Trading</span><span class="tag">Node.js</span><span class="tag">Charts</span></span></p>
+
+    <!-- ARTICLE BODY START -->
+    <p>Every NSE stock that has a futures contract trades at two prices at once: the cash price on the spot market and the futures price for the current month. The difference between them is the spread, sometimes called the basis. Most of the time it is a small positive number that reflects the cost of carrying the stock to expiry. When it stops behaving like that, something is going on, and I wanted to see it.</p>
+
+    <p>The brokers I used showed the two prices in different windows and never the difference. The exchange publishes both but not side by side over time. So I wrote <code>futures_spread_chart</code>, a small Node and Express app that computes the daily spread and draws it.</p>
+
+    <h2>Why the spread matters</h2>
+    <p>In theory the futures price equals the cash price plus the cost of carry (interest for the days to expiry) minus any dividend expected before expiry. That is the fair value. In practice the traded spread wanders around fair value because of demand for leverage, short-selling constraints, and plain positioning.</p>
+
+    <p>A few patterns are worth watching:</p>
+    <ul>
+      <li>A spread that widens well above carry means people are paying a premium to be long with leverage. That is crowded long positioning.</li>
+      <li>A spread that collapses to zero or goes negative (futures at a discount) usually means heavy shorting in futures, or an expected dividend, or both.</li>
+      <li>A spread that stays unusually wide into the last week of the series is often rolled rather than closed, which tells you the position is sticky.</li>
+    </ul>
+
+    <p>None of this is a signal on its own. It is context that the price chart does not give you, and it is cheap to compute once you have both series.</p>
+
+    <h2>What I built</h2>
+    <p>The app has three parts. <code>spreadData.js</code> is the module that gathers the cash close and the futures close for a symbol and produces one row per trading day with the spread. An Express server exposes that as JSON. And <code>/chart.html</code> is a static page that fetches the JSON and draws the spread as a line, with the cash and futures prices available on a second axis so you can see whether a move in the spread came from the cash leg or the futures leg.</p>
+
+    <p>The structure is intentionally flat. There is no database. The data module is the only thing that knows where prices come from, so swapping the source is a one-file change. Everything else is presentation.</p>
+
+    <h2>How it works</h2>
+
+    <h3>Computing the spread</h3>
+    <p>The data module takes two series keyed by date and joins them. The join matters more than it sounds: cash and futures do not always have the same set of dates in the source data, so I key both by date and only emit a row where both are present. The spread is stored both in absolute rupees and as a percentage of the cash price, because a 5 rupee spread means something different on a 100 rupee stock than on a 3,000 rupee one.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">spreadData.js</span></div>
+<pre><code><span class="c-mist">// cash and fut: { "YYYY-MM-DD": closePrice }</span>
+<span class="c-teal">function</span> <span class="c-cobalt">buildSpread</span>(<span class="c-cobalt">cash</span>, <span class="c-cobalt">fut</span>) {
+  <span class="c-teal">const</span> <span class="c-cobalt">rows</span> = [];
+  <span class="c-teal">for</span> (<span class="c-teal">const</span> <span class="c-cobalt">date</span> <span class="c-teal">of</span> <span class="c-cobalt">Object</span>.<span class="c-cobalt">keys</span>(<span class="c-cobalt">cash</span>).<span class="c-cobalt">sort</span>()) {
+    <span class="c-teal">if</span> (!(<span class="c-cobalt">date</span> <span class="c-teal">in</span> <span class="c-cobalt">fut</span>)) <span class="c-teal">continue</span>;        <span class="c-mist">// only days where both legs traded</span>
+    <span class="c-teal">const</span> <span class="c-cobalt">c</span> = <span class="c-cobalt">cash</span>[<span class="c-cobalt">date</span>], <span class="c-cobalt">f</span> = <span class="c-cobalt">fut</span>[<span class="c-cobalt">date</span>];
+    <span class="c-cobalt">rows</span>.<span class="c-cobalt">push</span>({
+      <span class="c-cobalt">date</span>,
+      <span class="c-cobalt">cash</span>: <span class="c-cobalt">c</span>,
+      <span class="c-cobalt">futures</span>: <span class="c-cobalt">f</span>,
+      <span class="c-cobalt">spread</span>: +(<span class="c-cobalt">f</span> - <span class="c-cobalt">c</span>).<span class="c-cobalt">toFixed</span>(<span class="c-rust">2</span>),
+      <span class="c-cobalt">spreadPct</span>: +((<span class="c-cobalt">f</span> - <span class="c-cobalt">c</span>) / <span class="c-cobalt">c</span> * <span class="c-rust">100</span>).<span class="c-cobalt">toFixed</span>(<span class="c-rust">3</span>)
+    });
+  }
+  <span class="c-teal">return</span> <span class="c-cobalt">rows</span>;
+}
+
+<span class="c-cobalt">module</span>.<span class="c-cobalt">exports</span> = { <span class="c-cobalt">buildSpread</span> };</code></pre>
+    </div>
+
+    <h3>Serving it</h3>
+    <p>Express does two jobs: serve the static chart page and expose the spread as JSON. The symbol comes in as a query parameter and is validated against a short allow-list, because the symbol ends up in a request to the price source and I did not want to forward arbitrary strings.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">server.js</span></div>
+<pre><code><span class="c-teal">const</span> <span class="c-cobalt">express</span> = <span class="c-cobalt">require</span>(<span class="c-plum">"express"</span>);
+<span class="c-teal">const</span> { <span class="c-cobalt">getSpread</span> } = <span class="c-cobalt">require</span>(<span class="c-plum">"./spreadData"</span>);
+
+<span class="c-teal">const</span> <span class="c-cobalt">app</span> = <span class="c-cobalt">express</span>();
+<span class="c-cobalt">app</span>.<span class="c-cobalt">use</span>(<span class="c-cobalt">express</span>.<span class="c-cobalt">static</span>(<span class="c-plum">"public"</span>));   <span class="c-mist">// serves /chart.html</span>
+
+<span class="c-cobalt">app</span>.<span class="c-cobalt">get</span>(<span class="c-plum">"/api/spread"</span>, <span class="c-teal">async</span> (<span class="c-cobalt">req</span>, <span class="c-cobalt">res</span>) =&gt; {
+  <span class="c-teal">const</span> <span class="c-cobalt">symbol</span> = <span class="c-cobalt">String</span>(<span class="c-cobalt">req</span>.<span class="c-cobalt">query</span>.<span class="c-cobalt">symbol</span> || <span class="c-plum">"NIFTY"</span>).<span class="c-cobalt">toUpperCase</span>();
+  <span class="c-teal">if</span> (!/^[<span class="c-cobalt">A-Z0-9&amp;-</span>]{<span class="c-rust">1</span>,<span class="c-rust">20</span>}$/.<span class="c-cobalt">test</span>(<span class="c-cobalt">symbol</span>)) <span class="c-teal">return</span> <span class="c-cobalt">res</span>.<span class="c-cobalt">status</span>(<span class="c-rust">400</span>).<span class="c-cobalt">end</span>();
+  <span class="c-teal">try</span> {
+    <span class="c-cobalt">res</span>.<span class="c-cobalt">json</span>(<span class="c-teal">await</span> <span class="c-cobalt">getSpread</span>(<span class="c-cobalt">symbol</span>));
+  } <span class="c-teal">catch</span> (<span class="c-cobalt">e</span>) {
+    <span class="c-cobalt">res</span>.<span class="c-cobalt">status</span>(<span class="c-rust">502</span>).<span class="c-cobalt">json</span>({ <span class="c-cobalt">error</span>: <span class="c-plum">"upstream"</span> });
+  }
+});
+
+<span class="c-cobalt">app</span>.<span class="c-cobalt">listen</span>(<span class="c-rust">3000</span>);</code></pre>
+    </div>
+
+    <h3>Drawing it</h3>
+    <p><code>/chart.html</code> is a single page with a canvas and a small script. It fetches <code>/api/spread</code>, maps the rows into two datasets, and hands them to a charting library with two y-axes: one for the spread, one for the prices. I did not want to get clever here. A line chart with a zero line is enough to see premium versus discount, and plotting the cash and futures prices alongside it answers the only follow-up question I ever had, which is "which leg moved".</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">public/chart.html</span></div>
+<pre><code><span class="c-teal">const</span> <span class="c-cobalt">rows</span> = <span class="c-teal">await</span> (<span class="c-teal">await</span> <span class="c-cobalt">fetch</span>(<span class="c-plum">"/api/spread?symbol="</span> + <span class="c-cobalt">symbol</span>)).<span class="c-cobalt">json</span>();
+
+<span class="c-teal">const</span> <span class="c-cobalt">labels</span>  = <span class="c-cobalt">rows</span>.<span class="c-cobalt">map</span>(<span class="c-cobalt">r</span> =&gt; <span class="c-cobalt">r</span>.<span class="c-cobalt">date</span>);
+<span class="c-teal">const</span> <span class="c-cobalt">spread</span>  = <span class="c-cobalt">rows</span>.<span class="c-cobalt">map</span>(<span class="c-cobalt">r</span> =&gt; <span class="c-cobalt">r</span>.<span class="c-cobalt">spread</span>);
+<span class="c-teal">const</span> <span class="c-cobalt">cash</span>    = <span class="c-cobalt">rows</span>.<span class="c-cobalt">map</span>(<span class="c-cobalt">r</span> =&gt; <span class="c-cobalt">r</span>.<span class="c-cobalt">cash</span>);
+<span class="c-teal">const</span> <span class="c-cobalt">futures</span> = <span class="c-cobalt">rows</span>.<span class="c-cobalt">map</span>(<span class="c-cobalt">r</span> =&gt; <span class="c-cobalt">r</span>.<span class="c-cobalt">futures</span>);
+
+<span class="c-mist">// spread on the left axis, prices on the right; zero line marks premium vs discount</span>
+<span class="c-cobalt">draw</span>({ <span class="c-cobalt">labels</span>, <span class="c-cobalt">series</span>: [
+  { <span class="c-cobalt">name</span>: <span class="c-plum">"spread"</span>,  <span class="c-cobalt">data</span>: <span class="c-cobalt">spread</span>,  <span class="c-cobalt">axis</span>: <span class="c-plum">"left"</span>  },
+  { <span class="c-cobalt">name</span>: <span class="c-plum">"cash"</span>,    <span class="c-cobalt">data</span>: <span class="c-cobalt">cash</span>,    <span class="c-cobalt">axis</span>: <span class="c-plum">"right"</span> },
+  { <span class="c-cobalt">name</span>: <span class="c-plum">"futures"</span>, <span class="c-cobalt">data</span>: <span class="c-cobalt">futures</span>, <span class="c-cobalt">axis</span>: <span class="c-plum">"right"</span> }
+]});</code></pre>
+    </div>
+
+    <h2>Reading the chart</h2>
+    <p>Once you have a few months of history on screen, the shape is familiar for most liquid stocks. The spread starts each monthly series near its widest, decays roughly linearly as the days to expiry run down, and snaps back up on the first day of the next series. That saw-tooth is just carry, and you learn to see through it.</p>
+
+    <p>What you are looking for is departure from the saw-tooth. A sudden jump in the spread with no change in cash is futures buying. A spread that goes to a discount mid-series while cash is flat is futures selling, or a dividend announcement, and it is worth checking which. A spread that does not decay at all into expiry means the premium is being defended, which is a strong hint about who is on the other side.</p>
+
+    <h2>Try it</h2>
+    <p>Clone the repo, run <code>npm install</code> and <code>node server.js</code>, and open <code>http://localhost:3000/chart.html</code>. The data module expects a price source; the README describes what it was built against, and if that source has changed since, <code>spreadData.js</code> is the only file you need to edit. If you adapt it to a different exchange or a different data vendor, please send a pull request with the new source behind a flag rather than replacing the old one, so both keep working.</p>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li>Join on date, not on index position. The two series will not line up and the bug will be silent.</li>
+      <li>Store the spread as both absolute and percentage. You will want each one at different times, and the second is free to compute.</li>
+      <li>Plot the legs next to the difference. A spread chart on its own invites wrong conclusions about which side moved.</li>
+      <li>Keep the data source in one module. It is the only part of this kind of tool that rots, and isolating it made the project survive its original source going away.</li>
+      <li>Daily data is enough. I started with an intraday version and the extra noise was not worth the extra plumbing.</li>
+    </ul>
+
+    <p><a class="text-link" href="https://github.com/aadityatamrakar/futures_spread_chart" target="_blank" rel="noopener">Source on GitHub <span class="chev">&gt;</span></a></p>
+    <!-- ARTICLE BODY END -->
+
+    <nav class="post-nav" aria-label="More posts">
+      <a href="/blog/broker-sdks-open-source/" rel="prev">&lt; What I built and maintain for the open source trading community</a>
+      <a href="/blog/reading-open-interest-buildups/" rel="next">How to read open interest: long buildup, short covering and friends &gt;</a>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year">2026</span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="/#about">About</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/blog.js"></script>
+</body>
+</html>

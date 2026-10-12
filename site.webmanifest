@@ -1,0 +1,13 @@
+{
+  "name": "Aaditya Tamrakar",
+  "short_name": "aaditya",
+  "description": "Full stack engineer, machine learning and algorithmic trading projects, plus writing.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#ffffff",
+  "theme_color": "#303055",
+  "icons": [
+    { "src": "/public/apple-touch-icon-precomposed.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/public/favicon.ico", "sizes": "48x48", "type": "image/x-icon" }
+  ]
+}

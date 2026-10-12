@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Designing an options trading UI for beginners</title>
+  <meta name="description" content="My CS615 UI Design project at UMass Boston: an options trading screen built for beginners, the design goals behind it, and how the prototype works.">
+  <meta name="author" content="Aaditya Tamrakar">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#303055">
+  <link rel="canonical" href="https://aadityatamrakar.github.io/blog/options-ui-for-beginners-cs615/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Aaditya Tamrakar">
+  <meta property="og:title" content="Designing an options trading UI for beginners (CS615 project)">
+  <meta property="og:description" content="My CS615 UI Design project at UMass Boston: an options trading screen built for beginners, the design goals behind it, and how the prototype works.">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/blog/options-ui-for-beginners-cs615/">
+  <meta property="og:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <meta property="article:published_time" content="2026-10-02">
+  <meta property="article:author" content="https://aadityatamrakar.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@t_aaditya">
+  <meta name="twitter:creator" content="@t_aaditya">
+  <meta name="twitter:title" content="Designing an options trading UI for beginners (CS615 project)">
+  <meta name="twitter:description" content="My CS615 UI Design project at UMass Boston: an options trading screen built for beginners, the design goals behind it, and how the prototype works.">
+  <meta name="twitter:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <link rel="alternate" type="application/rss+xml" title="Aaditya Tamrakar · Blog" href="/feed.xml">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Designing an options trading UI for beginners (CS615 project)",
+    "description": "My CS615 UI Design project at UMass Boston: an options trading screen built for beginners, the design goals behind it, and how the prototype works.",
+    "datePublished": "2026-10-02",
+    "dateModified": "2026-10-02",
+    "keywords": "UI design, options trading, CS615, UMass Boston, user interface, beginners, prototype, GitHub Pages, option chain, usability",
+    "image": "https://aadityatamrakar.github.io/assets/og.png",
+    "mainEntityOfPage": "https://aadityatamrakar.github.io/blog/options-ui-for-beginners-cs615/",
+    "author": { "@type": "Person", "name": "Aaditya Tamrakar", "url": "https://aadityatamrakar.github.io/" },
+    "publisher": { "@type": "Person", "name": "Aaditya Tamrakar" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#journey">Journey</a>
+      <a href="/#skills">Skills</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="post container">
+    <p class="eyebrow">Academic · Design</p>
+    <h1>Designing an options trading UI for beginners (CS615 project)</h1>
+    <p class="post-meta"><time datetime="2026-10-02">2 Oct 2026</time> · <span class="reading-time"></span> · <span class="tags"><span class="tag">Academic</span><span class="tag">Design</span><span class="tag">Options</span></span></p>
+
+    <!-- ARTICLE BODY START -->
+    <p>In December 2021, at the end of my first semester in the M.S. Computer Science programme at UMass Boston, I submitted my project for CS615 User Interface Design. The brief was open: pick a real problem where the interface is the obstacle, design a solution, and justify every decision. I picked options trading, because by then I had spent two years building <a class="text-link" href="/blog/nse-option-chain-analysis/">option chain tooling</a> for people who already understood options, and I had watched beginners bounce off the same screens.</p>
+
+    <p>The result is <a class="text-link" href="https://github.com/aadityatamrakar/umbtrading" target="_blank" rel="noopener">umbtrading</a>: a clickable prototype hosted on GitHub Pages, plus a project site that documents the design process. This post is about the thinking behind it rather than the grade.</p>
+
+    <h2>The problem</h2>
+    <p>A standard option chain is a dense grid. Calls on the left, puts on the right, strikes down the middle, and a dozen columns of numbers per side: last price, change, bid, ask, volume, open interest, implied volatility. It is an efficient layout for a professional. For someone who has never traded an option it is a wall of numbers with no indication of what any of them mean or what to click first.</p>
+
+    <p>The consequence is that new traders either avoid options entirely or trade them without understanding what they bought. Neither is good. The interface is doing the gatekeeping, not the concept, and the concept of a call or a put is not actually that hard.</p>
+
+    <h2>Design goals</h2>
+    <p>I wrote down three goals before sketching anything, and I kept checking the prototype against them.</p>
+    <ol>
+      <li><strong>Make placing an options trade easier.</strong> A beginner should be able to go from "I think this stock will go up" to a sensible order without reading a glossary first.</li>
+      <li><strong>Simplify learning.</strong> Concepts like strike, expiry and premium should be introduced where they are used, one at a time, not in a separate tutorial.</li>
+      <li><strong>Learn through the interface.</strong> The screen itself should teach. Every choice the user makes should show its consequence immediately, so the feedback loop is the lesson.</li>
+    </ol>
+
+    <h2>What I built</h2>
+    <p>The core idea is a guided screen that replaces the grid with a sequence of questions. Instead of presenting every strike and expiry at once, the interface asks what the user expects to happen, by when, and how much they are willing to risk, and only then shows the small set of contracts that fit. The full chain is still available behind an "advanced" toggle, but it is not the starting point.</p>
+
+    <h3>Step 1: direction</h3>
+    <p>The first screen asks one thing: do you think the price will go up, go down, or stay flat? Three large buttons. This maps directly to the basic strategies (buy a call, buy a put, sell premium) without ever using those words up front. The word appears after the choice, with a one-line explanation.</p>
+
+    <h3>Step 2: timeframe and target</h3>
+    <p>The user drags a target price on a simple chart and picks a horizon from a short list of expiries. The interface translates that into a strike and an expiry and says so in plain language: "You are choosing a call at 180 expiring on 17 Dec."</p>
+
+    <h3>Step 3: the payoff picture</h3>
+    <p>Before confirming, the user sees a payoff diagram for the position: profit and loss on the vertical axis, underlying price on the horizontal. Maximum loss is labelled in currency, not as "premium paid". Changing the strike moves the chart live. This is the screen that does the teaching.</p>
+
+    <h2>How the prototype works</h2>
+    <p>The prototype is deliberately low tech: static HTML, CSS and a small amount of JavaScript, served from GitHub Pages so reviewers could click through it without installing anything. The data is fixed sample data. A design course project should test the interaction, not the market feed.</p>
+
+    <p>The guided flow is a set of panels toggled by a step index. Keeping it this simple meant I could change the order of steps in minutes when a test session suggested it.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">js/flow.js</span></div>
+<pre><code><span class="c-teal">const</span> <span class="c-cobalt">steps</span> = [<span class="c-plum">'direction'</span>, <span class="c-plum">'target'</span>, <span class="c-plum">'payoff'</span>, <span class="c-plum">'confirm'</span>];
+<span class="c-teal">let</span> <span class="c-cobalt">current</span> = <span class="c-rust">0</span>;
+
+<span class="c-teal">function</span> <span class="c-cobalt">show</span>(i) {
+  steps.<span class="c-teal">forEach</span>((id, n) =&gt; {
+    <span class="c-cobalt">document</span>.<span class="c-teal">getElementById</span>(id).<span class="c-cobalt">hidden</span> = n !== i;
+  });
+  <span class="c-mist">// progress text doubles as orientation for the user</span>
+  <span class="c-cobalt">document</span>.<span class="c-teal">getElementById</span>(<span class="c-plum">'progress'</span>).<span class="c-cobalt">textContent</span> =
+    <span class="c-plum">`Step ${i + 1} of ${steps.length}`</span>;
+  current = i;
+}
+
+<span class="c-cobalt">document</span>.<span class="c-teal">querySelectorAll</span>(<span class="c-plum">'[data-next]'</span>).<span class="c-teal">forEach</span>(btn =&gt;
+  btn.<span class="c-teal">addEventListener</span>(<span class="c-plum">'click'</span>, () =&gt; <span class="c-cobalt">show</span>(current + <span class="c-rust">1</span>)));</code></pre>
+    </div>
+
+    <p>The payoff chart is the only real computation. For a long call, profit at expiry is the greater of zero and price minus strike, less the premium paid. I evaluate that across a range of prices and draw the line on a canvas. The same function with a sign flip covers puts and short positions.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">js/payoff.js</span></div>
+<pre><code><span class="c-mist">// profit per share at expiry for a single long option</span>
+<span class="c-teal">function</span> <span class="c-cobalt">payoff</span>(type, strike, premium, price) {
+  <span class="c-teal">const</span> <span class="c-cobalt">intrinsic</span> = type === <span class="c-plum">'call'</span>
+    ? <span class="c-cobalt">Math</span>.<span class="c-teal">max</span>(<span class="c-rust">0</span>, price - strike)
+    : <span class="c-cobalt">Math</span>.<span class="c-teal">max</span>(<span class="c-rust">0</span>, strike - price);
+  <span class="c-teal">return</span> intrinsic - premium;
+}
+
+<span class="c-teal">function</span> <span class="c-cobalt">series</span>(type, strike, premium, lo, hi, n = <span class="c-rust">60</span>) {
+  <span class="c-teal">const</span> <span class="c-cobalt">out</span> = [];
+  <span class="c-teal">for</span> (<span class="c-teal">let</span> i = <span class="c-rust">0</span>; i &lt;= n; i++) {
+    <span class="c-teal">const</span> <span class="c-cobalt">p</span> = lo + (hi - lo) * i / n;
+    out.<span class="c-teal">push</span>({ price: p, pnl: <span class="c-cobalt">payoff</span>(type, strike, premium, p) });
+  }
+  <span class="c-teal">return</span> out;
+}</code></pre>
+    </div>
+
+    <p>The labels on the chart are generated from the same numbers, so "Max loss: $120" is never out of sync with the line. That consistency mattered more than the visual polish; a beginner who notices the text and the picture disagree stops trusting both.</p>
+
+    <h2>Design decisions I would defend</h2>
+    <ul>
+      <li><strong>Hide the grid by default.</strong> The option chain is still there for people who want it, but it is a destination, not the entry point. This was the single change that made the biggest difference in walkthroughs.</li>
+      <li><strong>Introduce one term per step.</strong> Each screen names exactly one concept (direction, strike, expiry, premium) at the moment the user needs it. Glossaries get skipped; inline definitions get read.</li>
+      <li><strong>Show loss before gain.</strong> The payoff screen leads with maximum loss in currency. Beginners underestimate downside, and the interface should push against that bias rather than along with it.</li>
+      <li><strong>Make everything reversible.</strong> Every step has a back button and nothing is committed until the final confirm. Exploration is cheap, so people explore, and exploring is how they learn.</li>
+      <li><strong>Prototype in the browser.</strong> A clickable HTML prototype got far more useful feedback than static mockups, because people tried things I had not scripted.</li>
+    </ul>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li>Expert tools and beginner tools are not the same tool with fewer buttons. The information architecture has to change: a question-driven flow instead of a data grid.</li>
+      <li>Writing the goals down first kept the project honest. Several features I liked were cut because they did not serve any of the three goals.</li>
+      <li>Immediate feedback is the best tutorial. The live payoff chart taught strike selection better than any paragraph of text I wrote.</li>
+      <li>Coming from two years of building for experienced traders, the hardest part was unlearning what I assumed was obvious.</li>
+      <li>The prototype is a course project, not a brokerage. It never connected to a real account, and that constraint is what let me focus purely on the interaction.</li>
+    </ul>
+
+    <p>I still think about this project when I build trading tools. The grids I build for myself are dense on purpose, but the question "what would a first-time user click here" has made every one of them better.</p>
+
+    <p><a class="text-link" href="https://github.com/aadityatamrakar/umbtrading" target="_blank" rel="noopener">Source and prototype on GitHub <span class="chev">&gt;</span></a></p>
+    <!-- ARTICLE BODY END -->
+
+    <nav class="post-nav" aria-label="More posts">
+      <a href="/blog/ten-years-of-public-code/" rel="prev">&lt; Ten years of public code: what changed from 2016 to 2026</a>
+      <a href="/blog/dealership-reporting-laravel-cron/" rel="next">Reporting engines for small businesses: cron, email and AdminLTE &gt;</a>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year">2026</span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="/#about">About</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/blog.js"></script>
+</body>
+</html>

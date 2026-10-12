@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ten years of public code: what changed from 2016 to 2026</title>
+  <meta name="description" content="A year by year look at a decade of public repos: freelance PHP and Node, the 2019 turn to markets, UMass Boston, Viasat, and going independent in 2026.">
+  <meta name="author" content="Aaditya Tamrakar">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#303055">
+  <link rel="canonical" href="https://aadityatamrakar.github.io/blog/ten-years-of-public-code/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Aaditya Tamrakar">
+  <meta property="og:title" content="Ten years of public code: what changed from 2016 to 2026">
+  <meta property="og:description" content="A year by year look at a decade of public repos: freelance PHP and Node, the 2019 turn to markets, UMass Boston, Viasat, and going independent in 2026.">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/blog/ten-years-of-public-code/">
+  <meta property="og:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <meta property="article:published_time" content="2026-10-01">
+  <meta property="article:author" content="https://aadityatamrakar.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@t_aaditya">
+  <meta name="twitter:creator" content="@t_aaditya">
+  <meta name="twitter:title" content="Ten years of public code: what changed from 2016 to 2026">
+  <meta name="twitter:description" content="A year by year look at a decade of public repos: freelance PHP and Node, the 2019 turn to markets, UMass Boston, Viasat, and going independent in 2026.">
+  <meta name="twitter:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <link rel="alternate" type="application/rss+xml" title="Aaditya Tamrakar · Blog" href="/feed.xml">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Ten years of public code: what changed from 2016 to 2026",
+    "description": "A year by year look at a decade of public repos: freelance PHP and Node, the 2019 turn to markets, UMass Boston, Viasat, and going independent in 2026.",
+    "datePublished": "2026-10-01",
+    "dateModified": "2026-10-01",
+    "keywords": "career retrospective, open source, GitHub, freelance developer, Laravel, Node.js, algo trading, UMass Boston, Viasat, independent engineer",
+    "image": "https://aadityatamrakar.github.io/assets/og.png",
+    "mainEntityOfPage": "https://aadityatamrakar.github.io/blog/ten-years-of-public-code/",
+    "author": { "@type": "Person", "name": "Aaditya Tamrakar", "url": "https://aadityatamrakar.github.io/" },
+    "publisher": { "@type": "Person", "name": "Aaditya Tamrakar" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#journey">Journey</a>
+      <a href="/#skills">Skills</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="post container">
+    <p class="eyebrow">Career</p>
+    <h1>Ten years of public code: what changed from 2016 to 2026</h1>
+    <p class="post-meta"><time datetime="2026-10-01">1 Oct 2026</time> · <span class="reading-time"></span> · <span class="tags"><span class="tag">Career</span><span class="tag">Open Source</span><span class="tag">Retrospective</span></span></p>
+
+    <!-- ARTICLE BODY START -->
+    <p>My first public repository is a custom styled HTML5 video player from October 2016, built for an internship application. Ten years later the newest commit on this profile is the site you are reading. In between are a few dozen repositories that trace, more honestly than any résumé, what I was working on and what I cared about each year. This is a walk through them.</p>
+
+    <p>I have tried to keep this factual. The dates come from the repositories themselves; the reflections are mine.</p>
+
+    <h2>2016: learning in public by accident</h2>
+    <p><a class="text-link" href="https://github.com/aadityatamrakar/VideoPlayerCss" target="_blank" rel="noopener">VideoPlayerCss</a> was HTML and CSS and nothing else. A month later <a class="text-link" href="https://github.com/aadityatamrakar/ProductsDisplay" target="_blank" rel="noopener">ProductsDisplay</a> rendered a product catalogue from JSON with jQuery and Bootstrap, and in December I pushed an unofficial PayTM API written in PHP, which was me poking at a wallet's request flow to understand how it worked. GitHub was simply where code went so I could show it to someone.</p>
+
+    <p>The jQuery of that year looked like this, and I wrote a lot of it.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">2016 · products.js</span></div>
+<pre><code><span class="c-cobalt">$</span>.<span class="c-teal">getJSON</span>(<span class="c-plum">'products.json'</span>, <span class="c-teal">function</span> (data) {
+  <span class="c-cobalt">$</span>.<span class="c-teal">each</span>(data, <span class="c-teal">function</span> (i, p) {
+    <span class="c-cobalt">$</span>(<span class="c-plum">'#grid'</span>).<span class="c-teal">append</span>(
+      <span class="c-plum">'&lt;div class="col-md-3"&gt;&lt;h4&gt;'</span> + p.name + <span class="c-plum">'&lt;/h4&gt;'</span> +
+      <span class="c-plum">'&lt;p&gt;'</span> + p.price + <span class="c-plum">'&lt;/p&gt;&lt;/div&gt;'</span>
+    );
+  });
+});</code></pre>
+    </div>
+
+    <h2>2017: freelance PHP</h2>
+    <p>This is the year I started getting paid for code. A fantasy league voting portal on Lumen in January, this website (then a Jekyll theme) in February, a Node backend for an ice cream shop's ordering app in April, and in the same month <a class="text-link" href="https://github.com/aadityatamrakar/city_cars" target="_blank" rel="noopener">city_cars</a>, the reporting engine for a car dealership that I kept maintaining until 2019. PHP and Laravel were a good default for small business work: cheap hosting, fast to build, easy to hand over.</p>
+
+    <h2>2018: Node, experiments, and the first model</h2>
+    <p>2018 is the busiest year on the profile. A multi-level marketing platform with tree algorithms, a fleet management system on Loopback and AngularJS, an HTTP proxy that injected scripts into pages for testing browser plugins, an Instagram image downloader, and <a class="text-link" href="https://github.com/aadityatamrakar/pwa_notes" target="_blank" rel="noopener">pwa_notes</a>, my first offline-first app with a service worker.</p>
+
+    <p>The one that mattered most was <a class="text-link" href="https://github.com/aadityatamrakar/captcha_ai" target="_blank" rel="noopener">captcha_ai</a>, started in January. A scikit-learn pipeline that segmented captcha images into letters and classified them, served behind a PHP API. It was the first time I trained a model that did something useful, and the first time I understood that most of the work in machine learning is the preprocessing.</p>
+
+    <h2>2019: the turn to markets</h2>
+    <p>The year started as freelance usual: a distress alarm that broadcast video over Socket.io rooms in January, and in February the whole food delivery product (Laravel backend, Bootstrap frontend, Ionic app), an Ionic accounts diary, and a Node order API built for a coding challenge.</p>
+
+    <p>Then in November I pushed <a class="text-link" href="https://github.com/aadityatamrakar/option_chain_analysis" target="_blank" rel="noopener">option_chain_analysis</a>. A Node app that fetched the NSE Nifty option chain and classified every strike into long buildup, short buildup, short covering or long liquidation. It is still the most starred repository on my profile, and it marks the point where I stopped building whatever a client asked for and started building what I wanted to use. I joined Algo Maker that year as a full stack and quant developer, and trading tools became the job.</p>
+
+    <h2>2020: trading tools and data</h2>
+    <p>Every 2020 repository is about markets or numbers. A PHP port of the option chain analyser for shared hosting, an accounting app, a daily cash versus futures spread chart on Express, and in October the Dream11 fantasy cricket team builder, which was really a constraint solver dressed up as a sports app. On the fork side I picked up the 5paisa Node SDK and a repository of option pricing formulas used by clearing houses, both of which I adapted for my own tooling.</p>
+
+    <h2>2021 to 2023: UMass Boston</h2>
+    <p>I moved to Boston for an M.S. in Computer Science. The public code slows down, which is what you would expect; most coursework is not meant to be published. Two things did go up. <a class="text-link" href="https://github.com/aadityatamrakar/umbtrading" target="_blank" rel="noopener">umbtrading</a>, my CS615 User Interface Design project from December 2021, an options trading interface for beginners. And <a class="text-link" href="https://github.com/aadityatamrakar/cs240-lecture-programs" target="_blank" rel="noopener">cs240-lecture-programs</a>, the sample C programs from the Fall 2022 Programming in C course I supported. I also went back and fixed the READMEs on captcha_ai and pwa_notes in late 2021.</p>
+
+    <h2>2023 to 2025: Viasat</h2>
+    <p>I joined Viasat in 2023 as a software engineer doing full stack and platform work on large systems, and stayed until December 2025. Almost nothing from those years is public, for the obvious reason. The forks tell the story of what I did with my evenings instead: a Python remote client for Hummingbot in 2023, the Go client for Zerodha Kite Connect in 2024, and the Node client for the XTS Interactive API in 2025. Each one I forked, adapted, and used in my own tooling, and I contributed fixes back where I hit bugs.</p>
+
+    <h2>2026: independent</h2>
+    <p>Since January I have been working on my own: trading tools, broker SDKs, and writing, including this site and this blog. I am open to full time and contract roles. The site itself was rebuilt this year from a 2017 Jekyll theme into a static page with no build step, rendered from a single data file. Ten years on, I am back to plain HTML, CSS and JavaScript, this time by choice.</p>
+
+    <h2>The decade in a table</h2>
+    <table>
+      <thead>
+        <tr><th>Year</th><th>Notable repositories</th><th>What I was doing</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>2016</td><td>VideoPlayerCss, ProductsDisplay, PayTM-API-UnOfficial</td><td>Student, first internship applications</td></tr>
+        <tr><td>2017</td><td>Fashmash-VotingPortal-Lumen, aadityatamrakar.github.io, sic_app_backend, city_cars</td><td>Freelance, mostly PHP</td></tr>
+        <tr><td>2018</td><td>captcha_ai, multilevel-marketing-app, fleet_management_app, proxy_http_web, pwa_notes</td><td>Freelance, Node and first ML</td></tr>
+        <tr><td>2019</td><td>DistressAlarmSystem, food_delivery_app (×3), accounts_diary_android_app, nodejs_challenge, option_chain_analysis</td><td>Freelance, then Algo Maker</td></tr>
+        <tr><td>2020</td><td>option_chain_php, creative_accounting, futures_spread_chart, dream11-cricket-team-builder, 5paisa-js (fork), option-pricing (fork)</td><td>Algo Maker</td></tr>
+        <tr><td>2021</td><td>umbtrading</td><td>M.S. at UMass Boston</td></tr>
+        <tr><td>2022</td><td>cs240-lecture-programs, timesheet-app (fork)</td><td>M.S. at UMass Boston</td></tr>
+        <tr><td>2023</td><td>hbot-remote-client-py (fork)</td><td>Graduated, joined Viasat</td></tr>
+        <tr><td>2024</td><td>gokiteconnect (fork)</td><td>Viasat</td></tr>
+        <tr><td>2025</td><td>xts-interactive-nodeJS-api-v2 (fork)</td><td>Viasat, until December</td></tr>
+        <tr><td>2026</td><td>aadityatamrakar.github.io (rebuilt), this blog</td><td>Independent</td></tr>
+      </tbody>
+    </table>
+
+    <h2>What changed in the tooling</h2>
+    <p>The obvious shift is from PHP to JavaScript to Python and Go, but that undersells it. In 2016 the stack was decided by what shared hosting would run. By 2020 it was decided by which broker had an SDK. Now it is decided by what I can maintain alone, which has pushed me toward fewer dependencies, not more.</p>
+
+    <p>Some specific changes I notice reading the old code:</p>
+    <ul>
+      <li><strong>jQuery to nothing.</strong> The 2016 snippet above is a template literal and a <code>fetch</code> call today, with no library. The browser caught up.</li>
+      <li><strong>Callbacks to async/await.</strong> The 2018 Node code is nested callbacks. Everything I write now is <code>async</code> functions, and it has made error handling something I actually do.</li>
+      <li><strong>Frameworks to data files.</strong> The food delivery app had three repositories and two frameworks. This site is one HTML file and one data object. Now I add structure when the code asks for it.</li>
+      <li><strong>Scraping to SDKs.</strong> option_chain_analysis shelled out to cURL because the NSE blocked Node's HTTP clients. The last three years of forks are proper broker clients with authentication and typed responses. The data access problem got solved by the industry, not by me.</li>
+      <li><strong>Reports as email to reports as code.</strong> The 2017 dealership engine emailed tables to an owner. My tools now write to a database and I query it. Same idea, different reader.</li>
+    </ul>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">2026 · products.js</span></div>
+<pre><code><span class="c-teal">const</span> <span class="c-cobalt">data</span> = <span class="c-teal">await</span> (<span class="c-teal">await</span> <span class="c-cobalt">fetch</span>(<span class="c-plum">'products.json'</span>)).<span class="c-teal">json</span>();
+<span class="c-cobalt">grid</span>.<span class="c-cobalt">innerHTML</span> = data.<span class="c-teal">map</span>(p =&gt;
+  <span class="c-plum">`&lt;div class="col"&gt;&lt;h4&gt;${p.name}&lt;/h4&gt;&lt;p&gt;${p.price}&lt;/p&gt;&lt;/div&gt;`</span>
+).<span class="c-teal">join</span>(<span class="c-plum">''</span>);</code></pre>
+    </div>
+
+    <h2>What changed in how I work</h2>
+    <ul>
+      <li><strong>I write the README first now.</strong> The 2017 and 2018 repositories have one-line READMEs or none. I went back in 2021 to fix the ones I still cared about, and the lesson stuck: if I cannot describe it, I do not understand it yet.</li>
+      <li><strong>I build for a user I can name.</strong> Freelance work taught me to build what was asked. The trading tools taught me to build what I would use. The CS615 project taught me to build what a specific other person could use. The third one is the hardest and the most useful.</li>
+      <li><strong>I ship smaller.</strong> The food delivery product in 2019 was three repositories in one push. Everything since has been a single repository that does one thing.</li>
+      <li><strong>I am less precious about frameworks.</strong> AngularJS, Ionic 1, Loopback and Bootstrap 3 are all in this history and all effectively gone. The code that still runs is the code with the fewest moving parts.</li>
+      <li><strong>Public code is a journal.</strong> I did not plan this profile as a record, but it is the most accurate one I have. That alone is a reason to keep pushing things even when they are small.</li>
+    </ul>
+
+    <p>If there is a theme, it is that the interesting work started when I stopped waiting for a client to define the problem. The next ten years of this profile will be more trading tools, more SDKs, and more writing like this. Everything is at <a class="text-link" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">github.com/aadityatamrakar <span class="chev">&gt;</span></a>.</p>
+    <!-- ARTICLE BODY END -->
+
+    <nav class="post-nav" aria-label="More posts">
+      <a href="/blog/" rel="prev">&lt; All posts</a>
+      <a href="/blog/options-ui-for-beginners-cs615/" rel="next">Designing an options trading UI for beginners (CS615 project) &gt;</a>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year">2026</span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="/#about">About</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/blog.js"></script>
+</body>
+</html>
