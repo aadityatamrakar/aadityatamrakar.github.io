@@ -337,7 +337,7 @@ kbd {
    v3: engaging layout — narrow content column, visuals, motion
 ================================================================== */
 .narrow { max-width: 960px; }
-.progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--ink); z-index: 30; transition: width .1s linear; }
+.progress { position: fixed; top: 0; left: 0; height: 2px; width: 100%; background: var(--ink); z-index: 30; transform: scaleX(0); transform-origin: left; transition: transform .1s linear; will-change: transform; }
 
 /* Reveal on scroll */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }

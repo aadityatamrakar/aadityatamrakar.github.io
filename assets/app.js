@@ -8,6 +8,19 @@
 
   const state = { cat: 'all', year: null, q: '', sort: 'newest', expanded: false };
 
+  function countUp(el, to) {
+    const from = Number(el.textContent) || 0;
+    if (from === to) return;
+    const t0 = performance.now();
+    const step = (t) => {
+      const k = Math.min(1, (t - t0) / 600);
+      el.textContent = Math.round(from + (to - from) * k);
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+
   /* Ambient animations (typing, rotating word, marquee) start after the page has settled
      or on first interaction, so the first paint is stable for Speed Index. */
   const ambient = [];
@@ -61,6 +74,15 @@
     }, 2600);
   });
 
+  $('[data-stat="years"]').dataset.to = new Date().getFullYear() - 2016;
+  $('[data-stat="projects"]').dataset.to = D.projects.length;
+  $$('#stat-row .stat-num[data-to]').forEach((n) => countUp(n, Number(n.dataset.to)));
+
+  /* Everything below the hero is built after the first paint. */
+  const idle = window.requestIdleCallback || ((f) => setTimeout(f, 1));
+  requestAnimationFrame(() => idle(initBelowFold));
+  function initBelowFold() {
+
   /* ---------- marquee ---------- */
   (function marquee() {
     const el = $('#marquee');
@@ -75,7 +97,7 @@
   const onScroll = () => {
     if (!prog) return;
     const h = document.documentElement;
-    prog.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+    prog.style.transform = 'scaleX(' + (h.scrollTop / (h.scrollHeight - h.clientHeight)) + ')';
   };
   document.addEventListener('scroll', onScroll, { passive: true });
   const rio = new IntersectionObserver((entries) => {
@@ -253,8 +275,8 @@
       render();
     });
     const limit = state.expanded ? Infinity : 6;
-    $('#grid').innerHTML = list.length ? list.map((p, i) => `
-      <article class="card ${p.featured ? 'featured' : ''} ${i >= limit ? 'hidden-more' : ''}" data-repo="${esc(p.repo)}" style="animation-delay:${Math.min(i, 12) * 30}ms" tabindex="0">
+    $('#grid').innerHTML = list.length ? list.slice(0, limit).map((p, i) => `
+      <article class="card ${p.featured ? 'featured' : ''}" data-repo="${esc(p.repo)}" style="animation-delay:${Math.min(i, 12) * 30}ms" tabindex="0">
         <div class="card-top">
           <span class="card-name">${esc(p.name)}</span>
           <span class="card-year">${esc(p.started)}</span>
@@ -274,11 +296,15 @@
   $('#grid').addEventListener('click', (e) => { const c = e.target.closest('.card'); if (c) openModal(c.dataset.repo); });
   $('#grid').addEventListener('keydown', (e) => { const c = e.target.closest('.card'); if (c && e.key === 'Enter') openModal(c.dataset.repo); });
 
-  /* ---------- forks ---------- */
-  $('#forks').innerHTML = D.forks.map((f) => `
+  /* ---------- forks (rendered when opened) ---------- */
+  const forksDetails = $('.forks-details');
+  if (forksDetails) forksDetails.addEventListener('toggle', () => {
+    if (forksDetails.open && !$('#forks').children.length) {
+      $('#forks').innerHTML = D.forks.map((f) => `
     <li><div><a href="${gh(f.repo)}" target="_blank" rel="noopener">${esc(f.repo)}</a><small>${esc(f.desc)}</small></div>
     <span class="lang">${esc(f.lang)} · ${f.year}</span></li>`).join('');
-
+    }
+  }, { once: false });
   const fc = $('#forks-count'); if (fc) fc.textContent = `(${D.forks.length})`;
   const copyBtn = $('#copy-email');
   if (copyBtn) copyBtn.addEventListener('click', () => {
@@ -323,20 +349,7 @@
   sections.forEach((s) => io.observe(s));
 
   /* ---------- live GitHub stats (graceful fallback to static) ---------- */
-  function countUp(el, to) {
-    const from = Number(el.textContent) || 0;
-    if (from === to) return;
-    const t0 = performance.now();
-    const step = (t) => {
-      const k = Math.min(1, (t - t0) / 600);
-      el.textContent = Math.round(from + (to - from) * k);
-      if (k < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }
   const setStat = (key, v) => { const el = $(`[data-stat="${key}"]`); if (el) countUp(el, v); };
-  $('[data-stat="years"]').dataset.to = new Date().getFullYear() - 2016;
-  $('[data-stat="projects"]').dataset.to = D.projects.length;
   fetch(`https://api.github.com/users/${D.profile.handle}`)
     .then((r) => (r.ok ? r.json() : Promise.reject()))
     .then((u) => { $('#code-repos').textContent = u.public_repos; })
@@ -356,7 +369,7 @@
     })
     .catch(() => {});
 
-  $$('#stat-row .stat-num[data-to]').forEach((n) => countUp(n, Number(n.dataset.to)));
   $('#year').textContent = new Date().getFullYear();
   render();
+  } // initBelowFold
 })();
