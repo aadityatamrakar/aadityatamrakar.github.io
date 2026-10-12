@@ -24,6 +24,8 @@ python3 scripts/build.py
 
 SEO check: `python3 scripts/check-seo.py`
 
+Resume PDF (after editing `resume/index.html`): `NODE_PATH=$(npm root -g) node scripts/build-resume.js` (needs Playwright + Chromium). The LaTeX source lives in `resume/resume.tex`.
+
 ## Editing content
 
 Everything shown on the page comes from `assets/data.js`. Add a project object there and it appears in the grid, the timeline and the category counts automatically. Star and fork counts refresh from the GitHub API on page load.
