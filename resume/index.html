@@ -56,39 +56,47 @@
     .btn.primary:hover { background: #1f1f3a; }
     .btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-    /* The sheet: A4 proportions, LaTeX article look */
+    /* The sheet: A4 proportions, clean LaTeX-inspired layout */
     .sheet {
-      background: #fff; color: #111; font-family: "CMU Serif", "Latin Modern Roman", "Computer Modern", Georgia, "Times New Roman", serif;
-      font-size: 10.5pt; line-height: 1.35; padding: 0.75in; max-width: 8.27in; margin: 0 auto;
+      --r-ink: #303055; --r-text: #1b1b2a; --r-muted: #5a5a6a; --r-rule: #cfd0dd;
+      background: #fff; color: var(--r-text); font-family: "CMU Serif", "Latin Modern Roman", "Computer Modern", Georgia, "Times New Roman", serif;
+      font-size: 10.5pt; line-height: 1.35; padding: 0.7in 0.75in; max-width: 8.27in; margin: 0 auto;
       border: 1px solid var(--lav, #e8e8f2); box-shadow: 0 0 0 1px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
     }
-    .sheet a { color: #303055; text-decoration: none; }
+    .sheet a { color: var(--r-ink); text-decoration: none; }
     .sheet a:hover { text-decoration: underline; }
-    .sheet header { text-align: center; margin-bottom: 8pt; }
-    .sheet h1 { font-family: inherit; font-size: 20pt; font-weight: 700; letter-spacing: 0; margin: 0 0 2pt; color: #111; line-height: 1.2; }
-    .sheet .tagline { margin: 0 0 2pt; }
-    .sheet .contact { margin: 0; font-size: 9.5pt; }
-    .sheet .contact span + span::before { content: " \00b7 "; color: #666; }
+    .sheet header { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding-bottom: 8pt; border-bottom: 1.2pt solid var(--r-ink); margin-bottom: 6pt; }
+    .sheet h1 { font-family: inherit; font-size: 24pt; font-weight: 700; letter-spacing: 0.01em; margin: 0; color: var(--r-ink); line-height: 1.1; }
+    .sheet .tagline { margin: 3pt 0 0; font-size: 11pt; color: var(--r-muted); font-style: italic; }
+    .sheet .contact { margin: 0; font-size: 9.5pt; text-align: right; line-height: 1.45; }
+    .sheet .contact span { display: block; }
+    .sheet .contact span::before { content: none; }
     .sheet h2 {
-      font-family: inherit; font-size: 12pt; font-weight: 400; font-variant: small-caps; letter-spacing: 0.04em; color: #111;
-      margin: 10pt 0 4pt; padding-bottom: 1pt; border-bottom: 0.6pt solid #111;
+      font-family: inherit; font-size: 11pt; font-weight: 700; font-variant: small-caps; letter-spacing: 0.08em; color: var(--r-ink);
+      margin: 9pt 0 3pt; padding-bottom: 1pt; border-bottom: 0.6pt solid var(--r-rule);
     }
-    .sheet p { margin: 0 0 4pt; }
-    .sheet .entry { margin: 5pt 0 0; }
-    .sheet .row { display: flex; justify-content: space-between; gap: 12px; }
-    .sheet .row em { font-style: italic; }
+    .sheet p { margin: 0 0 3pt; }
+    .sheet .summary { margin: 2pt 0 0; }
+    .sheet .entry { margin: 4pt 0 0; }
+    .sheet .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .sheet .row em { font-style: italic; color: var(--r-muted); }
     .sheet .row b { font-weight: 700; }
-    .sheet ul { margin: 1pt 0 0; padding-left: 1.2em; }
-    .sheet li { margin: 0 0 1pt; }
-    .sheet .proj { margin: 4pt 0 0; }
-    .sheet .proj .row { align-items: baseline; }
-    .sheet .proj .meta { color: #444; }
-    .sheet .skills { display: block; }
-    .sheet .skills p { margin: 0 0 2pt; }
-    .sheet .muted { color: #555; font-size: 9pt; }
+    .sheet .row > span:last-child { color: var(--r-muted); font-size: 9.5pt; white-space: nowrap; }
+    .sheet ul { margin: 1pt 0 0; padding-left: 1.1em; }
+    .sheet li { margin: 0 0 1pt; padding-left: 0.1em; }
+    .sheet li::marker { color: var(--r-ink); }
+    .sheet .proj { margin: 3pt 0 0; }
+    .sheet .proj .meta { color: var(--r-muted); font-size: 9.5pt; }
+    .sheet .skills { display: grid; grid-template-columns: max-content 1fr; gap: 1pt 10pt; margin-top: 2pt; }
+    .sheet .skills b { color: var(--r-ink); font-weight: 700; }
+    .sheet .skills span { display: block; }
+    .sheet .muted { color: var(--r-muted); font-size: 9pt; }
 
     @media (max-width: 700px) {
       .sheet { padding: 24px 18px; font-size: 10pt; }
+      .sheet header { flex-direction: column; align-items: flex-start; }
+      .sheet .contact { text-align: left; }
+      .sheet .skills { grid-template-columns: 1fr; }
       .sheet .row { flex-direction: column; gap: 0; }
       .sheet .row > span:last-child { color: #555; }
     }
@@ -98,11 +106,17 @@
       html, body { background: #fff !important; margin: 0; height: auto; }
       main { display: block; }
       .sheet { box-sizing: border-box; height: 297mm; overflow: hidden; }
+      .sheet .skills { display: grid; grid-template-columns: max-content 1fr; }
+      .sheet header { flex-direction: row; align-items: flex-end; }
+      .sheet .contact { text-align: right; }
       .site-header, .resume-bar, .site-footer, .noprint { display: none !important; }
       .resume-wrap { max-width: none; padding: 0; margin: 0; }
-      .sheet { border: 0; box-shadow: none; max-width: none; margin: 0; padding: 0.4in 0.65in 0.15in; font-size: 9.6pt; line-height: 1.27; }
-      .sheet header { margin-bottom: 4pt; }
-      .sheet h1 { font-size: 18pt; }
+      .sheet { border: 0; box-shadow: none; max-width: none; margin: 0; padding: 0.45in 0.6in 0.2in; font-size: 9.8pt; line-height: 1.28; }
+      .sheet header { margin-bottom: 3pt; padding-bottom: 5pt; }
+      .sheet h1 { font-size: 20pt; }
+      .sheet h2 { margin: 6pt 0 2pt; font-size: 10.5pt; }
+      .sheet .entry { margin-top: 3pt; }
+      .sheet .proj { margin-top: 2pt; }
       .sheet .proj { margin-top: 3pt; }
       .sheet p { margin-bottom: 3pt; }
       .sheet h2 { margin: 7pt 0 3pt; }
@@ -138,7 +152,7 @@
   <div class="resume-bar">
     <div>
       <p class="eyebrow" style="margin:0">Resume</p>
-      <p class="muted" style="margin:0;font-size:13px">Typeset in Computer Modern. Updated October 2026.</p>
+      <p class="muted" style="margin:0;font-size:13px">Typeset in Computer Modern. One page. Updated October 2026.</p>
     </div>
     <div class="actions">
       <a class="btn primary" href="/resume/Aaditya-Tamrakar-Resume.pdf" download>
@@ -155,8 +169,10 @@
 
   <article class="sheet" id="resume">
     <header>
-      <h1>Aaditya Tamrakar</h1>
-      <p class="tagline">Software Engineer · Full Stack · Data Platforms · Algorithmic Trading</p>
+      <div>
+        <h1>Aaditya Tamrakar</h1>
+        <p class="tagline">Software Engineer · Quant Developer</p>
+      </div>
       <p class="contact">
         <span><a href="mailto:aaditya.span@gmail.com">aaditya.span@gmail.com</a></span>
         <span><a href="https://aadityatamrakar.in">aadityatamrakar.in</a></span>
@@ -165,15 +181,7 @@
       </p>
     </header>
 
-    <h2>Education</h2>
-    <div class="entry">
-      <div class="row"><b>Master of Science, Computer Science</b><span>CGPA 3.7/4 · 2021 – 2023</span></div>
-      <div class="row"><em>University of Massachusetts, Boston</em><span></span></div>
-      <ul>
-        <li>Coursework: Artificial Intelligence, Compilers, Computer Networks, Object Oriented Design and Programming, Software Development, User Interface Design, Theory of Computation.</li>
-        <li>Graduate Teaching Fellow, CS240 Programming in C, for two semesters to classes of 51 and 67 students.</li>
-      </ul>
-    </div>
+    <p class="summary">Software engineer in Go, Python and TypeScript across trading systems and data platforms. Built 80+ order execution and market making algorithms at Algo Maker, Go microservices with Snowflake and Airflow pipelines at Viasat, and NSE options analytics used by 50+ developers. M.S. Computer Science, UMass Boston.</p>
 
     <h2>Work Experience</h2>
 
@@ -220,6 +228,15 @@
       </ul>
     </div>
 
+    <h2>Education</h2>
+    <div class="entry">
+      <div class="row"><b>Master of Science, Computer Science</b><span>CGPA 3.7/4 · 2021 – 2023</span></div>
+      <div class="row"><em>University of Massachusetts, Boston</em><span></span></div>
+      <ul>
+        <li>Graduate Teaching Fellow, CS240 Programming in C, for two semesters to classes of 51 and 67 students.</li>
+      </ul>
+    </div>
+
     <h2>Projects</h2>
     <div class="proj">
       <div class="row"><span><b><a href="https://github.com/aadityatamrakar/option_chain_analysis">Option Chain Analysis</a></b> <span class="meta">· Node.js, REST API</span></span><span class="meta">100+ stars on GitHub · Nov 2019</span></div>
@@ -235,13 +252,13 @@
     </div>
 
     <h2>Open Source</h2>
-    <p>Forked, adapted and maintained broker SDKs for my own tooling: Kite Connect (Go), XTS Interactive v2 and 5paisa (Node.js), Hummingbot remote client (Python), option pricing formulas. Open sourced the option chain analyser, a futures spread chart and a Dream11 team builder.</p>
+    <p>Broker SDKs forked and maintained for my own tooling: Kite Connect (Go), XTS v2 and 5paisa (Node.js), Hummingbot client (Python), option pricing formulas. Open sourced the option chain analyser, futures spread chart and Dream11 team builder.</p>
 
     <h2>Skills</h2>
     <div class="skills">
-      <p><b>Languages:</b> Golang, Python, JavaScript, TypeScript, PHP, SQL, C, C++, Java</p>
-      <p><b>Technologies:</b> Linux, Git, AWS, Docker, Kubernetes, Redis, MongoDB, Snowflake, Apache Airflow, Kafka, Spark, Playwright, Node.js, Angular, Laravel</p>
-      <p><b>Certifications:</b> Crash Course on Python by Google (Coursera); HackerRank certificates in Problem Solving, JavaScript, Python, Node.js, CSS, REST API, SQL</p>
+      <b>Languages</b><span>Go, Python, TypeScript, JavaScript, C++, C, PHP, SQL, Java</span>
+      <b>Trading</b><span>Order execution, market making, WebSockets, NSE option chain data, option pricing, Kite Connect, XTS, 5paisa, Hummingbot</span>
+      <b>Data &amp; infra</b><span>AWS, CloudFormation, Snowflake, Apache Airflow, Kafka, Spark, Docker, Kubernetes, Redis, MongoDB, Linux, Playwright</span>
     </div>
   </article>
 </main>
