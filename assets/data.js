@@ -24,11 +24,11 @@ window.PORTFOLIO = {
   /* Career & education, newest first. */
   journey: [
     {
-      when: "2026 — Present",
-      role: "Independent Engineer",
-      org: "Building trading tools and open source SDKs",
+      when: "Jan 2026 — Present",
+      role: "Freelance Quant Researcher & Developer",
+      org: "Independent, remote",
       type: "work",
-      notes: "Working on my own trading tooling, broker SDKs and writing. Open to full time and contract roles."
+      notes: "MT5 Expert Advisors for gold CFDs with recovery-factor based strategies at 80%+ accuracy. Intraday and positional Greeks-based strategies for Indian index options, automated end to end. Backtests on US and Indian options history across 20+ technical indicators."
     },
     {
       when: "May 2023 — Dec 2025",
@@ -85,7 +85,7 @@ window.PORTFOLIO = {
   /* Skill groups. `tags` map to project tech so hovering a skill lights up matching projects. */
   skills: [
     { group: "Languages", items: ["Go", "Python", "TypeScript", "JavaScript", "C++", "C", "PHP", "SQL", "Java"] },
-    { group: "Trading systems", items: ["Order Execution", "Market Making", "WebSockets", "NSE Data", "Options", "Option Pricing", "Kite Connect", "XTS API", "5paisa", "Hummingbot"] },
+    { group: "Trading systems", items: ["Options Greeks", "Backtesting", "Technical Indicators", "MT5 / MQL5", "Order Execution", "Market Making", "WebSockets", "NSE Data", "Option Pricing", "Kite Connect", "XTS API", "5paisa", "Hummingbot"] },
     { group: "Data & infra", items: ["AWS", "CloudFormation", "Snowflake", "Apache Airflow", "Kafka", "Spark", "Docker", "Kubernetes", "Redis", "MongoDB", "MySQL", "Linux"] },
     { group: "Backend", items: ["Node.js", "Express", "REST API", "Socket.io", "Laravel", "Lumen", "Loopback"] },
     { group: "Frontend & mobile", items: ["React", "Angular", "AngularJS", "Bootstrap", "PWA", "Ionic", "Cordova"] },
