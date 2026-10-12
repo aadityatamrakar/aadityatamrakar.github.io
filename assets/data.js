@@ -35,7 +35,7 @@ window.PORTFOLIO = {
       role: "Software Engineer II",
       org: "Viasat Inc., USA",
       type: "work",
-      notes: "Golang microservice for in-flight monitoring servers, new API endpoints, Snowflake and Airflow changes, CloudFormation infrastructure for data monitoring."
+      notes: "Go microservice for in-flight monitoring servers. Took a 2M request/day production API from 50% failures to 100% success. Owned deployments: CI/CD, Kubernetes, CloudFormation, Snowflake and Airflow."
     },
     {
       when: "Fall 2022 — Spring 2023",
@@ -64,7 +64,7 @@ window.PORTFOLIO = {
       role: "Full Stack Developer",
       org: "Algo Maker LLP, Mumbai",
       type: "work",
-      notes: "80+ trade execution algorithms over WebSockets, Angular + Express dashboard on MongoDB that cut risk evaluation time by 50%, AWS platform near the broker for 20% faster execution."
+      notes: "80+ execution algorithms streaming ~10k orders a day under 30 ms for funds up to ₹200 crore. Angular + Express risk dashboard cut evaluation time by 50%, AWS near the broker for 20% faster execution."
     },
     {
       when: "Apr — Sep 2018",
