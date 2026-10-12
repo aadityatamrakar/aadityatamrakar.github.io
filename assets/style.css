@@ -8,8 +8,8 @@
   --teal: #096e72;
   --rust: #984e4d;
   --slate: #403f53;
-  --fog: #767682;
-  --mist: #a8a8b0;
+  --fog: #5f5f6e;
+  --mist: #6b6b78;
   --obsidian: #111111;
   --lav: #e8e8f2;
   --paper: #ffffff;
@@ -62,7 +62,7 @@ kbd {
 .c-cobalt { color: var(--cobalt); }
 .c-teal { color: var(--teal); }
 .c-rust { color: var(--rust); }
-.c-mist { color: var(--mist); }
+.c-mist { color: #5f5f6e; }
 
 /* ------------------------------------------------------------------
    Header
@@ -107,7 +107,7 @@ kbd {
   display: flex; align-items: center; gap: 6px; margin: -4px 0 12px; font-family: var(--mono);
   font-size: 12px; color: var(--mist);
 }
-.code-head .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--mist); opacity: .5; }
+.code-head .dot { width: 8px; height: 8px; border-radius: 50%; background: #a8a8b0; opacity: .5; }
 .code-file { margin-left: 8px; font-weight: 600; color: var(--fog); }
 .code-block.small pre { font-size: 13px; }
 .terminal-line {
@@ -356,14 +356,15 @@ kbd {
 .rotator { display: inline-block; position: relative; font-weight: 600; color: var(--ink); min-width: 9ch; vertical-align: bottom; height: 1.65em; overflow: hidden; }
 .rotator > span { display: block; animation: rot-in .5s ease; }
 @keyframes rot-in { from { transform: translateY(100%); opacity: 0; } to { transform: none; opacity: 1; } }
-.rotator > span.out { animation: rot-out .35s ease forwards; }
+.rotator > span.out { position: absolute; left: 0; top: 0; animation: rot-out .35s ease forwards; }
 @keyframes rot-out { to { transform: translateY(-100%); opacity: 0; } }
 #hero-lines .line { display: block; opacity: 0; transform: translateX(-6px); animation: line-in .35s ease forwards; }
 @keyframes line-in { to { opacity: 1; transform: none; } }
 
 /* Marquee */
 .marquee-wrap { margin-top: 40px; border-top: 1px solid var(--lav); border-bottom: 1px solid var(--lav); overflow: hidden; }
-.marquee { display: flex; gap: 40px; width: max-content; padding: 12px 0; animation: marquee 40s linear infinite; }
+.marquee { display: flex; gap: 40px; width: max-content; padding: 12px 0; }
+.marquee.run { animation: marquee 40s linear infinite; }
 .marquee:hover { animation-play-state: paused; }
 .marquee span { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--fog); white-space: nowrap; }
 .marquee span::before { content: "·"; margin-right: 40px; color: var(--mist); }
@@ -552,3 +553,7 @@ kbd {
 .contact-card { background: linear-gradient(135deg, var(--cobalt-soft), var(--plum-soft)); border-color: transparent; }
 .contact-card .text-link.big { color: var(--cobalt); }
 .progress { background: linear-gradient(90deg, var(--cobalt), var(--plum)); }
+
+/* Avatar + bio */
+.avatar { width: 72px; height: 72px; border-radius: 50%; border: 2px solid var(--lav); display: block; margin-bottom: 16px; background: var(--lav); }
+.bio { font-size: 16px; line-height: 1.7; color: var(--slate); max-width: 60ch; margin: 0; }

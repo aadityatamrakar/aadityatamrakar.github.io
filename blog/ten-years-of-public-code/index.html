@@ -28,9 +28,10 @@
   <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
-  <link rel="stylesheet" href="/assets/blog.css">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/style.min.css">
+  <link rel="stylesheet" href="/assets/blog.min.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -106,7 +107,7 @@
     <h2>2019: the turn to markets</h2>
     <p>The year started as freelance usual: a distress alarm that broadcast video over Socket.io rooms in January, and in February the whole food delivery product (Laravel backend, Bootstrap frontend, Ionic app), an Ionic accounts diary, and a Node order API built for a coding challenge.</p>
 
-    <p>Then in November I pushed <a class="text-link" href="https://github.com/aadityatamrakar/option_chain_analysis" target="_blank" rel="noopener">option_chain_analysis</a>. A Node app that fetched the NSE Nifty option chain and classified every strike into long buildup, short buildup, short covering or long liquidation. It is still the most starred repository on my profile, and it marks the point where I stopped building whatever a client asked for and started building what I wanted to use. I joined Algo Maker that year as a full stack and quant developer, and trading tools became the job.</p>
+    <p>Then in November I pushed <a class="text-link" href="https://github.com/aadityatamrakar/option_chain_analysis" target="_blank" rel="noopener">option_chain_analysis</a>. A Node app that fetched the NSE Nifty option chain and classified every strike into long buildup, short buildup, short covering or long liquidation. It is still the most starred repository on my profile, and it marks the point where I stopped building whatever a client asked for and started building what I wanted to use. I joined a prop trading desk that year as a quant developer, working with real-time data and building a fast execution engine, and trading tools became the job.</p>
 
     <h2>2020: trading tools and data</h2>
     <p>Every 2020 repository is about markets or numbers. A PHP port of the option chain analyser for shared hosting, an accounting app, a daily cash versus futures spread chart on Express, and in October the Dream11 fantasy cricket team builder, which was really a constraint solver dressed up as a sports app. On the fork side I picked up the 5paisa Node SDK and a repository of option pricing formulas used by clearing houses, both of which I adapted for my own tooling.</p>
@@ -129,8 +130,8 @@
         <tr><td>2016</td><td>VideoPlayerCss, ProductsDisplay, PayTM-API-UnOfficial</td><td>Student, first internship applications</td></tr>
         <tr><td>2017</td><td>Fashmash-VotingPortal-Lumen, aadityatamrakar.github.io, sic_app_backend, city_cars</td><td>Freelance, mostly PHP</td></tr>
         <tr><td>2018</td><td>captcha_ai, multilevel-marketing-app, fleet_management_app, proxy_http_web, pwa_notes</td><td>Freelance, Node and first ML</td></tr>
-        <tr><td>2019</td><td>DistressAlarmSystem, food_delivery_app (×3), accounts_diary_android_app, nodejs_challenge, option_chain_analysis</td><td>Freelance, then Algo Maker</td></tr>
-        <tr><td>2020</td><td>option_chain_php, creative_accounting, futures_spread_chart, dream11-cricket-team-builder, 5paisa-js (fork), option-pricing (fork)</td><td>Algo Maker</td></tr>
+        <tr><td>2019</td><td>DistressAlarmSystem, food_delivery_app (×3), accounts_diary_android_app, nodejs_challenge, option_chain_analysis</td><td>Freelance, then quant dev on a prop desk</td></tr>
+        <tr><td>2020</td><td>option_chain_php, creative_accounting, futures_spread_chart, dream11-cricket-team-builder, 5paisa-js (fork), option-pricing (fork)</td><td>Prop trading desk</td></tr>
         <tr><td>2021</td><td>umbtrading</td><td>M.S. at UMass Boston</td></tr>
         <tr><td>2022</td><td>cs240-lecture-programs, timesheet-app (fork)</td><td>M.S. at UMass Boston</td></tr>
         <tr><td>2023</td><td>hbot-remote-client-py (fork)</td><td>Graduated, joined Viasat</td></tr>
@@ -187,13 +188,13 @@
       <a href="/#projects">Projects</a>
       <a href="/blog/">Blog</a>
       <a href="/feed.xml">RSS</a>
-      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
-      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
-      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" title="X">X</a>
     </div>
   </div>
 </footer>
 
-<script src="/assets/blog.js"></script>
+<script src="/assets/blog.min.js" defer></script>
 </body>
 </html>

@@ -7,7 +7,7 @@ window.PORTFOLIO = {
     name: "Aaditya Tamrakar",
     handle: "aadityatamrakar",
     title: "Full Stack Engineer · ML · Algo Trading",
-    tagline: "Techie who builds for the web, trains models on the side, and writes code that trades.",
+    tagline: "Born to a family of computer and software engineers, hacking and building applications since high school.",
     location: "India / Boston, MA",
     email: "aaditya.span@gmail.com",
     links: {
@@ -34,21 +34,42 @@ window.PORTFOLIO = {
       role: "Software Engineer",
       org: "Viasat Inc.",
       type: "work",
-      notes: "Full stack and platform engineering on large scale systems."
+      notes: "Working to improve global connectivity for people. Full stack and platform engineering on large scale systems."
+    },
+    {
+      when: "Fall 2022 — Spring 2023",
+      role: "Teaching Fellow · CS240 Programming in C",
+      org: "University of Massachusetts, Boston",
+      type: "education",
+      notes: "Taught a class of 75 students. Responsible for course content, evaluation and delivering in-person lectures."
+    },
+    {
+      when: "2022 · Internship",
+      role: "Software Engineer Intern",
+      org: "Viasat Inc.",
+      type: "work",
+      notes: "Deployed 7+ changes to production. Learned agile scrum, worked on frontend, backend and infra deployment tasks."
     },
     {
       when: "2021 — 2023",
       role: "M.S. Computer Science",
       org: "University of Massachusetts, Boston",
       type: "education",
-      notes: "Graduate coursework in UI design (CS615), systems and algorithms. Supported CS240 (Programming in C, Fall 2022) with lecture sample programs."
+      notes: "Graduate coursework in UI design (CS615), systems and algorithms."
     },
     {
       when: "2019 — 2021",
-      role: "Full Stack Developer · Quant Dev",
-      org: "Algo Maker",
+      role: "Quant Developer",
+      org: "Prop Trading Desk",
       type: "work",
-      notes: "Built trading tools around NSE data: option chain analytics, futures spread charts, broker API SDKs."
+      notes: "Worked with a lot of real-time data and built a super-fast execution engine for basic operations. Lesson: keeping things simple yields the best result."
+    },
+    {
+      when: "Internship",
+      role: "Tech Intern",
+      org: "AI AdTech Startup",
+      type: "work",
+      notes: "Learned how to work in a team and deliver pixel-perfect designs, and how to survive when the production server crashes."
     },
     {
       when: "2016 — 2019",
@@ -99,7 +120,7 @@ window.PORTFOLIO = {
         "Pulls the official NSE option chain on every visit; expiry selector filters the strikes.",
         "Classifies each strike by price change vs open interest change: long buildup, short buildup, short covering, long liquidation.",
         "Scraping done with cURL after Node request/https libraries were blocked by NSE.",
-        "Switchable to FINNIFTY. Most starred repo on the profile (106 stars, 77 forks)."
+        "Switchable to FINNIFTY. Most starred repo on the profile (106 stars, 77 forks), used by 50+ developers in their own projects."
       ]
     },
     {
@@ -133,7 +154,7 @@ window.PORTFOLIO = {
       stars: 2,
       forks: 1,
       tech: ["Python", "scikit-learn", "matplotlib", "PHP", "jQuery"],
-      summary: "Machine learning solver that reads text out of captcha images with 99.7% reported accuracy.",
+      summary: "Machine learning model trained to read Amazon-style captchas, 99.7% reported accuracy on that style.",
       details: [
         "Pipeline: trim whitespace, segment letters, rotate, normalise size, vectorise pixels.",
         "scikit-learn classifier exported as model.pkl and served behind a PHP API with an HTML/jQuery front end.",
@@ -152,7 +173,7 @@ window.PORTFOLIO = {
       stars: 2,
       forks: 2,
       tech: ["HTML", "Options", "UI Design"],
-      summary: "CS615 User Interface Design project: an options trading interface simple enough for beginners.",
+      summary: "CS615 UI Design project: a simple interface where a user can trade options easily.",
       details: [
         "Problem: option chains are hard to read, so new traders avoid them.",
         "Goal: make trading, learning and practising options possible from one guided screen.",
