@@ -1,38 +1,221 @@
----
-layout: default
-title: Home
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aaditya Tamrakar · Full Stack · ML · Algo Trading</title>
+  <meta name="description" content="Portfolio of Aaditya Tamrakar: full stack engineer, machine learning and algorithmic trading projects, 2016 to today.">
+  <meta property="og:title" content="Aaditya Tamrakar">
+  <meta property="og:description" content="Full stack engineer · ML · Algo trading. Every public project since 2016, in one page.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/">
+  <link rel="shortcut icon" href="public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
 
-<div class="posts">
-  {% for post in paginator.posts %}
-  <div class="post">
-    <h1 class="post-title">
-      <a href="{{ site.baseurl }}/{{ post.url }}">
-        {{ post.title }}
-      </a>
-    </h1>
-
-    <span class="post-date">{{ post.date | date_to_string }}</span>
-
-    {{ post.content }}
+<header class="site-header">
+  <div class="container header-row">
+    <a href="#top" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav">
+      <a href="#about">About</a>
+      <a href="#journey">Journey</a>
+      <a href="#skills">Skills</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <button class="search-pill" id="search-trigger" type="button" aria-label="Search projects">
+        <span>Search projects</span><kbd>⌘K</kbd>
+      </button>
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
   </div>
-  {% endfor %}
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero container">
+    <div class="code-block hero-code" id="hero-code" aria-label="profile config">
+      <div class="code-head">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="code-file">aaditya.config.ts</span>
+      </div>
+<pre><code><span class="c-mist">// who</span>
+<span class="c-teal">export default</span> {
+  <span class="c-cobalt">name</span>: <span class="c-plum">"Aaditya Tamrakar"</span>,
+  <span class="c-cobalt">role</span>: [<span class="c-plum">"full-stack"</span>, <span class="c-plum">"ml"</span>, <span class="c-plum">"algo-trading"</span>],
+  <span class="c-cobalt">since</span>: <span class="c-rust">2016</span>,
+  <span class="c-cobalt">stack</span>: {
+    <span class="c-cobalt">web</span>: [<span class="c-plum">"node"</span>, <span class="c-plum">"react"</span>, <span class="c-plum">"laravel"</span>],
+    <span class="c-cobalt">data</span>: [<span class="c-plum">"python"</span>, <span class="c-plum">"sklearn"</span>],
+    <span class="c-cobalt">markets</span>: [<span class="c-plum">"nse"</span>, <span class="c-plum">"options"</span>],
+  },
+  <span class="c-cobalt">repos</span>: <span class="c-rust" id="code-repos">38</span>,
+  <span class="c-cobalt">stars</span>: <span class="c-rust" id="code-stars">139</span>,
+  <span class="c-cobalt">status</span>: <span class="c-plum">"focusing"</span>,
+};</code></pre>
+      <div class="terminal-line">
+        <span class="prompt">&gt;</span> <span class="cmd" id="typed"></span><span class="cursor">▍</span>
+      </div>
+    </div>
+
+    <div class="hero-text">
+      <p class="eyebrow">Full stack · machine learning · algo trading</p>
+      <h1 class="display">Aaditya Tamrakar</h1>
+      <p class="lead">I build web products end to end, train models when a problem needs one, and write code that reads the market. Ten years of public work, from a CSS video player in 2016 to trading SDKs today.</p>
+      <div class="cta-row">
+        <a class="text-link" href="#projects">Browse projects <span class="chev">&gt;</span></a>
+        <a class="text-link" href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener">LinkedIn <span class="chev">&gt;</span></a>
+        <a class="text-link" href="mailto:aaditya.span@gmail.com">Email <span class="chev">&gt;</span></a>
+      </div>
+      <div class="stat-row" id="stat-row">
+        <div class="stat"><span class="stat-num" data-stat="repos">38</span><span class="stat-label">public repos</span></div>
+        <div class="stat"><span class="stat-num" data-stat="stars">139</span><span class="stat-label">stars earned</span></div>
+        <div class="stat"><span class="stat-num" data-stat="followers">48</span><span class="stat-label">followers</span></div>
+        <div class="stat"><span class="stat-num" data-stat="years">10</span><span class="stat-label">years shipping</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGO / TRUST STRIP -->
+  <section class="strip container">
+    <p class="eyebrow mist">Built with</p>
+    <div class="logo-row" id="logo-row"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="container section">
+    <div class="section-head">
+      <p class="eyebrow">01 · About</p>
+      <h2>Techie, by profile and by habit.</h2>
+    </div>
+    <div class="two-col">
+      <div>
+        <p>I started publishing code in 2016 while freelancing: PHP and Laravel backends, Node.js APIs, and Ionic hybrid apps for food delivery, dealerships and small accounting shops. Each one shipped to a real customer.</p>
+        <p>Around 2019 the work turned toward markets. The option chain analyser for NSE Nifty became my most used project, followed by spread charts, broker SDKs and a fantasy cricket optimiser that is really a constraint solver in disguise.</p>
+        <p>A master's in computer science at UMass Boston added the systems depth: UI design research, C programming support for CS240, and a trading interface built for beginners. Today I work as a software engineer and keep the trading tooling alive on the side.</p>
+      </div>
+      <div class="code-block small">
+        <div class="code-head"><span class="code-file">interests.json</span></div>
+<pre><code>{
+  <span class="c-cobalt">"web"</span>: <span class="c-plum">"performance, responsive design, usability"</span>,
+  <span class="c-cobalt">"ml"</span>: <span class="c-plum">"image recognition, scoring models"</span>,
+  <span class="c-cobalt">"markets"</span>: <span class="c-plum">"options, open interest, spreads"</span>,
+  <span class="c-cobalt">"fuel"</span>: <span class="c-plum">"a good cheese burger"</span>
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNEY -->
+  <section id="journey" class="container section">
+    <div class="section-head">
+      <p class="eyebrow">02 · Journey</p>
+      <h2>Where the years went.</h2>
+    </div>
+    <ol class="journey" id="journey-list"></ol>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="container section">
+    <div class="section-head">
+      <p class="eyebrow">03 · Skills</p>
+      <h2>Tools I reach for. <span class="hint">Hover a tag to count the projects that use it.</span></h2>
+    </div>
+    <div class="skills" id="skills-grid"></div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline" class="container section">
+    <div class="section-head">
+      <p class="eyebrow">04 · Timeline</p>
+      <h2>Every public project, 2016 to today. <span class="hint">Click a year to filter, click again to clear.</span></h2>
+    </div>
+    <div class="timeline" id="timeline-chart"></div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="container section">
+    <div class="section-head">
+      <p class="eyebrow">05 · Projects</p>
+      <h2>The work, in detail.</h2>
+    </div>
+
+    <div class="toolbar">
+      <div class="chips" id="chips"></div>
+      <div class="toolbar-right">
+        <label class="search-field">
+          <span class="prompt">&gt;</span>
+          <input type="search" id="search" placeholder="grep projects…" autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+        <select id="sort" aria-label="Sort projects">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="stars">Most starred</option>
+          <option value="name">A → Z</option>
+        </select>
+      </div>
+    </div>
+    <p class="result-count" id="result-count"></p>
+    <div class="grid" id="grid"></div>
+
+    <div class="forks-head">
+      <h3>Forks and SDKs I work with</h3>
+      <p class="muted">Broker clients and bots kept in the profile for trading work.</p>
+    </div>
+    <ul class="forks" id="forks"></ul>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="container section">
+    <div class="section-head">
+      <p class="eyebrow">06 · Contact</p>
+      <h2>Say hello.</h2>
+    </div>
+    <div class="code-block contact-code">
+      <div class="code-head"><span class="code-file">contact.sh</span></div>
+<pre><code><span class="c-mist">$</span> <b>open</b> <a href="mailto:aaditya.span@gmail.com">mailto:aaditya.span@gmail.com</a>
+<span class="c-mist">$</span> <b>open</b> <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">https://github.com/aadityatamrakar</a>
+<span class="c-mist">$</span> <b>open</b> <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener">https://linkedin.com/in/aadityatamrakar</a>
+<span class="c-mist">$</span> <b>open</b> <a href="https://x.com/t_aaditya" target="_blank" rel="noopener">https://x.com/t_aaditya</a>
+<span class="c-mist">$</span> <b>open</b> <a href="https://aadityatamrakar.in" target="_blank" rel="noopener">https://aadityatamrakar.in</a></code></pre>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year"></span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="https://github.com/aadityatamrakar/aadityatamrakar.github.io" target="_blank" rel="noopener">Source</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<!-- PROJECT MODAL -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" data-close aria-label="Close">×</button>
+    <div id="modal-body"></div>
+  </div>
 </div>
 
-<div class="pagination">
-  {% if paginator.next_page %}
-    <a class="pagination-item older" href="{{ site.baseurl }}/page{{paginator.next_page}}">Older</a>
-  {% else %}
-    <span class="pagination-item older">Older</span>
-  {% endif %}
-  {% if paginator.previous_page %}
-    {% if paginator.page == 2 %}
-      <a class="pagination-item newer" href="{{ site.baseurl }}/">Newer</a>
-    {% else %}
-      <a class="pagination-item newer" href="{{ site.baseurl }}/page{{paginator.previous_page}}">Newer</a>
-    {% endif %}
-  {% else %}
-    <span class="pagination-item newer">Newer</span>
-  {% endif %}
-</div>
-
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

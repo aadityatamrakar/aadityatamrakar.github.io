@@ -1,14 +1,29 @@
-# Aaditya Tamrakar
+# aadityatamrakar.github.io
 
-Enthusiast performance, responsive design and usability, always looking for the best project and cheese burger.
+Personal portfolio of Aaditya Tamrakar: full stack engineer, machine learning and algorithmic trading projects, with every public repo since 2016 on an interactive timeline.
 
-## Social Links
+Live: https://aadityatamrakar.github.io
 
-**Aaditya Tamrakar**
-- <https://www.facebok.com/aaditya.tamrakar.9>
+## Stack
+
+Plain HTML, CSS and JavaScript. No build step, no framework. Served by GitHub Pages (`.nojekyll` disables Jekyll).
+
+- `index.html` – page structure
+- `assets/style.css` – design tokens and layout (two fonts: IBM Plex Mono for code, Rubik for prose)
+- `assets/data.js` – all content: profile, journey, skills, projects, forks
+- `assets/app.js` – rendering, filters, timeline, search, modal, live GitHub stats
+
+## Editing content
+
+Everything shown on the page comes from `assets/data.js`. Add a project object there and it appears in the grid, the timeline and the category counts automatically. Star and fork counts refresh from the GitHub API on page load.
+
+## Run locally
+
+```sh
+python3 -m http.server 8000
+# open http://localhost:8000
+```
 
 ## License
 
-Open sourced under the [MIT license](LICENSE.md).
-
-<3
+MIT, see [LICENSE.md](LICENSE.md).
