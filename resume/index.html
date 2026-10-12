@@ -25,8 +25,8 @@
   <link rel="icon" href="/public/icon.svg" type="image/svg+xml">
   <link rel="icon" href="/public/favicon.ico" sizes="32x32">
   <link rel="apple-touch-icon" href="/public/apple-touch-icon.png">
-  <link rel="preload" href="/public/fonts/cmu-serif-500-roman.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/public/fonts/cmu-serif-700-roman.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/public/fonts/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/public/fonts/source-serif-4-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/style.min.css" media="screen">
   <script type="application/ld+json">
   {
@@ -39,10 +39,10 @@
   }
   </script>
   <style>
-    @font-face { font-family: "CMU Serif"; src: url("/public/fonts/cmu-serif-500-roman.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
-    @font-face { font-family: "CMU Serif"; src: url("/public/fonts/cmu-serif-500-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
-    @font-face { font-family: "CMU Serif"; src: url("/public/fonts/cmu-serif-700-roman.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: "CMU Serif"; src: url("/public/fonts/cmu-serif-700-italic.woff2") format("woff2"); font-weight: 700; font-style: italic; font-display: swap; }
+    @font-face { font-family: "Source Serif"; src: url("/public/fonts/source-serif-4-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Source Serif"; src: url("/public/fonts/source-serif-4-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+    @font-face { font-family: "Source Serif"; src: url("/public/fonts/source-serif-4-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Source Serif"; src: url("/public/fonts/source-serif-4-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
 
     .resume-wrap { max-width: 860px; margin: 0 auto; padding: 24px 16px 64px; }
     .resume-bar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; margin-bottom: 20px; }
@@ -59,7 +59,7 @@
     /* The sheet: A4 proportions, clean LaTeX-inspired layout */
     .sheet {
       --r-ink: #303055; --r-text: #1b1b2a; --r-muted: #5a5a6a; --r-rule: #cfd0dd;
-      background: #fff; color: var(--r-text); font-family: "CMU Serif", "Latin Modern Roman", "Computer Modern", Georgia, "Times New Roman", serif;
+      background: #fff; color: var(--r-text); font-family: "Source Serif", "Source Serif 4", Charter, Georgia, "Times New Roman", serif;
       font-size: 10.5pt; line-height: 1.35; padding: 0.7in 0.75in; max-width: 8.27in; margin: 0 auto;
       border: 1px solid var(--lav, #e8e8f2); box-shadow: 0 0 0 1px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
     }
@@ -67,7 +67,7 @@
     .sheet a:hover { text-decoration: underline; }
     .sheet header { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding-bottom: 8pt; border-bottom: 1.2pt solid var(--r-ink); margin-bottom: 6pt; }
     .sheet h1 { font-family: inherit; font-size: 24pt; font-weight: 700; letter-spacing: 0.01em; margin: 0; color: var(--r-ink); line-height: 1.1; }
-    .sheet .tagline { margin: 3pt 0 0; font-size: 11pt; color: var(--r-muted); font-style: italic; }
+    .sheet .tagline { margin: 3pt 0 0; font-size: 10.5pt; color: var(--r-muted); font-style: italic; }
     .sheet .contact { margin: 0; font-size: 9.5pt; text-align: right; line-height: 1.45; }
     .sheet .contact span { display: block; }
     .sheet .contact span::before { content: none; }
@@ -111,12 +111,12 @@
       .sheet .contact { text-align: right; }
       .site-header, .resume-bar, .site-footer, .noprint { display: none !important; }
       .resume-wrap { max-width: none; padding: 0; margin: 0; }
-      .sheet { border: 0; box-shadow: none; max-width: none; margin: 0; padding: 0.45in 0.6in 0.2in; font-size: 9.8pt; line-height: 1.28; }
+      .sheet { border: 0; box-shadow: none; max-width: none; margin: 0; padding: 0.55in 0.65in 0.3in; font-size: 10.6pt; line-height: 1.34; }
       .sheet header { margin-bottom: 3pt; padding-bottom: 5pt; }
-      .sheet h1 { font-size: 20pt; }
-      .sheet h2 { margin: 6pt 0 2pt; font-size: 10.5pt; }
-      .sheet .entry { margin-top: 3pt; }
-      .sheet .proj { margin-top: 2pt; }
+      .sheet h1 { font-size: 21pt; }
+      .sheet h2 { margin: 9pt 0 3pt; font-size: 11pt; }
+      .sheet .entry { margin-top: 5pt; }
+      .sheet .proj { margin-top: 3pt; }
       .sheet .proj { margin-top: 3pt; }
       .sheet p { margin-bottom: 3pt; }
       .sheet h2 { margin: 7pt 0 3pt; }
@@ -152,7 +152,7 @@
   <div class="resume-bar">
     <div>
       <p class="eyebrow" style="margin:0">Resume</p>
-      <p class="muted" style="margin:0;font-size:13px">Typeset in Computer Modern. One page. Updated October 2026.</p>
+      <p class="muted" style="margin:0;font-size:13px">One page. Updated October 2026.</p>
     </div>
     <div class="actions">
       <a class="btn primary" href="/resume/Aaditya-Tamrakar-Resume.pdf" download>
@@ -181,84 +181,68 @@
       </p>
     </header>
 
-    <p class="summary">Software engineer in Go, Python and TypeScript across trading systems and data platforms. Built 80+ order execution and market making algorithms at Algo Maker, Go microservices with Snowflake and Airflow pipelines at Viasat, and NSE options analytics used by 50+ developers. M.S. Computer Science, UMass Boston.</p>
+    <p class="summary">Software engineer in Go, Python and TypeScript for trading systems and data platforms. 80+ execution algorithms at Algo Maker, Go services and data pipelines at Viasat, NSE options analytics used by 50+ developers.</p>
 
     <h2>Work Experience</h2>
 
     <div class="entry">
-      <div class="row"><b>Viasat Inc.</b> &nbsp;<em>Software Engineer II</em><span>Remote, Austin, US · May 2023 – Dec 2025</span></div>
+      <div class="row"><b>Viasat Inc.</b> &nbsp;<em>Software Engineer II (intern May – Aug 2022)</em><span>Remote, US · May 2023 – Dec 2025</span></div>
       <ul>
-        <li>Improved in-flight connectivity with the core platform team; developed a Golang microservice for a server deployed in airplanes for monitoring.</li>
-        <li>Added new API endpoints, changes to the Snowflake database, and updated Airflow DAGs.</li>
-        <li>Modified the CloudFormation stack to create new infrastructure for data monitoring.</li>
-      </ul>
-    </div>
-
-    <div class="entry">
-      <div class="row"><b>Viasat Inc.</b> &nbsp;<em>Software Engineer Intern</em><span>Remote, Boston, US · May – Aug 2022</span></div>
-      <ul>
-        <li>Consolidated functions into a common shared library used across teams; achieved 100% unit test coverage.</li>
-        <li>Modified the cloud stack to create new infrastructure for data monitoring; joined full time after graduation.</li>
+        <li>Built a Go microservice for monitoring servers deployed in aircraft, with the core platform team.</li>
+        <li>Shipped API endpoints, Snowflake schema changes and Airflow DAGs for in-flight connectivity data.</li>
+        <li>Extended the CloudFormation stack for data monitoring infrastructure; 100% unit test coverage on a shared library.</li>
       </ul>
     </div>
 
     <div class="entry">
       <div class="row"><b>Algo Maker LLP</b> &nbsp;<em>Full Stack Developer</em><span>Mumbai, IN · Dec 2020 – Aug 2021</span></div>
       <ul>
-        <li>Created and implemented 80+ efficient algorithms to execute trade orders, from time/price based to advanced market making using WebSockets, so it could scale to handle millions in funds.</li>
-        <li>Designed a dashboard using Angular and Express.js to visualise data stored in MongoDB, which reduced the time to evaluate risk exposure and execute new orders by 50%.</li>
-        <li>Set up the complete platform in AWS, closest to the broker's servers, resulting in 20% faster order execution.</li>
+        <li>Implemented 80+ order execution algorithms, from time/price based to market making, over WebSockets at fund scale.</li>
+        <li>Built an Angular + Express risk dashboard on MongoDB that cut risk evaluation and order entry time by 50%.</li>
+        <li>Deployed the platform on AWS next to the broker, 20% faster order execution.</li>
       </ul>
     </div>
 
     <div class="entry">
-      <div class="row"><b>Accio.ai</b> &nbsp;<em>Software Engineer Intern</em><span>Mumbai, IN · Apr 2018 – Sep 2018</span></div>
+      <div class="row"><b>Accio.ai</b> &nbsp;<em>Software Engineer Intern</em><span>Mumbai, IN · Apr – Sep 2018</span></div>
       <ul>
-        <li>Developed and implemented a data pipeline to process 2 million events per day.</li>
-        <li>Designed a REST API to query data for ad payment and reporting.</li>
-        <li>Created a searchable schema in MongoDB on the raw analytics data (clicks, impressions, views).</li>
-        <li>Developed an automation script using the AWS SDK which cut the time to upload each design from minutes to seconds.</li>
+        <li>Built a data pipeline processing 2 million ad events a day with a searchable MongoDB analytics schema.</li>
+        <li>Designed the REST API for ad payment reporting; automated design uploads with the AWS SDK, minutes to seconds.</li>
       </ul>
     </div>
 
     <div class="entry">
       <div class="row"><b>Freelance</b> &nbsp;<em>Full Stack Developer</em><span>2016 – 2019</span></div>
       <ul>
-        <li>Shipped PHP/Laravel backends, Node.js APIs and Ionic/AngularJS apps for small businesses: food delivery, fleet management, dealership reporting, accounting.</li>
+        <li>Delivered Laravel, Node.js and Ionic apps for small businesses: food delivery, fleet management, dealership reporting.</li>
       </ul>
     </div>
 
     <h2>Education</h2>
     <div class="entry">
-      <div class="row"><b>Master of Science, Computer Science</b><span>CGPA 3.7/4 · 2021 – 2023</span></div>
-      <div class="row"><em>University of Massachusetts, Boston</em><span></span></div>
-      <ul>
-        <li>Graduate Teaching Fellow, CS240 Programming in C, for two semesters to classes of 51 and 67 students.</li>
-      </ul>
+      <div class="row"><b>M.S. Computer Science</b> &nbsp;<em>University of Massachusetts, Boston</em><span>CGPA 3.7/4 · 2021 – 2023</span></div>
+      <ul><li>Graduate Teaching Fellow, CS240 Programming in C, two semesters, classes of 51 and 67.</li></ul>
     </div>
 
-    <h2>Projects</h2>
+    <h2>Projects &amp; Open Source</h2>
     <div class="proj">
-      <div class="row"><span><b><a href="https://github.com/aadityatamrakar/option_chain_analysis">Option Chain Analysis</a></b> <span class="meta">· Node.js, REST API</span></span><span class="meta">100+ stars on GitHub · Nov 2019</span></div>
-      <p>Fetches the live NSE Nifty option chain and classifies every strike by price and open interest change; used by 50+ developers in their own projects.</p>
+      <div class="row"><span><b><a href="https://github.com/aadityatamrakar/option_chain_analysis">Option Chain Analysis</a></b> <span class="meta">· Live NSE Nifty option chain classified by price and open interest change · Node.js</span></span><span class="meta">100+ stars · 2019</span></div>
     </div>
     <div class="proj">
-      <div class="row"><span><b><a href="https://github.com/aadityatamrakar/umbtrading">UMB Trading App</a></b> <span class="meta">· HTML5, JavaScript, Figma, User Interface Design · <a href="https://sites.google.com/view/umbtrading/home">project site</a></span></span><span class="meta">Dec 2021</span></div>
-      <p>CS615 project: a simple interface where a beginner can trade options easily.</p>
+      <div class="row"><span><b><a href="https://github.com/aadityatamrakar">Broker SDKs</a></b> <span class="meta">· Kite Connect (Go), XTS v2 and 5paisa (Node.js), Hummingbot client (Python), option pricing formulas</span></span><span class="meta">2020 – 2025</span></div>
     </div>
     <div class="proj">
-      <div class="row"><span><b><a href="https://github.com/aadityatamrakar/captcha_ai">ML Captcha Solver</a></b> <span class="meta">· scikit-learn, PHP</span></span><span class="meta">Jan 2018</span></div>
-      <p>Image pipeline and classifier that reads Amazon-style captchas, 99.7% reported accuracy on that style.</p>
+      <div class="row"><span><b><a href="https://github.com/aadityatamrakar/umbtrading">UMB Trading App</a></b> <span class="meta">· Options trading interface for beginners · UI design, Figma, JavaScript</span></span><span class="meta">2021</span></div>
     </div>
-
-    <h2>Open Source</h2>
-    <p>Broker SDKs forked and maintained for my own tooling: Kite Connect (Go), XTS v2 and 5paisa (Node.js), Hummingbot client (Python), option pricing formulas. Open sourced the option chain analyser, futures spread chart and Dream11 team builder.</p>
+    <div class="proj">
+      <div class="row"><span><b><a href="https://github.com/aadityatamrakar/captcha_ai">ML Captcha Solver</a></b> <span class="meta">· Image pipeline and scikit-learn classifier, 99.7% on one captcha style</span></span><span class="meta">2018</span></div>
+    </div>
 
     <h2>Skills</h2>
     <div class="skills">
-      <b>Languages</b><span>Go, Python, TypeScript, JavaScript, C++, C, PHP, SQL, Java</span>
-      <b>Trading</b><span>Order execution, market making, WebSockets, NSE option chain data, option pricing, Kite Connect, XTS, 5paisa, Hummingbot</span>
-      <b>Data &amp; infra</b><span>AWS, CloudFormation, Snowflake, Apache Airflow, Kafka, Spark, Docker, Kubernetes, Redis, MongoDB, Linux, Playwright</span>
+      <b>Languages</b><span>Go, Python, TypeScript, JavaScript, C++, C, SQL</span>
+      <b>Trading</b><span>Order execution, market making, WebSockets, NSE option chain data, option pricing, broker APIs</span>
+      <b>Data &amp; infra</b><span>AWS, CloudFormation, Snowflake, Airflow, Kafka, Spark, Docker, Kubernetes, Redis, MongoDB, Linux</span>
     </div>
   </article>
 </main>
