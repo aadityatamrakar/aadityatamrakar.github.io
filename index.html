@@ -72,8 +72,9 @@
   <link rel="apple-touch-icon-precomposed" href="public/apple-touch-icon-precomposed.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap"></noscript>
+  <link rel="stylesheet" href="assets/style.min.css">
 </head>
 <body>
 <div class="progress" id="progress" aria-hidden="true"></div>
@@ -91,7 +92,7 @@
       <a href="#contact">Contact</a>
     </nav>
     <div class="header-tools">
-      <button class="search-pill" id="search-trigger" type="button" aria-label="Search projects">
+      <button class="search-pill" id="search-trigger" type="button">
         <span>Search projects</span><kbd>⌘K</kbd>
       </button>
       <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
@@ -129,6 +130,7 @@
     </div>
 
     <div class="hero-text">
+      <img class="avatar" src="https://avatars.githubusercontent.com/u/11058559?v=4&s=160" width="72" height="72" alt="Aaditya Tamrakar" loading="eager" decoding="async">
       <p class="status-badge"><span class="pulse"></span>Open to full time and contract roles</p>
       <h1 class="display">Aaditya Tamrakar</h1>
       <p class="lead">I build <span class="rotator" id="rotator"><span>trading tools</span></span><br>and write about how they work.</p>
@@ -162,21 +164,25 @@
 
   <!-- ABOUT (compact) -->
   <section id="about" class="container narrow section reveal">
+    <div class="section-head">
+      <p class="eyebrow">Hi, I'm Aaditya</p>
+      <p class="bio">Having been born to a family of computer and software engineers, my passion for computer science came naturally. Since high school, I have been hacking and building applications.</p>
+    </div>
     <div class="facts">
       <div class="fact">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z M4 10h16" /></svg>
         <strong>Web since 2016</strong>
-        <span>Laravel, Node, React, Ionic. Shipped to real customers.</span>
+        <span>Freelance, startup intern, then Viasat. Shipped to production.</span>
       </div>
       <div class="fact">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18l5-6 4 3 7-9" /></svg>
         <strong>Markets since 2019</strong>
-        <span>NSE option chains, spreads, broker SDKs.</span>
+        <span>Quant dev on a prop desk. Option chains, spreads, SDKs.</span>
       </div>
       <div class="fact">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l9 4-9 4-9-4z M5 10v5c0 2 14 2 14 0v-5" /></svg>
         <strong>M.S. CS, UMass Boston</strong>
-        <span>UI design, systems, C programming support.</span>
+        <span>Taught CS240 Programming in C to 75 students.</span>
       </div>
     </div>
   </section>
@@ -220,7 +226,7 @@
       <div class="toolbar-right">
         <label class="search-field">
           <span class="prompt">&gt;</span>
-          <input type="search" id="search" placeholder="grep projects…" autocomplete="off">
+          <input type="search" id="search" placeholder="grep projects…" autocomplete="off" aria-label="Search projects">
           <kbd>/</kbd>
         </label>
         <select id="sort" aria-label="Sort projects">
@@ -311,6 +317,7 @@
         <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
         <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://x.com/t_aaditya" target="_blank" rel="noopener">X</a>
+        <a href="mailto:aaditya.tamrakar001@umb.edu">umb.edu email</a>
         <a href="https://aadityatamrakar.in" target="_blank" rel="noopener">aadityatamrakar.in</a>
         <a href="/feed.xml">RSS</a>
       </div>
@@ -326,9 +333,9 @@
       <a href="#projects">Projects</a>
       <a href="/blog/">Blog</a>
       <a href="https://github.com/aadityatamrakar/aadityatamrakar.github.io" target="_blank" rel="noopener">Source</a>
-      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
-      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
-      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" title="X">X</a>
     </div>
   </div>
 </footer>
@@ -342,7 +349,7 @@
   </div>
 </div>
 
-<script src="assets/data.js"></script>
-<script src="assets/app.js"></script>
+<script src="assets/data.min.js" defer></script>
+<script src="assets/app.min.js" defer></script>
 </body>
 </html>

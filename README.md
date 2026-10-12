@@ -13,6 +13,17 @@ Plain HTML, CSS and JavaScript. No build step, no framework. Served by GitHub Pa
 - `assets/data.js` – all content: profile, journey, skills, projects, forks
 - `assets/app.js` – rendering, filters, timeline, search, modal, live GitHub stats
 
+## Build step (minify)
+
+Pages load `assets/*.min.css` and `assets/*.min.js`. After editing any CSS/JS source run:
+
+```sh
+pip install rcssmin rjsmin
+python3 scripts/build.py
+```
+
+SEO check: `python3 scripts/check-seo.py`
+
 ## Editing content
 
 Everything shown on the page comes from `assets/data.js`. Add a project object there and it appears in the grid, the timeline and the category counts automatically. Star and fork counts refresh from the GitHub API on page load.

@@ -28,9 +28,10 @@
   <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
-  <link rel="stylesheet" href="/assets/blog.css">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/style.min.css">
+  <link rel="stylesheet" href="/assets/blog.min.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -189,13 +190,13 @@
       <a href="/#projects">Projects</a>
       <a href="/blog/">Blog</a>
       <a href="/feed.xml">RSS</a>
-      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
-      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
-      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" title="X">X</a>
     </div>
   </div>
 </footer>
 
-<script src="/assets/blog.js"></script>
+<script src="/assets/blog.min.js" defer></script>
 </body>
 </html>

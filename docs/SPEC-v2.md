@@ -70,7 +70,7 @@ Repo facts to stay consistent with:
 - city_cars: Laravel reporting for a Maruti Suzuki dealership, AdminLTE 2, cron scheduler, email sender. multilevel-marketing-app: Laravel, tree algorithms, REST. creative_accounting: JS accounting app.
 - umbtrading: CS615 UI design, UMass Boston, Dec 2021; goals: easier options trading, simplify learning, learn through the interface; GitHub Pages prototype.
 - Forks/SDKs: gokiteconnect (Go, Zerodha Kite Connect), xts-interactive-nodeJS-api-v2 (Node, XTS), 5paisa-js (Node), hbot-remote-client-py (Python, Hummingbot), option-pricing (CCP formulas), zenbot (crypto bot). Write as "forked, adapted, and used in my own tooling; contributed fixes where I hit bugs" without inventing specific merged PRs.
-- Career: freelance 2016–2019, Algo Maker 2019–2021, UMass Boston MS 2021–2023 (CS615 UI design, CS240 C programs Fall 2022), Viasat 2023–Dec 2025, independent 2026.
+- Career: freelance 2016–2019, quant dev at a prop trading desk 2019–2021, Viasat intern 2022, CS240 teaching fellow Fall 2022–Spring 2023, UMass Boston MS 2021–2023 (CS615 UI design, CS240 C programs Fall 2022), Viasat 2023–Dec 2025, independent 2026.
 
 ## 5. Verification (owner: main session)
 

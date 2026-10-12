@@ -8,8 +8,8 @@
   --teal: #096e72;
   --rust: #984e4d;
   --slate: #403f53;
-  --fog: #767682;
-  --mist: #a8a8b0;
+  --fog: #5f5f6e;
+  --mist: #6b6b78;
   --obsidian: #111111;
   --lav: #e8e8f2;
   --paper: #ffffff;
@@ -62,7 +62,7 @@ kbd {
 .c-cobalt { color: var(--cobalt); }
 .c-teal { color: var(--teal); }
 .c-rust { color: var(--rust); }
-.c-mist { color: var(--mist); }
+.c-mist { color: #5f5f6e; }
 
 /* ------------------------------------------------------------------
    Header
@@ -107,7 +107,7 @@ kbd {
   display: flex; align-items: center; gap: 6px; margin: -4px 0 12px; font-family: var(--mono);
   font-size: 12px; color: var(--mist);
 }
-.code-head .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--mist); opacity: .5; }
+.code-head .dot { width: 8px; height: 8px; border-radius: 50%; background: #a8a8b0; opacity: .5; }
 .code-file { margin-left: 8px; font-weight: 600; color: var(--fog); }
 .code-block.small pre { font-size: 13px; }
 .terminal-line {
@@ -552,3 +552,7 @@ kbd {
 .contact-card { background: linear-gradient(135deg, var(--cobalt-soft), var(--plum-soft)); border-color: transparent; }
 .contact-card .text-link.big { color: var(--cobalt); }
 .progress { background: linear-gradient(90deg, var(--cobalt), var(--plum)); }
+
+/* Avatar + bio */
+.avatar { width: 72px; height: 72px; border-radius: 50%; border: 2px solid var(--lav); display: block; margin-bottom: 16px; background: var(--lav); }
+.bio { font-size: 16px; line-height: 1.7; color: var(--slate); max-width: 60ch; margin: 0; }
