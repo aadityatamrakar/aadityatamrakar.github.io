@@ -35,7 +35,7 @@ window.PORTFOLIO = {
       role: "Software Engineer II",
       org: "Viasat Inc., USA",
       type: "work",
-      notes: "Go microservice for in-flight monitoring servers. Took a 2M request/day production API from 50% failures to 100% success. Snowflake, Airflow and CloudFormation for data monitoring."
+      notes: "Go microservice for in-flight monitoring servers. Took a 2M request/day production API from 50% failures to 100% success. Owned deployments: CI/CD, Kubernetes, CloudFormation, Snowflake and Airflow."
     },
     {
       when: "Fall 2022 — Spring 2023",
