@@ -14,7 +14,8 @@ window.PORTFOLIO = {
       github: "https://github.com/aadityatamrakar",
       linkedin: "https://www.linkedin.com/in/aadityatamrakar/",
       x: "https://x.com/t_aaditya",
-      website: "https://aadityatamrakar.in"
+      website: "https://aadityatamrakar.in",
+      umb: "https://cs.umb.edu/~aaditya/"
     },
     // Static fallback; live numbers are fetched from the GitHub API.
     stats: { repos: 38, stars: 139, followers: 48 }
@@ -41,7 +42,8 @@ window.PORTFOLIO = {
       role: "Teaching Fellow · CS240 Programming in C",
       org: "University of Massachusetts, Boston",
       type: "education",
-      notes: "Taught a class of 75 students. Responsible for course content, evaluation and delivering in-person lectures."
+      notes: "Taught a class of 75 students. Responsible for course content, evaluation and delivering in-person lectures. Course page: cs.umb.edu/~aaditya",
+      link: "https://cs.umb.edu/~aaditya/"
     },
     {
       when: "2022 · Internship",

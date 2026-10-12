@@ -162,7 +162,7 @@
         <div class="when">${esc(j.when)}</div>
         <div class="role">${esc(j.role)}</div>
         <div class="org">${esc(j.org)}</div>
-        <p class="notes">${esc(j.notes)}</p>
+        <p class="notes">${esc(j.notes)}${j.link ? ` <a href="${esc(j.link)}" target="_blank" rel="noopener">Open &gt;</a>` : ''}</p>
       </div>
     </li>`).join('');
 
