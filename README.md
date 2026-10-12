@@ -6,7 +6,7 @@ Live: https://aadityatamrakar.in (Cloudflare Pages, deploys from master)
 
 ## Stack
 
-Plain HTML, CSS and JavaScript. No build step, no framework. Served by GitHub Pages (`.nojekyll` disables Jekyll).
+Plain HTML, CSS and JavaScript. No framework. Deployed by Cloudflare Pages from the `master` branch (build command: none, output directory: `/`). `_headers` and `_redirects` configure caching and the www redirect.
 
 - `index.html` – page structure
 - `assets/style.css` – design tokens and layout (two fonts: IBM Plex Mono for code, Rubik for prose)
