@@ -126,11 +126,13 @@
   };
   $('#journey-list').innerHTML = D.journey.map((j, i) => `
     <li class="${j.type} ${i === 0 ? 'now' : ''}">
-      ${JICON[j.type] || JICON.work}
-      <div class="when">${esc(j.when)}</div>
-      <div class="role">${esc(j.role)}</div>
-      <div class="org">${esc(j.org)}</div>
-      <p class="notes">${esc(j.notes)}</p>
+      <div class="jcard">
+        ${JICON[j.type] || JICON.work}
+        <div class="when">${esc(j.when)}</div>
+        <div class="role">${esc(j.role)}</div>
+        <div class="org">${esc(j.org)}</div>
+        <p class="notes">${esc(j.notes)}</p>
+      </div>
     </li>`).join('');
 
   /* ---------- skills (with project counts) ---------- */
