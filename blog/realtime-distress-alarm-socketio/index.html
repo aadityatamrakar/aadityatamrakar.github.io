@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to broadcast live video to a room with Socket.io</title>
+  <meta name="description" content="A how-to for streaming camera frames from one browser to a Socket.io room: Node server with rooms, getUserMedia plus canvas broadcaster, and a viewer page.">
+  <meta name="author" content="Aaditya Tamrakar">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#303055">
+  <link rel="canonical" href="https://aadityatamrakar.github.io/blog/realtime-distress-alarm-socketio/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Aaditya Tamrakar">
+  <meta property="og:title" content="How to broadcast live video to a room with Socket.io">
+  <meta property="og:description" content="A how-to for streaming camera frames from one browser to a Socket.io room: Node server with rooms, getUserMedia plus canvas broadcaster, and a viewer page.">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/blog/realtime-distress-alarm-socketio/">
+  <meta property="og:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <meta property="article:published_time" content="2026-10-05">
+  <meta property="article:author" content="https://aadityatamrakar.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@t_aaditya">
+  <meta name="twitter:creator" content="@t_aaditya">
+  <meta name="twitter:title" content="How to broadcast live video to a room with Socket.io">
+  <meta name="twitter:description" content="A how-to for streaming camera frames from one browser to a Socket.io room: Node server with rooms, getUserMedia plus canvas broadcaster, and a viewer page.">
+  <meta name="twitter:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <link rel="alternate" type="application/rss+xml" title="Aaditya Tamrakar · Blog" href="/feed.xml">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How to broadcast live video to a room with Socket.io",
+    "description": "A how-to for streaming camera frames from one browser to a Socket.io room: Node server with rooms, getUserMedia plus canvas broadcaster, and a viewer page.",
+    "datePublished": "2026-10-05",
+    "dateModified": "2026-10-05",
+    "keywords": "socket.io, websocket, getUserMedia, node, express, live video, rooms, how-to",
+    "image": "https://aadityatamrakar.github.io/assets/og.png",
+    "mainEntityOfPage": "https://aadityatamrakar.github.io/blog/realtime-distress-alarm-socketio/",
+    "author": { "@type": "Person", "name": "Aaditya Tamrakar", "url": "https://aadityatamrakar.github.io/" },
+    "publisher": { "@type": "Person", "name": "Aaditya Tamrakar" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#journey">Journey</a>
+      <a href="/#skills">Skills</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="post container">
+    <p class="eyebrow">Web · How-to</p>
+    <h1>How to broadcast live video to a room with Socket.io</h1>
+    <p class="post-meta"><time datetime="2026-10-05">5 Oct 2026</time> · <span class="reading-time"></span> · <span class="tags"><span class="tag">Web</span><span class="tag">How-to</span><span class="tag">Socket.io</span></span></p>
+
+    <!-- ARTICLE BODY START -->
+    <p>DistressAlarmSystem started as a simple idea: when someone presses a panic button in the browser, people watching a shared room should see what their camera sees, right now, without installing anything. I built it with Node, Socket.io rooms and the browser's <code>getUserMedia</code> API. This post is a how-to for the core mechanism, which is broadcasting live video frames from one browser to everyone else in a room over a WebSocket.</p>
+
+    <p>A caveat before the code. Sending video frames over Socket.io is not how you would build a production video call. WebRTC does that with far better quality and latency. But WebRTC needs signalling, STUN and TURN servers, and peer-to-peer connection handling, which is a lot of machinery for a prototype. Pushing JPEG frames through a socket is trivially simple, works through any firewall your website works through, and is good enough for a low-frame-rate alarm feed. That trade-off is the point of this approach.</p>
+
+    <h2>What you will end up with</h2>
+    <ul>
+      <li>A Node server using Express and Socket.io where clients join named rooms.</li>
+      <li>A broadcaster page that captures the camera, draws frames to a canvas, and emits them as JPEG data URLs.</li>
+      <li>A viewer page that joins the same room and paints each incoming frame into an <code>&lt;img&gt;</code>.</li>
+      <li>An alarm event that fans out to the room so viewers get a visible and audible alert.</li>
+    </ul>
+
+    <h2>Step 1: the server and rooms</h2>
+    <p>Socket.io rooms are server-side groups of sockets. A socket joins a room by name, and emitting to a room sends to every socket in it. That is all the routing this system needs. The broadcaster and its viewers share a room id, and the server relays frames and alarms from one to the others without caring about the payload.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">server.js</span></div>
+<pre><code><span class="c-teal">const</span> <span class="c-cobalt">express</span> = <span class="c-cobalt">require</span>(<span class="c-plum">"express"</span>);
+<span class="c-teal">const</span> <span class="c-cobalt">http</span> = <span class="c-cobalt">require</span>(<span class="c-plum">"http"</span>);
+<span class="c-teal">const</span> { <span class="c-cobalt">Server</span> } = <span class="c-cobalt">require</span>(<span class="c-plum">"socket.io"</span>);
+
+<span class="c-teal">const</span> <span class="c-cobalt">app</span> = <span class="c-cobalt">express</span>();
+<span class="c-teal">const</span> <span class="c-cobalt">server</span> = <span class="c-cobalt">http</span>.createServer(<span class="c-cobalt">app</span>);
+<span class="c-teal">const</span> <span class="c-cobalt">io</span> = <span class="c-teal">new</span> <span class="c-cobalt">Server</span>(<span class="c-cobalt">server</span>, { <span class="c-cobalt">maxHttpBufferSize</span>: <span class="c-rust">2e6</span> }); <span class="c-mist">// allow ~2 MB frames</span>
+
+<span class="c-cobalt">app</span>.use(<span class="c-cobalt">express</span>.static(<span class="c-plum">"public"</span>));
+
+<span class="c-cobalt">io</span>.on(<span class="c-plum">"connection"</span>, (<span class="c-cobalt">socket</span>) =&gt; {
+  <span class="c-cobalt">socket</span>.on(<span class="c-plum">"join"</span>, ({ <span class="c-cobalt">room</span>, <span class="c-cobalt">role</span> }) =&gt; {
+    <span class="c-cobalt">socket</span>.join(<span class="c-cobalt">room</span>);
+    <span class="c-cobalt">socket</span>.data.room = <span class="c-cobalt">room</span>;
+    <span class="c-cobalt">socket</span>.data.role = <span class="c-cobalt">role</span>;
+    <span class="c-cobalt">socket</span>.to(<span class="c-cobalt">room</span>).emit(<span class="c-plum">"peer-joined"</span>, { <span class="c-cobalt">id</span>: <span class="c-cobalt">socket</span>.id, <span class="c-cobalt">role</span> });
+  });
+
+  <span class="c-mist">// relay a frame from the broadcaster to everyone else in the room</span>
+  <span class="c-cobalt">socket</span>.on(<span class="c-plum">"frame"</span>, (<span class="c-cobalt">dataUrl</span>) =&gt; {
+    <span class="c-teal">if</span> (<span class="c-cobalt">socket</span>.data.role !== <span class="c-plum">"broadcaster"</span>) <span class="c-teal">return</span>;
+    <span class="c-cobalt">socket</span>.to(<span class="c-cobalt">socket</span>.data.room).volatile.emit(<span class="c-plum">"frame"</span>, <span class="c-cobalt">dataUrl</span>);
+  });
+
+  <span class="c-cobalt">socket</span>.on(<span class="c-plum">"alarm"</span>, (<span class="c-cobalt">info</span>) =&gt; {
+    <span class="c-cobalt">io</span>.to(<span class="c-cobalt">socket</span>.data.room).emit(<span class="c-plum">"alarm"</span>, { ...<span class="c-cobalt">info</span>, <span class="c-cobalt">at</span>: <span class="c-cobalt">Date</span>.now() });
+  });
+
+  <span class="c-cobalt">socket</span>.on(<span class="c-plum">"disconnect"</span>, () =&gt; {
+    <span class="c-teal">if</span> (<span class="c-cobalt">socket</span>.data.room) <span class="c-cobalt">socket</span>.to(<span class="c-cobalt">socket</span>.data.room).emit(<span class="c-plum">"peer-left"</span>, <span class="c-cobalt">socket</span>.id);
+  });
+});
+
+<span class="c-cobalt">server</span>.listen(<span class="c-rust">3000</span>, () =&gt; <span class="c-cobalt">console</span>.log(<span class="c-plum">"listening on :3000"</span>));</code></pre>
+    </div>
+
+    <p>Two details matter here. <code>socket.to(room)</code> emits to everyone in the room except the sender, so the broadcaster does not receive its own frames. And frames are sent with <code>volatile</code>, which tells Socket.io to drop the message if the client's connection is not ready instead of queueing it. For video you always want the newest frame, never a backlog of stale ones.</p>
+
+    <h2>Step 2: the broadcaster</h2>
+    <p>The broadcaster asks for the camera with <code>getUserMedia</code>, attaches the stream to a hidden <code>&lt;video&gt;</code> element, and then on a timer draws the current video frame onto a canvas and exports it as a JPEG data URL. That string is the payload. Resolution and JPEG quality are the two knobs that control bandwidth; a 320 by 240 frame at quality 0.5 is small enough to send several times a second over a normal connection.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">public/broadcast.js</span></div>
+<pre><code><span class="c-teal">const</span> <span class="c-cobalt">socket</span> = <span class="c-cobalt">io</span>();
+<span class="c-teal">const</span> <span class="c-cobalt">room</span> = <span class="c-teal">new</span> <span class="c-cobalt">URLSearchParams</span>(<span class="c-cobalt">location</span>.search).get(<span class="c-plum">"room"</span>) || <span class="c-plum">"default"</span>;
+<span class="c-teal">const</span> <span class="c-cobalt">video</span> = <span class="c-cobalt">document</span>.getElementById(<span class="c-plum">"cam"</span>);
+<span class="c-teal">const</span> <span class="c-cobalt">canvas</span> = <span class="c-cobalt">document</span>.createElement(<span class="c-plum">"canvas"</span>);
+<span class="c-teal">const</span> <span class="c-cobalt">ctx</span> = <span class="c-cobalt">canvas</span>.getContext(<span class="c-plum">"2d"</span>);
+<span class="c-teal">const</span> <span class="c-cobalt">FPS</span> = <span class="c-rust">5</span>;
+
+<span class="c-cobalt">socket</span>.emit(<span class="c-plum">"join"</span>, { <span class="c-cobalt">room</span>, <span class="c-cobalt">role</span>: <span class="c-plum">"broadcaster"</span> });
+
+<span class="c-teal">async function</span> <span class="c-cobalt">start</span>() {
+  <span class="c-teal">const</span> <span class="c-cobalt">stream</span> = <span class="c-teal">await</span> <span class="c-cobalt">navigator</span>.mediaDevices.getUserMedia({
+    <span class="c-cobalt">video</span>: { <span class="c-cobalt">width</span>: <span class="c-rust">320</span>, <span class="c-cobalt">height</span>: <span class="c-rust">240</span>, <span class="c-cobalt">facingMode</span>: <span class="c-plum">"environment"</span> },
+    <span class="c-cobalt">audio</span>: <span class="c-teal">false</span>
+  });
+  <span class="c-cobalt">video</span>.srcObject = <span class="c-cobalt">stream</span>;
+  <span class="c-teal">await</span> <span class="c-cobalt">video</span>.play();
+  <span class="c-cobalt">canvas</span>.width = <span class="c-cobalt">video</span>.videoWidth;
+  <span class="c-cobalt">canvas</span>.height = <span class="c-cobalt">video</span>.videoHeight;
+
+  <span class="c-cobalt">setInterval</span>(() =&gt; {
+    <span class="c-cobalt">ctx</span>.drawImage(<span class="c-cobalt">video</span>, <span class="c-rust">0</span>, <span class="c-rust">0</span>, <span class="c-cobalt">canvas</span>.width, <span class="c-cobalt">canvas</span>.height);
+    <span class="c-teal">const</span> <span class="c-cobalt">frame</span> = <span class="c-cobalt">canvas</span>.toDataURL(<span class="c-plum">"image/jpeg"</span>, <span class="c-rust">0.5</span>);
+    <span class="c-cobalt">socket</span>.volatile.emit(<span class="c-plum">"frame"</span>, <span class="c-cobalt">frame</span>);
+  }, <span class="c-rust">1000</span> / <span class="c-cobalt">FPS</span>);
+}
+
+<span class="c-cobalt">document</span>.getElementById(<span class="c-plum">"panic"</span>).addEventListener(<span class="c-plum">"click"</span>, () =&gt; {
+  <span class="c-cobalt">navigator</span>.geolocation.getCurrentPosition(
+    (<span class="c-cobalt">pos</span>) =&gt; <span class="c-cobalt">socket</span>.emit(<span class="c-plum">"alarm"</span>, { <span class="c-cobalt">lat</span>: <span class="c-cobalt">pos</span>.coords.latitude, <span class="c-cobalt">lng</span>: <span class="c-cobalt">pos</span>.coords.longitude }),
+    () =&gt; <span class="c-cobalt">socket</span>.emit(<span class="c-plum">"alarm"</span>, {})
+  );
+});
+
+<span class="c-cobalt">start</span>().catch((<span class="c-cobalt">err</span>) =&gt; <span class="c-cobalt">alert</span>(<span class="c-plum">"Camera access failed: "</span> + <span class="c-cobalt">err</span>.message));</code></pre>
+    </div>
+
+    <p><code>getUserMedia</code> only works on a secure origin, so you need HTTPS or <code>localhost</code>, and the browser will prompt for camera permission. On a phone, <code>facingMode: "environment"</code> asks for the rear camera, which is what you want for a distress feed. The panic button attaches the current location if the user allows it, and sends the alarm either way.</p>
+
+    <h2>Step 3: the viewer</h2>
+    <p>The viewer is the simplest part. Join the room as a viewer, and whenever a frame arrives, set it as the <code>src</code> of an image element. The browser decodes the JPEG and paints it. Because frames are complete images rather than a video stream, a viewer that joins late sees the next frame immediately with no keyframe wait.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">public/view.js</span></div>
+<pre><code><span class="c-teal">const</span> <span class="c-cobalt">socket</span> = <span class="c-cobalt">io</span>();
+<span class="c-teal">const</span> <span class="c-cobalt">room</span> = <span class="c-teal">new</span> <span class="c-cobalt">URLSearchParams</span>(<span class="c-cobalt">location</span>.search).get(<span class="c-plum">"room"</span>) || <span class="c-plum">"default"</span>;
+<span class="c-teal">const</span> <span class="c-cobalt">img</span> = <span class="c-cobalt">document</span>.getElementById(<span class="c-plum">"feed"</span>);
+<span class="c-teal">const</span> <span class="c-cobalt">banner</span> = <span class="c-cobalt">document</span>.getElementById(<span class="c-plum">"banner"</span>);
+<span class="c-teal">const</span> <span class="c-cobalt">siren</span> = <span class="c-teal">new</span> <span class="c-cobalt">Audio</span>(<span class="c-plum">"/siren.mp3"</span>);
+
+<span class="c-cobalt">socket</span>.emit(<span class="c-plum">"join"</span>, { <span class="c-cobalt">room</span>, <span class="c-cobalt">role</span>: <span class="c-plum">"viewer"</span> });
+
+<span class="c-cobalt">socket</span>.on(<span class="c-plum">"frame"</span>, (<span class="c-cobalt">dataUrl</span>) =&gt; { <span class="c-cobalt">img</span>.src = <span class="c-cobalt">dataUrl</span>; });
+
+<span class="c-cobalt">socket</span>.on(<span class="c-plum">"alarm"</span>, ({ <span class="c-cobalt">lat</span>, <span class="c-cobalt">lng</span>, <span class="c-cobalt">at</span> }) =&gt; {
+  <span class="c-cobalt">banner</span>.hidden = <span class="c-teal">false</span>;
+  <span class="c-cobalt">banner</span>.textContent = <span class="c-plum">"ALARM at "</span> + <span class="c-teal">new</span> <span class="c-cobalt">Date</span>(<span class="c-cobalt">at</span>).toLocaleTimeString()
+    + (<span class="c-cobalt">lat</span> ? <span class="c-plum">` (${</span><span class="c-cobalt">lat</span>.toFixed(<span class="c-rust">4</span>)<span class="c-plum">}, ${</span><span class="c-cobalt">lng</span>.toFixed(<span class="c-rust">4</span>)<span class="c-plum">})`</span> : <span class="c-plum">""</span>);
+  <span class="c-cobalt">siren</span>.play().catch(() =&gt; {}); <span class="c-mist">// autoplay may be blocked until the user interacts</span>
+});
+
+<span class="c-cobalt">socket</span>.on(<span class="c-plum">"peer-left"</span>, () =&gt; { <span class="c-cobalt">banner</span>.textContent = <span class="c-plum">"Broadcaster disconnected"</span>; <span class="c-cobalt">banner</span>.hidden = <span class="c-teal">false</span>; });</code></pre>
+    </div>
+
+    <h2>Step 4: run it</h2>
+    <ol>
+      <li><code>npm init -y &amp;&amp; npm install express socket.io</code>, then put <code>server.js</code> at the root and the HTML and scripts under <code>public/</code>.</li>
+      <li><code>node server.js</code> and open <code>http://localhost:3000/broadcast.html?room=test</code> in one tab. Allow the camera.</li>
+      <li>Open <code>http://localhost:3000/view.html?room=test</code> in another tab or another device on the same network. Frames should appear within a second.</li>
+      <li>Press the panic button on the broadcaster. Every viewer in the room should show the banner.</li>
+    </ol>
+    <p>To test from a phone you need HTTPS. The quickest route during development is a tunnelling tool that gives you a temporary HTTPS URL pointing at port 3000.</p>
+
+    <h2>Tuning and limits</h2>
+    <p>Bandwidth per viewer is roughly frame size times frames per second, and the server relays a copy to each viewer, so cost scales with viewers times frame rate. Lower the resolution or the JPEG quality before you lower the frame rate; a blurry feed at 5 fps reads as live, a sharp one at 1 fps reads as a slideshow. If you need many viewers, put a cap on the room, or move to WebRTC with an SFU, which is the right architecture at that scale.</p>
+
+    <p>Sending a base64 data URL is about a third larger than sending the raw bytes. Socket.io supports binary payloads, so switching to <code>canvas.toBlob</code> and emitting the <code>ArrayBuffer</code> is a straightforward optimisation once the basic flow works.</p>
+
+    <p>One more practical note: a room id in the URL is a shared secret, not authentication. For the prototype that was acceptable, because the ids were long random strings handed out by the alarm owner. For anything real, issue short-lived tokens on join and have the server check them before calling <code>socket.join</code>.</p>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li>Rooms are the whole routing layer. One join, then <code>socket.to(room)</code> everywhere. No session tables, no pub/sub.</li>
+      <li>Use <code>volatile</code> for frames. Dropping a frame is correct; queueing it is a slow-motion disaster on a bad connection.</li>
+      <li>JPEG-over-socket is fine for alarms and monitoring, and much easier to deploy than WebRTC. Know which problem you have.</li>
+      <li>Secure origins are mandatory for <code>getUserMedia</code>. Plan for HTTPS from the first day of testing on a phone.</li>
+      <li>Audio alerts need a user gesture first in most browsers. Have viewers click a "start monitoring" button so the siren is allowed to play later.</li>
+    </ul>
+
+    <p><a class="text-link" href="https://github.com/aadityatamrakar/DistressAlarmSystem" target="_blank" rel="noopener">Source on GitHub <span class="chev">&gt;</span></a></p>
+    <!-- ARTICLE BODY END -->
+
+    <nav class="post-nav" aria-label="More posts">
+      <a href="/blog/shipping-food-delivery-solo/" rel="prev">&lt; Shipping a food delivery product solo: Laravel, Ionic and lessons</a>
+      <a href="/blog/offline-first-notes-pwa/" rel="next">How to build an offline-first notes app with a service worker &gt;</a>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year">2026</span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="/#about">About</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/blog.js"></script>
+</body>
+</html>

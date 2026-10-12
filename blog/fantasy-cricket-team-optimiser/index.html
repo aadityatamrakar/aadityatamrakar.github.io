@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A fantasy cricket team optimiser is a constraint solver</title>
+  <meta name="description" content="Why a Dream11-style team builder is a constraint problem: prune the pool by pick frequency, enumerate every legal lineup, then pick by points or at random.">
+  <meta name="author" content="Aaditya Tamrakar">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#303055">
+  <link rel="canonical" href="https://aadityatamrakar.github.io/blog/fantasy-cricket-team-optimiser/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Aaditya Tamrakar">
+  <meta property="og:title" content="A fantasy cricket team optimiser is a constraint solver">
+  <meta property="og:description" content="Why a Dream11-style team builder is a constraint problem: prune the pool by pick frequency, enumerate every legal lineup, then pick by points or at random.">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/blog/fantasy-cricket-team-optimiser/">
+  <meta property="og:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <meta property="article:published_time" content="2026-10-07">
+  <meta property="article:author" content="https://aadityatamrakar.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@t_aaditya">
+  <meta name="twitter:creator" content="@t_aaditya">
+  <meta name="twitter:title" content="A fantasy cricket team optimiser is a constraint solver">
+  <meta name="twitter:description" content="Why a Dream11-style team builder is a constraint problem: prune the pool by pick frequency, enumerate every legal lineup, then pick by points or at random.">
+  <meta name="twitter:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <link rel="alternate" type="application/rss+xml" title="Aaditya Tamrakar · Blog" href="/feed.xml">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "A fantasy cricket team optimiser is a constraint solver",
+    "description": "Why a Dream11-style team builder is a constraint problem: prune the pool by pick frequency, enumerate every legal lineup, then pick by points or at random.",
+    "datePublished": "2026-10-07",
+    "dateModified": "2026-10-07",
+    "keywords": "fantasy cricket, dream11, constraint solver, python, optimisation, data",
+    "image": "https://aadityatamrakar.github.io/assets/og.png",
+    "mainEntityOfPage": "https://aadityatamrakar.github.io/blog/fantasy-cricket-team-optimiser/",
+    "author": { "@type": "Person", "name": "Aaditya Tamrakar", "url": "https://aadityatamrakar.github.io/" },
+    "publisher": { "@type": "Person", "name": "Aaditya Tamrakar" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#journey">Journey</a>
+      <a href="/#skills">Skills</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="post container">
+    <p class="eyebrow">ML · Data</p>
+    <h1>A fantasy cricket team optimiser is a constraint solver</h1>
+    <p class="post-meta"><time datetime="2026-10-07">7 Oct 2026</time> · <span class="reading-time"></span> · <span class="tags"><span class="tag">ML</span><span class="tag">Data</span><span class="tag">Python</span></span></p>
+
+    <!-- ARTICLE BODY START -->
+    <p>Fantasy cricket looks like a prediction problem. Who will score the most points this match? But when I sat down to build a team builder for Dream11-style contests, I realised that most of the work is not prediction at all. It is constraint satisfaction. You have a pool of players, a set of lineup rules, a budget, and a scoring input. The hard part is enumerating every lineup that satisfies the rules and then picking one. That is a solver, not a model.</p>
+
+    <p>This post is about <code>dream11-cricket-team-builder</code>, a small Python tool I wrote to do exactly that, and why I think framing it as a constraint problem is the right call even if you later bolt a proper prediction model on top.</p>
+
+    <h2>What I built</h2>
+    <p>The tool reads four JSON files and produces a valid eleven:</p>
+    <ul>
+      <li><code>teams.json</code>: the two sides playing and their squads.</li>
+      <li><code>playing11.json</code>: the announced playing eleven for each side, so benched players are excluded.</li>
+      <li><code>player_points.json</code>: a points number per player. This can be last-match points, a season average, or your own estimate. The tool does not care where it comes from.</li>
+      <li><code>contest.json</code>: contest-level settings, including which player roles are allowed in which counts.</li>
+    </ul>
+    <p>From those it builds a candidate pool, enumerates every lineup that satisfies the role rules, validates each one, and then selects a team either by total points or at random from the valid set. Random selection sounds odd, but it is useful when you are entering several teams into a large contest and want diversity rather than eleven copies of the same "best" lineup.</p>
+
+    <h2>How it works</h2>
+
+    <h3>Shrink the pool first</h3>
+    <p>Two squads of fifteen is thirty players. Choosing eleven from thirty is about 54 million combinations before any rules. That is too many to enumerate naively in Python, and most of those combinations include players nobody would pick. So the first step is to cut the pool to the top 18 players by pick frequency, the share of contest entrants who selected each player. Eighteen choose eleven is 31,824 lineups, which is trivial to enumerate and validate in memory.</p>
+
+    <p>Pick frequency is a crowd signal rather than a prediction, and that is fine for pruning. The players the crowd ignores are almost never the ones a points-based selector would choose anyway. The point is to make the search space small enough that the rest of the pipeline can be dumb and exhaustive.</p>
+
+    <h3>Encode the rules</h3>
+    <p>Fantasy cricket lineups have role composition rules. A typical format is a count per role across wicket-keeper, batter, all-rounder and bowler, with patterns such as 3-3-3-2 or 4-4-2-1 being common valid shapes. There is also usually a cap on how many players may come from one side. I keep the allowed patterns as data rather than code so that a different contest format is a JSON edit, not a rewrite.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">contest.json</span></div>
+<pre><code>{
+  <span class="c-cobalt">"team_size"</span>: <span class="c-rust">11</span>,
+  <span class="c-cobalt">"max_from_one_side"</span>: <span class="c-rust">7</span>,
+  <span class="c-cobalt">"roles"</span>: [<span class="c-plum">"WK"</span>, <span class="c-plum">"BAT"</span>, <span class="c-plum">"AR"</span>, <span class="c-plum">"BOWL"</span>],
+  <span class="c-cobalt">"allowed_patterns"</span>: [
+    [<span class="c-rust">1</span>, <span class="c-rust">3</span>, <span class="c-rust">3</span>, <span class="c-rust">4</span>],
+    [<span class="c-rust">1</span>, <span class="c-rust">4</span>, <span class="c-rust">2</span>, <span class="c-rust">4</span>],
+    [<span class="c-rust">1</span>, <span class="c-rust">4</span>, <span class="c-rust">3</span>, <span class="c-rust">3</span>],
+    [<span class="c-rust">2</span>, <span class="c-rust">3</span>, <span class="c-rust">3</span>, <span class="c-rust">3</span>]
+  ],
+  <span class="c-cobalt">"pool_size"</span>: <span class="c-rust">18</span>
+}</code></pre>
+    </div>
+
+    <p>The exact patterns above are illustrative. Whatever the contest allows goes in that list, and the validator only checks membership.</p>
+
+    <h3>Enumerate and validate</h3>
+    <p>With a pool of 18 and the rules as data, enumeration is a single <code>itertools.combinations</code> call followed by a filter. I count roles and sides for each candidate and keep the ones whose role vector appears in <code>allowed_patterns</code> and whose side split is within the cap.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">builder.py</span></div>
+<pre><code><span class="c-teal">from</span> <span class="c-cobalt">itertools</span> <span class="c-teal">import</span> <span class="c-cobalt">combinations</span>
+<span class="c-teal">from</span> <span class="c-cobalt">collections</span> <span class="c-teal">import</span> <span class="c-cobalt">Counter</span>
+
+<span class="c-teal">def</span> <span class="c-cobalt">valid_lineups</span>(<span class="c-cobalt">pool</span>, <span class="c-cobalt">contest</span>):
+    <span class="c-cobalt">roles</span> = <span class="c-cobalt">contest</span>[<span class="c-plum">"roles"</span>]
+    <span class="c-cobalt">allowed</span> = {<span class="c-cobalt">tuple</span>(<span class="c-cobalt">p</span>) <span class="c-teal">for</span> <span class="c-cobalt">p</span> <span class="c-teal">in</span> <span class="c-cobalt">contest</span>[<span class="c-plum">"allowed_patterns"</span>]}
+    <span class="c-cobalt">cap</span> = <span class="c-cobalt">contest</span>[<span class="c-plum">"max_from_one_side"</span>]
+
+    <span class="c-teal">for</span> <span class="c-cobalt">team</span> <span class="c-teal">in</span> <span class="c-cobalt">combinations</span>(<span class="c-cobalt">pool</span>, <span class="c-cobalt">contest</span>[<span class="c-plum">"team_size"</span>]):
+        <span class="c-cobalt">by_role</span> = <span class="c-cobalt">Counter</span>(<span class="c-cobalt">p</span>[<span class="c-plum">"role"</span>] <span class="c-teal">for</span> <span class="c-cobalt">p</span> <span class="c-teal">in</span> <span class="c-cobalt">team</span>)
+        <span class="c-cobalt">by_side</span> = <span class="c-cobalt">Counter</span>(<span class="c-cobalt">p</span>[<span class="c-plum">"side"</span>] <span class="c-teal">for</span> <span class="c-cobalt">p</span> <span class="c-teal">in</span> <span class="c-cobalt">team</span>)
+        <span class="c-cobalt">shape</span> = <span class="c-cobalt">tuple</span>(<span class="c-cobalt">by_role</span>[<span class="c-cobalt">r</span>] <span class="c-teal">for</span> <span class="c-cobalt">r</span> <span class="c-teal">in</span> <span class="c-cobalt">roles</span>)
+        <span class="c-teal">if</span> <span class="c-cobalt">shape</span> <span class="c-teal">in</span> <span class="c-cobalt">allowed</span> <span class="c-teal">and</span> <span class="c-cobalt">max</span>(<span class="c-cobalt">by_side</span>.values()) &lt;= <span class="c-cobalt">cap</span>:
+            <span class="c-teal">yield</span> <span class="c-cobalt">team</span></code></pre>
+    </div>
+
+    <p>Because the generator yields lazily, I can stop early if I only need one random team, or collect everything if I want to rank. On a pool of 18 the full enumeration finishes well under a second, so I never bothered with anything cleverer than brute force.</p>
+
+    <h3>Choose a team</h3>
+    <p>Selection is the only place where "points" enter. The tool supports two modes:</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">select.py</span></div>
+<pre><code><span class="c-teal">import</span> <span class="c-cobalt">random</span>
+
+<span class="c-teal">def</span> <span class="c-cobalt">choose</span>(<span class="c-cobalt">lineups</span>, <span class="c-cobalt">points</span>, <span class="c-cobalt">mode</span>=<span class="c-plum">"points"</span>):
+    <span class="c-cobalt">lineups</span> = <span class="c-cobalt">list</span>(<span class="c-cobalt">lineups</span>)
+    <span class="c-teal">if</span> <span class="c-cobalt">mode</span> == <span class="c-plum">"random"</span>:
+        <span class="c-teal">return</span> <span class="c-cobalt">random</span>.choice(<span class="c-cobalt">lineups</span>)
+    <span class="c-mist"># highest total points; captain/vice-captain multipliers applied here</span>
+    <span class="c-teal">def</span> <span class="c-cobalt">score</span>(<span class="c-cobalt">team</span>):
+        <span class="c-cobalt">s</span> = <span class="c-cobalt">sorted</span>((<span class="c-cobalt">points</span>[<span class="c-cobalt">p</span>[<span class="c-plum">"id"</span>]] <span class="c-teal">for</span> <span class="c-cobalt">p</span> <span class="c-teal">in</span> <span class="c-cobalt">team</span>), reverse=<span class="c-teal">True</span>)
+        <span class="c-teal">return</span> <span class="c-cobalt">s</span>[<span class="c-rust">0</span>] * <span class="c-rust">2</span> + <span class="c-cobalt">s</span>[<span class="c-rust">1</span>] * <span class="c-rust">1.5</span> + <span class="c-cobalt">sum</span>(<span class="c-cobalt">s</span>[<span class="c-rust">2</span>:])
+    <span class="c-teal">return</span> <span class="c-cobalt">max</span>(<span class="c-cobalt">lineups</span>, key=<span class="c-cobalt">score</span>)</code></pre>
+    </div>
+
+    <p>Points mode picks the lineup with the highest total, with the top two scorers treated as captain and vice-captain. Random mode draws uniformly from the valid set. Both produce lineups that are guaranteed to pass the contest's rules, which is the property I actually cared about. Whether the points input is any good is a separate question, and deliberately outside the tool's scope.</p>
+
+    <h2>Why "constraint solver" is the right frame</h2>
+    <p>Separating the feasible set from the objective does three things for you. First, validation is exhaustive and provable: if a lineup comes out, it is legal. Second, the objective is swappable. Today it is a points file; tomorrow it could be the output of a real model, or a blend with ownership data to find low-owned upside. Third, you get diversity for free. If you want five different teams for a big contest, sample five from the feasible set instead of perturbing one "optimal" answer and hoping it stays legal.</p>
+
+    <p>If the pool were larger, or there were a salary budget to respect, I would move from brute-force enumeration to integer programming with a library like PuLP or OR-Tools. The formulation is the same: binary variable per player, linear constraints for roles, sides and budget, linear objective for points. The brute-force version here is just the smallest thing that works for an 18-player pool.</p>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li>Prune before you enumerate. Cutting the pool to 18 by pick frequency turned an impractical search into a trivial one without visibly hurting the result.</li>
+      <li>Keep rules as data. The role patterns and side cap live in <code>contest.json</code>, so supporting a new format is a config change.</li>
+      <li>Separate feasibility from preference. The enumerator never looks at points; the selector never checks rules. Each half is easy to test on its own.</li>
+      <li>Random choice from a valid set is a feature, not a cop-out, when you need many distinct entries.</li>
+      <li>The hard, unsolved part is the points input. The optimiser is only as good as what you feed it, and I did not try to build a prediction model for this project.</li>
+    </ul>
+
+    <p><a class="text-link" href="https://github.com/aadityatamrakar/dream11-cricket-team-builder" target="_blank" rel="noopener">Source on GitHub <span class="chev">&gt;</span></a></p>
+    <!-- ARTICLE BODY END -->
+
+    <nav class="post-nav" aria-label="More posts">
+      <a href="/blog/offline-first-notes-pwa/" rel="prev">&lt; How to build an offline-first notes app with a service worker</a>
+      <a href="/blog/captcha-solver-scikit-learn/" rel="next">Solving captchas with scikit-learn: a 99.7% pipeline &gt;</a>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year">2026</span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="/#about">About</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/blog.js"></script>
+</body>
+</html>

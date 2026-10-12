@@ -23,7 +23,14 @@ window.PORTFOLIO = {
   /* Career & education, newest first. */
   journey: [
     {
-      when: "2023 — Present",
+      when: "2026 — Present",
+      role: "Independent Engineer",
+      org: "Building trading tools and open source SDKs",
+      type: "work",
+      notes: "Working on my own trading tooling, broker SDKs and writing. Open to full time and contract roles."
+    },
+    {
+      when: "2023 — Dec 2025",
       role: "Software Engineer",
       org: "Viasat Inc.",
       type: "work",
@@ -77,6 +84,7 @@ window.PORTFOLIO = {
   projects: [
     {
       repo: "option_chain_analysis",
+      post: "/blog/nse-option-chain-analysis/",
       name: "Option Chain Analysis",
       year: 2019,
       started: "2019-11",
@@ -96,6 +104,7 @@ window.PORTFOLIO = {
     },
     {
       repo: "dream11-cricket-team-builder",
+      post: "/blog/fantasy-cricket-team-optimiser/",
       name: "Dream11 Cricket Team Builder",
       year: 2020,
       started: "2020-10",
@@ -114,6 +123,7 @@ window.PORTFOLIO = {
     },
     {
       repo: "captcha_ai",
+      post: "/blog/captcha-solver-scikit-learn/",
       name: "Captcha AI",
       year: 2018,
       started: "2018-01",
@@ -132,6 +142,7 @@ window.PORTFOLIO = {
     },
     {
       repo: "umbtrading",
+      post: "/blog/options-ui-for-beginners-cs615/",
       name: "UMB Trading",
       year: 2021,
       started: "2021-12",
@@ -150,6 +161,7 @@ window.PORTFOLIO = {
     },
     {
       repo: "futures_spread_chart",
+      post: "/blog/cash-futures-spread-chart/",
       name: "Futures Spread Chart",
       year: 2020,
       started: "2020-05",
@@ -179,6 +191,7 @@ window.PORTFOLIO = {
     },
     {
       repo: "creative_accounting",
+      post: "/blog/dealership-reporting-laravel-cron/",
       name: "Creative Accounting",
       year: 2020,
       started: "2020-03",
@@ -192,6 +205,7 @@ window.PORTFOLIO = {
     },
     {
       repo: "food_delivery_app_backend_admin",
+      post: "/blog/shipping-food-delivery-solo/",
       name: "Food Delivery · Backend & Admin",
       year: 2019,
       started: "2019-02",
@@ -209,6 +223,7 @@ window.PORTFOLIO = {
     },
     {
       repo: "food_delivery_app_frontend",
+      post: "/blog/shipping-food-delivery-solo/",
       name: "Food Delivery · Web Frontend",
       year: 2019,
       started: "2019-02",
@@ -222,6 +237,7 @@ window.PORTFOLIO = {
     },
     {
       repo: "food_delivery_app",
+      post: "/blog/shipping-food-delivery-solo/",
       name: "Food Delivery · Mobile App",
       year: 2019,
       started: "2019-02",
@@ -264,6 +280,7 @@ window.PORTFOLIO = {
     },
     {
       repo: "DistressAlarmSystem",
+      post: "/blog/realtime-distress-alarm-socketio/",
       name: "Distress Alarm System",
       year: 2019,
       started: "2019-01",
@@ -277,6 +294,7 @@ window.PORTFOLIO = {
     },
     {
       repo: "pwa_notes",
+      post: "/blog/offline-first-notes-pwa/",
       name: "PWA Notes",
       year: 2018,
       started: "2018-05",
@@ -329,6 +347,7 @@ window.PORTFOLIO = {
     },
     {
       repo: "multilevel-marketing-app",
+      post: "/blog/dealership-reporting-laravel-cron/",
       name: "Multi-Level Marketing App",
       year: 2018,
       started: "2018-01",
@@ -342,6 +361,7 @@ window.PORTFOLIO = {
     },
     {
       repo: "city_cars",
+      post: "/blog/dealership-reporting-laravel-cron/",
       name: "City Cars Reporting",
       year: 2017,
       started: "2017-04",

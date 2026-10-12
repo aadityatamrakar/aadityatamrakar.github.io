@@ -1,0 +1,98 @@
+/* Blog behaviour: mobile menu, active nav, tag filter on index, reading time, copy buttons. */
+(function () {
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  /* ---------- mobile menu (article pages do not load app.js) ---------- */
+  const menuBtn = $('#menu-btn');
+  const nav = $('#nav');
+  if (menuBtn && nav) {
+    menuBtn.addEventListener('click', () => nav.classList.toggle('open'));
+    $$('a', nav).forEach((a) => a.addEventListener('click', () => nav.classList.remove('open')));
+  }
+
+  /* ---------- active nav ---------- */
+  if (nav) {
+    const path = location.pathname;
+    $$('a', nav).forEach((a) => {
+      const href = a.getAttribute('href') || '';
+      a.classList.toggle('active', href === '/blog/' && path.indexOf('/blog') === 0);
+    });
+  }
+
+  /* ---------- reading time ---------- */
+  const post = $('.post');
+  const rt = $('.reading-time');
+  if (post && rt) {
+    const words = (post.innerText || post.textContent || '').trim().split(/\s+/).filter(Boolean).length;
+    const mins = Math.max(1, Math.round(words / 220));
+    rt.textContent = mins + ' min read';
+  }
+
+  /* ---------- copy button on code blocks ---------- */
+  $$('.post .code-block').forEach((block) => {
+    const pre = $('pre', block);
+    if (!pre) return;
+    let head = $('.code-head', block);
+    if (!head) {
+      head = document.createElement('div');
+      head.className = 'code-head';
+      block.insertBefore(head, pre);
+    }
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'copy-btn';
+    btn.textContent = 'copy';
+    btn.setAttribute('aria-label', 'Copy code');
+    btn.addEventListener('click', () => {
+      const text = pre.textContent;
+      const done = () => {
+        btn.textContent = 'copied';
+        btn.classList.add('done');
+        setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('done'); }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(done);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.setAttribute('readonly', '');
+        ta.style.position = 'absolute'; ta.style.left = '-9999px';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+        done();
+      }
+    });
+    head.appendChild(btn);
+  });
+
+  /* ---------- tag filter on index (list is static; JS only hides/shows) ---------- */
+  const chips = $('#blog-chips');
+  const list = $('#post-list');
+  if (chips && list) {
+    const items = $$('li[data-tags]', list);
+    const empty = $('#blog-empty');
+    const apply = (tag) => {
+      let shown = 0;
+      items.forEach((li) => {
+        const tags = (li.dataset.tags || '').split(',');
+        const on = tag === 'all' || tags.indexOf(tag) !== -1;
+        li.hidden = !on;
+        if (on) shown++;
+      });
+      $$('.chip', chips).forEach((c) => c.classList.toggle('active', c.dataset.tag === tag));
+      if (empty) empty.hidden = shown > 0;
+      const url = tag === 'all' ? location.pathname : location.pathname + '?tag=' + encodeURIComponent(tag);
+      history.replaceState(null, '', url);
+    };
+    chips.addEventListener('click', (e) => {
+      const b = e.target.closest('.chip');
+      if (b) apply(b.dataset.tag);
+    });
+    const initial = new URLSearchParams(location.search).get('tag');
+    if (initial && $(`.chip[data-tag="${CSS.escape(initial)}"]`, chips)) apply(initial);
+  }
+
+  const year = $('#year');
+  if (year) year.textContent = new Date().getFullYear();
+})();

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shipping a food delivery product solo</title>
+  <meta name="description" content="How I shipped a food delivery product alone in 2019: a Laravel/MySQL API and admin, a Bootstrap 3 web frontend and an Ionic app, plus the lessons.">
+  <meta name="author" content="Aaditya Tamrakar">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#303055">
+  <link rel="canonical" href="https://aadityatamrakar.github.io/blog/shipping-food-delivery-solo/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Aaditya Tamrakar">
+  <meta property="og:title" content="Shipping a food delivery product solo: Laravel, Ionic and lessons">
+  <meta property="og:description" content="How I shipped a food delivery product alone in 2019: a Laravel/MySQL API and admin, a Bootstrap 3 web frontend and an Ionic app, plus the lessons.">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/blog/shipping-food-delivery-solo/">
+  <meta property="og:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <meta property="article:published_time" content="2026-10-04">
+  <meta property="article:author" content="https://aadityatamrakar.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@t_aaditya">
+  <meta name="twitter:creator" content="@t_aaditya">
+  <meta name="twitter:title" content="Shipping a food delivery product solo: Laravel, Ionic and lessons">
+  <meta name="twitter:description" content="How I shipped a food delivery product alone in 2019: a Laravel/MySQL API and admin, a Bootstrap 3 web frontend and an Ionic app, plus the lessons.">
+  <meta name="twitter:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <link rel="alternate" type="application/rss+xml" title="Aaditya Tamrakar · Blog" href="/feed.xml">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Shipping a food delivery product solo: Laravel, Ionic and lessons",
+    "description": "How I shipped a food delivery product alone in 2019: a Laravel/MySQL API and admin, a Bootstrap 3 web frontend and an Ionic app, plus the lessons.",
+    "datePublished": "2026-10-04",
+    "dateModified": "2026-10-04",
+    "keywords": "Laravel, Ionic, AngularJS, food delivery app, REST API, MySQL, Bootstrap 3, SMS API, payment gateway, solo developer",
+    "image": "https://aadityatamrakar.github.io/assets/og.png",
+    "mainEntityOfPage": "https://aadityatamrakar.github.io/blog/shipping-food-delivery-solo/",
+    "author": { "@type": "Person", "name": "Aaditya Tamrakar", "url": "https://aadityatamrakar.github.io/" },
+    "publisher": { "@type": "Person", "name": "Aaditya Tamrakar" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#journey">Journey</a>
+      <a href="/#skills">Skills</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="post container">
+    <p class="eyebrow">Web · Lessons</p>
+    <h1>Shipping a food delivery product solo: Laravel, Ionic and lessons</h1>
+    <p class="post-meta"><time datetime="2026-10-04">4 Oct 2026</time> · <span class="reading-time"></span> · <span class="tags"><span class="tag">Web</span><span class="tag">Laravel</span><span class="tag">Ionic</span><span class="tag">Lessons</span></span></p>
+
+    <!-- ARTICLE BODY START -->
+    <p>In early 2019 I shipped a complete food delivery product on my own: a backend with an admin panel, a customer facing website, and a hybrid mobile app. It was the largest thing I had built solo up to that point, and it was the last big freelance project before I moved into trading tools later that year. This is a write-up of how the three pieces fit together and what I took away from doing all of it alone.</p>
+
+    <p>The code lives in three repositories: <a class="text-link" href="https://github.com/aadityatamrakar/food_delivery_app_backend_admin" target="_blank" rel="noopener">food_delivery_app_backend_admin</a>, <a class="text-link" href="https://github.com/aadityatamrakar/food_delivery_app_frontend" target="_blank" rel="noopener">food_delivery_app_frontend</a> and <a class="text-link" href="https://github.com/aadityatamrakar/food_delivery_app" target="_blank" rel="noopener">food_delivery_app</a>. All three were pushed in February 2019.</p>
+
+    <h2>The problem</h2>
+    <p>A food delivery business needs the same handful of things regardless of its size: a catalogue of restaurants and menus, a way for customers to search and order, a way for the business to see and manage orders, and a way to tell the customer what is happening. The client wanted a website and an Android app, both talking to the same data, and an admin screen that staff could use without training.</p>
+
+    <p>As a solo developer the hard part is not any one of those. It is keeping three codebases consistent while you are the only person who knows how they connect.</p>
+
+    <h2>What I built</h2>
+    <p>I split the product into three layers that could be deployed independently.</p>
+
+    <h3>1. Laravel backend and admin</h3>
+    <p>The backend is Laravel on MySQL. It exposes a REST API for the two clients and ships an admin panel for restaurant, menu and order management. The admin has basic reporting (orders over time, by restaurant, by status) and an SMS API integration so customers get a text when an order is accepted or out for delivery.</p>
+
+    <h3>2. Bootstrap 3 web frontend</h3>
+    <p>The website is a conventional Bootstrap 3 UI. The important interaction is search: as you type, an AJAX call hits the API and the results list updates without a page reload. The cart is client side until checkout, where the order is posted to the API and the customer is handed over to a payment gateway.</p>
+
+    <h3>3. Ionic / AngularJS mobile app</h3>
+    <p>The app is Ionic 1 on AngularJS, one codebase packaged for Android and iOS with Cordova. It consumes the same web services as the website, so a menu change in the admin shows up in both clients immediately.</p>
+
+    <h2>How it works</h2>
+    <p>The whole product hangs off a small set of API routes. Keeping them boring was deliberate: two clients written in different frameworks need an API that is easy to reason about from memory.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">routes/api.php</span></div>
+<pre><code><span class="c-cobalt">Route</span>::<span class="c-teal">get</span>(<span class="c-plum">'restaurants'</span>, <span class="c-plum">'RestaurantController@index'</span>);
+<span class="c-cobalt">Route</span>::<span class="c-teal">get</span>(<span class="c-plum">'restaurants/{id}/menu'</span>, <span class="c-plum">'MenuController@show'</span>);
+<span class="c-cobalt">Route</span>::<span class="c-teal">get</span>(<span class="c-plum">'search'</span>, <span class="c-plum">'SearchController@query'</span>);
+
+<span class="c-cobalt">Route</span>::<span class="c-teal">middleware</span>(<span class="c-plum">'auth:api'</span>)-&gt;<span class="c-teal">group</span>(<span class="c-teal">function</span> () {
+    <span class="c-cobalt">Route</span>::<span class="c-teal">post</span>(<span class="c-plum">'orders'</span>, <span class="c-plum">'OrderController@store'</span>);
+    <span class="c-cobalt">Route</span>::<span class="c-teal">get</span>(<span class="c-plum">'orders/{id}'</span>, <span class="c-plum">'OrderController@show'</span>);
+});</code></pre>
+    </div>
+
+    <p>Order creation does three things in one request: validate the cart against current menu prices (never trust the client's totals), persist the order, and queue an SMS. The SMS call goes through a thin wrapper so the gateway can be swapped without touching the controller.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">app/Http/Controllers/OrderController.php</span></div>
+<pre><code><span class="c-teal">public function</span> <span class="c-cobalt">store</span>(<span class="c-teal">Request</span> $request)
+{
+    $items = <span class="c-cobalt">MenuItem</span>::<span class="c-teal">whereIn</span>(<span class="c-plum">'id'</span>, $request-&gt;<span class="c-cobalt">input</span>(<span class="c-plum">'items.*.id'</span>))-&gt;<span class="c-teal">get</span>();
+    $total = <span class="c-rust">0</span>;
+    <span class="c-teal">foreach</span> ($request-&gt;<span class="c-cobalt">items</span> <span class="c-teal">as</span> $line) {
+        <span class="c-mist">// price comes from the database, not from the request</span>
+        $total += $items-&gt;<span class="c-teal">find</span>($line[<span class="c-plum">'id'</span>])-&gt;<span class="c-cobalt">price</span> * $line[<span class="c-plum">'qty'</span>];
+    }
+
+    $order = <span class="c-cobalt">Order</span>::<span class="c-teal">create</span>([
+        <span class="c-plum">'user_id'</span> =&gt; $request-&gt;<span class="c-cobalt">user</span>()-&gt;<span class="c-cobalt">id</span>,
+        <span class="c-plum">'total'</span>   =&gt; $total,
+        <span class="c-plum">'status'</span>  =&gt; <span class="c-plum">'placed'</span>,
+    ]);
+
+    <span class="c-cobalt">Sms</span>::<span class="c-teal">send</span>($order-&gt;<span class="c-cobalt">user</span>-&gt;<span class="c-cobalt">phone</span>, <span class="c-plum">"Order #{$order-&gt;id} placed."</span>);
+    <span class="c-teal">return</span> <span class="c-cobalt">response</span>()-&gt;<span class="c-teal">json</span>($order, <span class="c-rust">201</span>);
+}</code></pre>
+    </div>
+
+    <p>On the website, search is a short piece of jQuery. It debounces keystrokes, calls <code>/api/search</code> and rebuilds the results list. There is nothing clever here, but it is the feature customers used most, so it had to feel instant.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">js/search.js</span></div>
+<pre><code><span class="c-teal">var</span> <span class="c-cobalt">timer</span>;
+<span class="c-cobalt">$</span>(<span class="c-plum">'#q'</span>).<span class="c-teal">on</span>(<span class="c-plum">'keyup'</span>, <span class="c-teal">function</span> () {
+  <span class="c-cobalt">clearTimeout</span>(timer);
+  <span class="c-teal">var</span> <span class="c-cobalt">q</span> = <span class="c-cobalt">$</span>(<span class="c-teal">this</span>).<span class="c-teal">val</span>();
+  timer = <span class="c-cobalt">setTimeout</span>(<span class="c-teal">function</span> () {
+    <span class="c-cobalt">$</span>.<span class="c-teal">getJSON</span>(<span class="c-plum">'/api/search'</span>, { q: q }, <span class="c-teal">function</span> (rows) {
+      <span class="c-teal">var</span> <span class="c-cobalt">html</span> = rows.<span class="c-teal">map</span>(<span class="c-teal">function</span> (r) {
+        <span class="c-teal">return</span> <span class="c-plum">'&lt;li data-id="'</span> + r.id + <span class="c-plum">'"&gt;'</span> + r.name + <span class="c-plum">'&lt;/li&gt;'</span>;
+      }).<span class="c-teal">join</span>(<span class="c-plum">''</span>);
+      <span class="c-cobalt">$</span>(<span class="c-plum">'#results'</span>).<span class="c-teal">html</span>(html);
+    });
+  }, <span class="c-rust">250</span>);
+});</code></pre>
+    </div>
+
+    <p>The Ionic app wraps the same endpoints in an AngularJS service. Having one service file that mirrors the API routes meant that when I changed a route in Laravel I knew exactly the one place in the app to update.</p>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li><strong>The API is the product.</strong> The website and the app were replaceable; the data model and the endpoints were not. I spent most of my design time on the backend and it paid off every time a client wanted a UI change.</li>
+      <li><strong>Never trust client totals.</strong> Recomputing prices on the server from the database is a few lines and removes an entire class of bugs and abuse. I would do this on day one of any commerce project.</li>
+      <li><strong>Notifications are a feature, not a nice-to-have.</strong> The SMS integration was the thing the business owner noticed first. Customers stopped calling to ask where their food was.</li>
+      <li><strong>Hybrid apps were the right call for one person.</strong> Ionic 1 was already dated in 2019, but a single AngularJS codebase for Android and iOS was the only way I could ship a mobile app alongside a website in the same timeframe.</li>
+      <li><strong>Three repositories is one too many for a solo project.</strong> Splitting backend, web and app made deployment simple but coordination hard. If I did it again I would keep the web frontend inside the Laravel project and only separate the mobile app.</li>
+      <li><strong>Reporting gets asked for last and needed first.</strong> The admin reports were an afterthought in the brief and the most used screen after launch. The next article in this series is about exactly that.</li>
+      <li><strong>Payment gateways eat time.</strong> Sandbox credentials, redirect flows and callback verification took longer than the entire cart. Budget for it.</li>
+    </ul>
+
+    <p>Looking at the code now, the stack is firmly of its time: Bootstrap 3, jQuery, AngularJS 1, Laravel 5. What has aged well is the shape of it. A boring REST API, server side validation, and clients that stay thin is still how I would structure a small commerce product today, just with different libraries.</p>
+
+    <p><a class="text-link" href="https://github.com/aadityatamrakar/food_delivery_app_backend_admin" target="_blank" rel="noopener">Backend and admin on GitHub <span class="chev">&gt;</span></a><br>
+    <a class="text-link" href="https://github.com/aadityatamrakar/food_delivery_app_frontend" target="_blank" rel="noopener">Web frontend on GitHub <span class="chev">&gt;</span></a><br>
+    <a class="text-link" href="https://github.com/aadityatamrakar/food_delivery_app" target="_blank" rel="noopener">Ionic app on GitHub <span class="chev">&gt;</span></a></p>
+    <!-- ARTICLE BODY END -->
+
+    <nav class="post-nav" aria-label="More posts">
+      <a href="/blog/dealership-reporting-laravel-cron/" rel="prev">&lt; Reporting engines for small businesses: cron, email and AdminLTE</a>
+      <a href="/blog/realtime-distress-alarm-socketio/" rel="next">How to broadcast live video to a room with Socket.io &gt;</a>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year">2026</span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="/#about">About</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/blog.js"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reporting engines for small businesses</title>
+  <meta name="description" content="Lessons from Laravel reporting backends for a car dealership, an MLM platform and an accounting tool: scheduled jobs, emailed reports and AdminLTE.">
+  <meta name="author" content="Aaditya Tamrakar">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#303055">
+  <link rel="canonical" href="https://aadityatamrakar.github.io/blog/dealership-reporting-laravel-cron/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Aaditya Tamrakar">
+  <meta property="og:title" content="Reporting engines for small businesses: cron, email and AdminLTE">
+  <meta property="og:description" content="Lessons from Laravel reporting backends for a car dealership, an MLM platform and an accounting tool: scheduled jobs, emailed reports and AdminLTE.">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/blog/dealership-reporting-laravel-cron/">
+  <meta property="og:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <meta property="article:published_time" content="2026-10-03">
+  <meta property="article:author" content="https://aadityatamrakar.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@t_aaditya">
+  <meta name="twitter:creator" content="@t_aaditya">
+  <meta name="twitter:title" content="Reporting engines for small businesses: cron, email and AdminLTE">
+  <meta name="twitter:description" content="Lessons from Laravel reporting backends for a car dealership, an MLM platform and an accounting tool: scheduled jobs, emailed reports and AdminLTE.">
+  <meta name="twitter:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <link rel="alternate" type="application/rss+xml" title="Aaditya Tamrakar · Blog" href="/feed.xml">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Reporting engines for small businesses: cron, email and AdminLTE",
+    "description": "Lessons from Laravel reporting backends for a car dealership, an MLM platform and an accounting tool: scheduled jobs, emailed reports and AdminLTE.",
+    "datePublished": "2026-10-03",
+    "dateModified": "2026-10-03",
+    "keywords": "Laravel, cron, task scheduler, email reports, AdminLTE, MySQL, reporting engine, multi-level marketing, tree algorithm, accounting app",
+    "image": "https://aadityatamrakar.github.io/assets/og.png",
+    "mainEntityOfPage": "https://aadityatamrakar.github.io/blog/dealership-reporting-laravel-cron/",
+    "author": { "@type": "Person", "name": "Aaditya Tamrakar", "url": "https://aadityatamrakar.github.io/" },
+    "publisher": { "@type": "Person", "name": "Aaditya Tamrakar" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#journey">Journey</a>
+      <a href="/#skills">Skills</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="post container">
+    <p class="eyebrow">Web · Lessons</p>
+    <h1>Reporting engines for small businesses: cron, email and AdminLTE</h1>
+    <p class="post-meta"><time datetime="2026-10-03">3 Oct 2026</time> · <span class="reading-time"></span> · <span class="tags"><span class="tag">Web</span><span class="tag">Laravel</span><span class="tag">Cron</span><span class="tag">Lessons</span></span></p>
+
+    <!-- ARTICLE BODY START -->
+    <p>Between 2017 and 2020 most of my freelance work for small businesses ended up being the same thing in different clothes: take data that lives in a spreadsheet or in someone's head, put it in a database, and send the owner a report they do not have to ask for. This post is about three of those projects and the pattern that connects them.</p>
+
+    <p>The main one is <a class="text-link" href="https://github.com/aadityatamrakar/city_cars" target="_blank" rel="noopener">city_cars</a>, a reporting engine for a Maruti Suzuki car dealership. The other two are <a class="text-link" href="https://github.com/aadityatamrakar/multilevel-marketing-app" target="_blank" rel="noopener">multilevel-marketing-app</a>, a Laravel platform with tree algorithms for downline tracking, and <a class="text-link" href="https://github.com/aadityatamrakar/creative_accounting" target="_blank" rel="noopener">creative_accounting</a>, a JavaScript accounting app for ledgers and transactions.</p>
+
+    <h2>The problem</h2>
+    <p>A dealership generates a steady stream of small records: enquiries, test drives, bookings, deliveries, service visits. None of it is complicated. What the owner wanted was not a dashboard to log into but a daily and monthly summary in their inbox, so they could read it on a phone before the showroom opened.</p>
+
+    <p>That framing changed how I built it. The admin panel existed so staff could enter data. The real output of the system was an email.</p>
+
+    <h2>What I built</h2>
+    <p>city_cars is Laravel on MySQL. Staff use an AdminLTE 2 panel to enter and correct records. A set of report classes turn those records into summaries. Laravel's task scheduler, driven by a single cron entry, runs those reports on a timetable and a mailer sends them to a list of recipients. The repo was started in April 2017 and I kept maintaining it until early 2019.</p>
+
+    <p>I chose AdminLTE because it gave me a complete admin shell (sidebar, tables, forms, alerts) for free. For a one-person project the most expensive thing is UI polish that nobody asked for, and a stock admin theme removes that temptation.</p>
+
+    <h2>How it works</h2>
+    <h3>One cron line, many schedules</h3>
+    <p>The server crontab contains exactly one entry. Everything else lives in the application, under version control, where it can be changed without SSH access.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">crontab</span></div>
+<pre><code><span class="c-mist"># run the Laravel scheduler every minute; it decides what is due</span>
+* * * * * cd /var/www/city_cars &amp;&amp; php artisan schedule:run &gt;&gt; /dev/null <span class="c-rust">2</span>&gt;&amp;<span class="c-rust">1</span></code></pre>
+    </div>
+
+    <p>The schedule itself is declared in the console kernel. Each report is an artisan command, so it can also be run by hand when someone asks "can you resend yesterday's numbers".</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">app/Console/Kernel.php</span></div>
+<pre><code><span class="c-teal">protected function</span> <span class="c-cobalt">schedule</span>(<span class="c-teal">Schedule</span> $schedule)
+{
+    $schedule-&gt;<span class="c-teal">command</span>(<span class="c-plum">'report:daily'</span>)
+             -&gt;<span class="c-teal">dailyAt</span>(<span class="c-plum">'07:30'</span>)
+             -&gt;<span class="c-teal">withoutOverlapping</span>();
+
+    $schedule-&gt;<span class="c-teal">command</span>(<span class="c-plum">'report:monthly'</span>)
+             -&gt;<span class="c-teal">monthlyOn</span>(<span class="c-rust">1</span>, <span class="c-plum">'08:00'</span>);
+
+    <span class="c-mist">// remind staff about open enquiries with no follow-up</span>
+    $schedule-&gt;<span class="c-teal">command</span>(<span class="c-plum">'report:stale-enquiries'</span>)
+             -&gt;<span class="c-teal">weekdays</span>()-&gt;<span class="c-teal">at</span>(<span class="c-plum">'18:00'</span>);
+}</code></pre>
+    </div>
+
+    <h3>Reports as plain queries</h3>
+    <p>Each report is a class with one job: run a few aggregate queries and hand an array to a Blade template. I resisted the urge to build a generic report builder. Three specific reports written plainly were easier to change when the owner asked for "the same thing but grouped by salesperson".</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">app/Reports/DailySummary.php</span></div>
+<pre><code><span class="c-teal">public function</span> <span class="c-cobalt">build</span>(<span class="c-teal">Carbon</span> $day): <span class="c-teal">array</span>
+{
+    <span class="c-teal">return</span> [
+        <span class="c-plum">'enquiries'</span> =&gt; <span class="c-cobalt">Enquiry</span>::<span class="c-teal">whereDate</span>(<span class="c-plum">'created_at'</span>, $day)-&gt;<span class="c-teal">count</span>(),
+        <span class="c-plum">'bookings'</span>  =&gt; <span class="c-cobalt">Booking</span>::<span class="c-teal">whereDate</span>(<span class="c-plum">'booked_on'</span>, $day)-&gt;<span class="c-teal">count</span>(),
+        <span class="c-plum">'by_model'</span>  =&gt; <span class="c-cobalt">Booking</span>::<span class="c-teal">whereDate</span>(<span class="c-plum">'booked_on'</span>, $day)
+                           -&gt;<span class="c-teal">select</span>(<span class="c-plum">'model'</span>, <span class="c-cobalt">DB</span>::<span class="c-teal">raw</span>(<span class="c-plum">'count(*) as n'</span>))
+                           -&gt;<span class="c-teal">groupBy</span>(<span class="c-plum">'model'</span>)-&gt;<span class="c-teal">get</span>(),
+    ];
+}</code></pre>
+    </div>
+
+    <p>The mailer wraps a Blade view in a Laravel Mailable. HTML email is hostile to layout, so the templates are tables with inline styles and nothing else. It looked plain, which was fine; the owner read it on a phone.</p>
+
+    <h3>The MLM app: reports over a tree</h3>
+    <p>The multi-level marketing platform had the same shape (Laravel, MySQL, a Bootstrap and jQuery admin, REST web services for a mobile client) with one twist: every member sits in a tree, and the numbers that matter are sums over subtrees. Who is in my downline, how much volume did it generate this month, which legs are weakest.</p>
+
+    <p>I stored the parent id on each member and precomputed the ancestor path, so subtree queries become a prefix match rather than a recursive walk. Payout calculation then walks the tree once from the leaves upward.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">app/Services/Downline.php</span></div>
+<pre><code><span class="c-mist">// members store a materialised path like "1/14/203/"</span>
+<span class="c-teal">public function</span> <span class="c-cobalt">volume</span>(<span class="c-teal">Member</span> $root, <span class="c-teal">string</span> $month): <span class="c-teal">float</span>
+{
+    <span class="c-teal">return</span> <span class="c-cobalt">Sale</span>::<span class="c-teal">join</span>(<span class="c-plum">'members'</span>, <span class="c-plum">'members.id'</span>, <span class="c-plum">'='</span>, <span class="c-plum">'sales.member_id'</span>)
+        -&gt;<span class="c-teal">where</span>(<span class="c-plum">'members.path'</span>, <span class="c-plum">'like'</span>, $root-&gt;<span class="c-cobalt">path</span> . <span class="c-plum">'%'</span>)
+        -&gt;<span class="c-teal">where</span>(<span class="c-plum">'sales.month'</span>, $month)
+        -&gt;<span class="c-teal">sum</span>(<span class="c-plum">'sales.amount'</span>);
+}</code></pre>
+    </div>
+
+    <p>The reports were then exactly the same idea as the dealership: a scheduled command, a query, a template, an email.</p>
+
+    <h3>The accounting app: the same reports in the browser</h3>
+    <p>creative_accounting, from 2020, was a bookkeeping tool for a small business built in JavaScript rather than PHP. Ledgers, transactions and reports, with the report screens rendered client side. By then I had written the same aggregate-and-group logic enough times that moving it to another language was mostly typing. The lesson it added was that an owner who wants to explore numbers wants a screen, and an owner who wants to be told numbers wants an email. Ask which one you are building before you start.</p>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li><strong>Put the schedule in the app, not the server.</strong> One crontab line plus Laravel's scheduler means every timing change is a commit, reviewable and reversible.</li>
+      <li><strong>Make every report a command.</strong> If it can run from cron it can run from the terminal, and that is how you debug it and how you resend it.</li>
+      <li><strong>Specific beats generic.</strong> A report builder would have been fun to write and painful to adapt. Three plain classes were boring and survived every change request.</li>
+      <li><strong>Email is the UI for busy owners.</strong> The admin panel got used by staff. The owner only ever saw the emails. Design for the person who reads the output, not the person who enters the input.</li>
+      <li><strong>Precompute tree paths.</strong> For hierarchies in SQL, a materialised path made subtree aggregates a single query and kept the reporting code identical to the flat case.</li>
+      <li><strong>Use a stock admin theme.</strong> AdminLTE 2 saved me weeks across these projects. Nobody paid me for a custom sidebar.</li>
+      <li><strong>Log the sends.</strong> The first support question is always "I did not get the report". A table of sent emails with timestamps answers it in seconds.</li>
+    </ul>
+
+    <p>None of this is sophisticated, and that is the point. Small businesses rarely need a data platform. They need the right four numbers at the right time, reliably, and a way to fix bad data when they spot it. Cron, a few queries and an email cover that surprisingly well.</p>
+
+    <p><a class="text-link" href="https://github.com/aadityatamrakar/city_cars" target="_blank" rel="noopener">city_cars on GitHub <span class="chev">&gt;</span></a><br>
+    <a class="text-link" href="https://github.com/aadityatamrakar/multilevel-marketing-app" target="_blank" rel="noopener">multilevel-marketing-app on GitHub <span class="chev">&gt;</span></a><br>
+    <a class="text-link" href="https://github.com/aadityatamrakar/creative_accounting" target="_blank" rel="noopener">creative_accounting on GitHub <span class="chev">&gt;</span></a></p>
+    <!-- ARTICLE BODY END -->
+
+    <nav class="post-nav" aria-label="More posts">
+      <a href="/blog/options-ui-for-beginners-cs615/" rel="prev">&lt; Designing an options trading UI for beginners (CS615 project)</a>
+      <a href="/blog/shipping-food-delivery-solo/" rel="next">Shipping a food delivery product solo: Laravel, Ionic and lessons &gt;</a>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year">2026</span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="/#about">About</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/blog.js"></script>
+</body>
+</html>

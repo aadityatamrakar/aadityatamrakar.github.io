@@ -188,6 +188,7 @@
       <div class="modal-links">
         <a class="text-link" href="${gh(p.repo)}" target="_blank" rel="noopener">View on GitHub <span class="chev">&gt;</span></a>
         <a class="text-link" href="${gh(p.repo)}/commits" target="_blank" rel="noopener">Commit history <span class="chev">&gt;</span></a>
+        ${p.post ? `<a class="text-link" href="${esc(p.post)}">Read the write-up <span class="chev">&gt;</span></a>` : ''}
       </div>`;
     modal.hidden = false;
     document.body.style.overflow = 'hidden';

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Building an NSE option chain analyser in Node.js</title>
+  <meta name="description" content="How I built option_chain_analysis: a Node.js app that scrapes the NSE Nifty option chain with cURL and classifies each strike as a long or short buildup.">
+  <meta name="author" content="Aaditya Tamrakar">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#303055">
+  <link rel="canonical" href="https://aadityatamrakar.github.io/blog/nse-option-chain-analysis/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Aaditya Tamrakar">
+  <meta property="og:title" content="Building an NSE option chain analyser in Node.js">
+  <meta property="og:description" content="How I built option_chain_analysis: a Node.js app that scrapes the NSE Nifty option chain with cURL and classifies each strike as a long or short buildup.">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/blog/nse-option-chain-analysis/">
+  <meta property="og:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <meta property="article:published_time" content="2026-10-12">
+  <meta property="article:author" content="https://aadityatamrakar.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@t_aaditya">
+  <meta name="twitter:creator" content="@t_aaditya">
+  <meta name="twitter:title" content="Building an NSE option chain analyser in Node.js">
+  <meta name="twitter:description" content="How I built option_chain_analysis: a Node.js app that scrapes the NSE Nifty option chain with cURL and classifies each strike as a long or short buildup.">
+  <meta name="twitter:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <link rel="alternate" type="application/rss+xml" title="Aaditya Tamrakar · Blog" href="/feed.xml">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Building an NSE option chain analyser in Node.js",
+    "description": "How I built option_chain_analysis: a Node.js app that scrapes the NSE Nifty option chain with cURL and classifies each strike as a long or short buildup.",
+    "datePublished": "2026-10-12",
+    "dateModified": "2026-10-12",
+    "keywords": "NSE option chain, Nifty, open interest, Node.js, Handlebars, cURL scraping, options trading, long buildup, short buildup",
+    "image": "https://aadityatamrakar.github.io/assets/og.png",
+    "mainEntityOfPage": "https://aadityatamrakar.github.io/blog/nse-option-chain-analysis/",
+    "author": { "@type": "Person", "name": "Aaditya Tamrakar", "url": "https://aadityatamrakar.github.io/" },
+    "publisher": { "@type": "Person", "name": "Aaditya Tamrakar" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#journey">Journey</a>
+      <a href="/#skills">Skills</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="post container">
+    <p class="eyebrow">Trading</p>
+    <h1>Building an NSE option chain analyser in Node.js</h1>
+    <p class="post-meta"><time datetime="2026-10-12">12 Oct 2026</time> · <span class="reading-time"></span> · <span class="tags"><span class="tag">Trading</span><span class="tag">Node.js</span><span class="tag">Options</span></span></p>
+
+    <!-- ARTICLE BODY START -->
+    <p>In 2019 I was spending too much of every trading morning staring at the NSE option chain page. The page itself is fine. The problem is that the information I wanted, which strikes are seeing fresh positions being built and in which direction, is not shown anywhere. You have to compare today's open interest with yesterday's, compare it against the price move, and do that for forty or fifty strikes on both the call and put side. I did it by hand for a few weeks, then wrote <code>option_chain_analysis</code> to do it for me.</p>
+
+    <p>The project is small, which is partly why it found an audience. It currently sits at 106 stars and 77 forks on GitHub, and most of the forks are people pointing it at a different index or a different data source. This post is about how it works and the decisions that went into it.</p>
+
+    <h2>What I built</h2>
+    <p>The app is a Node.js server that renders a single page. On every visit it fetches the current Nifty option chain from NSE, walks the rows, and classifies each strike using two signals: the change in option price and the change in open interest. The result is a table with a colour-coded label next to every call and put, plus a suggested action for the overall picture. There is an expiry selector at the top so you can look at the weekly or the monthly series, and a switch in <code>app.js</code> to point the whole thing at FINNIFTY instead of Nifty.</p>
+
+    <p>The stack is deliberately boring. Node runs the server, Handlebars renders the table on the server side, and Bootstrap makes it readable on a phone. I hosted it on a free Heroku dyno in 2019 so that I could open it from anywhere. It is an education-only tool and the README says so; it tells you what the chain is doing, not what to trade.</p>
+
+    <h2>How it works</h2>
+
+    <h3>Fetching the chain</h3>
+    <p>The first version used Node's built-in <code>https</code> module and then the <code>request</code> package. Both were blocked. The NSE endpoint looked at the request fingerprint and returned nothing useful, even with the same headers a browser sends. After some trial and error I found that a plain cURL call from the same machine went through, so I shelled out to cURL from Node and parsed what came back. It is not elegant, but it was reliable, and the shape of the code is simple enough that anyone who forks the project can swap the fetch layer out.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">fetch.js</span></div>
+<pre><code><span class="c-teal">const</span> { <span class="c-cobalt">exec</span> } = <span class="c-cobalt">require</span>(<span class="c-plum">"child_process"</span>);
+
+<span class="c-mist">// Node request/https were blocked by NSE; cURL from the same box was not.</span>
+<span class="c-teal">function</span> <span class="c-cobalt">fetchChain</span>(<span class="c-cobalt">url</span>, <span class="c-cobalt">cb</span>) {
+  <span class="c-teal">const</span> <span class="c-cobalt">cmd</span> = <span class="c-plum">`curl -s -H "Accept: */*" -H "User-Agent: Mozilla/5.0" "${url}"`</span>;
+  <span class="c-cobalt">exec</span>(<span class="c-cobalt">cmd</span>, { <span class="c-cobalt">maxBuffer</span>: <span class="c-rust">1024</span> * <span class="c-rust">1024</span> * <span class="c-rust">10</span> }, (<span class="c-cobalt">err</span>, <span class="c-cobalt">stdout</span>) =&gt; {
+    <span class="c-teal">if</span> (<span class="c-cobalt">err</span>) <span class="c-teal">return</span> <span class="c-cobalt">cb</span>(<span class="c-cobalt">err</span>);
+    <span class="c-cobalt">cb</span>(<span class="c-teal">null</span>, <span class="c-cobalt">stdout</span>);
+  });
+}</code></pre>
+    </div>
+
+    <p>The <code>maxBuffer</code> option matters. The full chain for a monthly expiry is a large payload and the default buffer in <code>exec</code> is far too small, which shows up as a confusing truncated-output error rather than a clear one.</p>
+
+    <h3>Classifying a strike</h3>
+    <p>The core of the project is a four-row table. Take the price change and the OI change for a contract and you land in exactly one cell:</p>
+
+    <ul>
+      <li>Price up, OI up: <strong>long buildup</strong>. New buyers are coming in. Bullish.</li>
+      <li>Price down, OI up: <strong>short buildup</strong>. New sellers are coming in. Bearish.</li>
+      <li>Price up, OI down: <strong>short covering</strong>. Sellers are exiting. Bullish.</li>
+      <li>Price down, OI down: <strong>long liquidation</strong>. Buyers are exiting. Bearish.</li>
+    </ul>
+
+    <p>In code this is a pair of sign checks. I kept it as a pure function with no dependencies so it is trivial to unit test and easy to read for people who are new to both JavaScript and options.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">classify.js</span></div>
+<pre><code><span class="c-mist">// priceChg and oiChg are deltas versus the previous close</span>
+<span class="c-teal">function</span> <span class="c-cobalt">classify</span>(<span class="c-cobalt">priceChg</span>, <span class="c-cobalt">oiChg</span>) {
+  <span class="c-teal">if</span> (<span class="c-cobalt">priceChg</span> &gt; <span class="c-rust">0</span> &amp;&amp; <span class="c-cobalt">oiChg</span> &gt; <span class="c-rust">0</span>) <span class="c-teal">return</span> { <span class="c-cobalt">label</span>: <span class="c-plum">"Long Buildup"</span>,      <span class="c-cobalt">bias</span>: <span class="c-plum">"bullish"</span> };
+  <span class="c-teal">if</span> (<span class="c-cobalt">priceChg</span> &lt; <span class="c-rust">0</span> &amp;&amp; <span class="c-cobalt">oiChg</span> &gt; <span class="c-rust">0</span>) <span class="c-teal">return</span> { <span class="c-cobalt">label</span>: <span class="c-plum">"Short Buildup"</span>,     <span class="c-cobalt">bias</span>: <span class="c-plum">"bearish"</span> };
+  <span class="c-teal">if</span> (<span class="c-cobalt">priceChg</span> &gt; <span class="c-rust">0</span> &amp;&amp; <span class="c-cobalt">oiChg</span> &lt; <span class="c-rust">0</span>) <span class="c-teal">return</span> { <span class="c-cobalt">label</span>: <span class="c-plum">"Short Covering"</span>,    <span class="c-cobalt">bias</span>: <span class="c-plum">"bullish"</span> };
+  <span class="c-teal">if</span> (<span class="c-cobalt">priceChg</span> &lt; <span class="c-rust">0</span> &amp;&amp; <span class="c-cobalt">oiChg</span> &lt; <span class="c-rust">0</span>) <span class="c-teal">return</span> { <span class="c-cobalt">label</span>: <span class="c-plum">"Long Liquidation"</span>,  <span class="c-cobalt">bias</span>: <span class="c-plum">"bearish"</span> };
+  <span class="c-teal">return</span> { <span class="c-cobalt">label</span>: <span class="c-plum">"Neutral"</span>, <span class="c-cobalt">bias</span>: <span class="c-plum">"neutral"</span> };
+}
+
+<span class="c-cobalt">module</span>.<span class="c-cobalt">exports</span> = { <span class="c-cobalt">classify</span> };</code></pre>
+    </div>
+
+    <p>The suggested-action line at the top of the page follows from the bias. If the chain reads bullish overall, the page suggests buying calls or selling puts. If it reads bearish, it suggests selling calls or buying puts. That is the whole rule set. I resisted adding weightings, scores or thresholds because every one of those is an opinion, and the point of the tool is to show the raw read so you can form your own.</p>
+
+    <h3>Rendering</h3>
+    <p>Each row of the NSE response becomes one Handlebars context object with the strike, both legs and their classifications. The template loops over the rows and applies a Bootstrap contextual class based on the bias. The expiry selector is a plain form that reloads the page with a query parameter, and the server passes that through to the fetch URL. No client-side framework, no state, no build step.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">views/chain.hbs</span></div>
+<pre><code>&#123;&#123;#each rows&#125;&#125;
+&lt;tr&gt;
+  &lt;td class=<span class="c-plum">"&#123;&#123;ce.bias&#125;&#125;"</span>&gt;&#123;&#123;ce.oi&#125;&#125; &lt;small&gt;&#123;&#123;ce.label&#125;&#125;&lt;/small&gt;&lt;/td&gt;
+  &lt;td class=<span class="c-plum">"strike"</span>&gt;&#123;&#123;strike&#125;&#125;&lt;/td&gt;
+  &lt;td class=<span class="c-plum">"&#123;&#123;pe.bias&#125;&#125;"</span>&gt;&#123;&#123;pe.oi&#125;&#125; &lt;small&gt;&#123;&#123;pe.label&#125;&#125;&lt;/small&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&#123;&#123;/each&#125;&#125;</code></pre>
+    </div>
+
+    <h2>Switching indices</h2>
+    <p>When FINNIFTY options were introduced, people asked whether the tool could read that chain too. The NSE payload has the same shape for every index, so the switch is a single constant in <code>app.js</code> that selects which symbol goes into the fetch URL. Several of the forks do the same thing for Bank Nifty or for individual stocks. If you want to add a symbol, that constant is where to start.</p>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li>Fetch-on-visit is the right default for a personal tool. No cache, no cron, no stale data, and no database to look after. The cost is a slow first paint, which I accepted.</li>
+      <li>When an HTTP library is blocked and a command-line tool is not, stop debugging headers and shell out. You can always come back to it later; I never needed to.</li>
+      <li>A pure classification function is the most valuable part of the codebase. Everyone who forked the project kept it and replaced something else.</li>
+      <li>Say what the tool is for. The "education only" line in the README has saved me a lot of back-and-forth.</li>
+      <li>Boring stacks age well. The 2019 code still runs today with no changes other than the data endpoint.</li>
+    </ul>
+
+    <p>If you want the longer explanation of the four buildup types and how to read them against each other, I wrote that up separately in <a class="text-link" href="/blog/reading-open-interest-buildups/">How to read open interest</a>.</p>
+
+    <p><a class="text-link" href="https://github.com/aadityatamrakar/option_chain_analysis" target="_blank" rel="noopener">Source on GitHub <span class="chev">&gt;</span></a></p>
+    <!-- ARTICLE BODY END -->
+
+    <nav class="post-nav" aria-label="More posts">
+      <a href="/blog/reading-open-interest-buildups/" rel="prev">&lt; How to read open interest: long buildup, short covering and friends</a>
+      <a href="/blog/" rel="next">All posts &gt;</a>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year">2026</span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="/#about">About</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/blog.js"></script>
+</body>
+</html>

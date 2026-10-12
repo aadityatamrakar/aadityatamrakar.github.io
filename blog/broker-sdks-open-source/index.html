@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What I build for the open source trading community</title>
+  <meta name="description" content="The broker SDK forks and trading tools I keep in the open: Go Kite Connect, XTS Node v2, 5paisa-js, a Hummingbot remote client and option pricing formulas.">
+  <meta name="author" content="Aaditya Tamrakar">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#303055">
+  <link rel="canonical" href="https://aadityatamrakar.github.io/blog/broker-sdks-open-source/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Aaditya Tamrakar">
+  <meta property="og:title" content="What I built and maintain for the open source trading community">
+  <meta property="og:description" content="The broker SDK forks and trading tools I keep in the open: Go Kite Connect, XTS Node v2, 5paisa-js, a Hummingbot remote client and option pricing formulas.">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/blog/broker-sdks-open-source/">
+  <meta property="og:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <meta property="article:published_time" content="2026-10-09">
+  <meta property="article:author" content="https://aadityatamrakar.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@t_aaditya">
+  <meta name="twitter:creator" content="@t_aaditya">
+  <meta name="twitter:title" content="What I built and maintain for the open source trading community">
+  <meta name="twitter:description" content="The broker SDK forks and trading tools I keep in the open: Go Kite Connect, XTS Node v2, 5paisa-js, a Hummingbot remote client and option pricing formulas.">
+  <meta name="twitter:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <link rel="alternate" type="application/rss+xml" title="Aaditya Tamrakar · Blog" href="/feed.xml">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "What I built and maintain for the open source trading community",
+    "description": "The broker SDK forks and trading tools I keep in the open: Go Kite Connect, XTS Node v2, 5paisa-js, a Hummingbot remote client and option pricing formulas.",
+    "datePublished": "2026-10-09",
+    "dateModified": "2026-10-09",
+    "keywords": "open source, broker SDK, Kite Connect, Go, XTS API, 5paisa, Node.js, Hummingbot, option pricing, trading tools, contributing",
+    "image": "https://aadityatamrakar.github.io/assets/og.png",
+    "mainEntityOfPage": "https://aadityatamrakar.github.io/blog/broker-sdks-open-source/",
+    "author": { "@type": "Person", "name": "Aaditya Tamrakar", "url": "https://aadityatamrakar.github.io/" },
+    "publisher": { "@type": "Person", "name": "Aaditya Tamrakar" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#journey">Journey</a>
+      <a href="/#skills">Skills</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="post container">
+    <p class="eyebrow">Open Source</p>
+    <h1>What I built and maintain for the open source trading community</h1>
+    <p class="post-meta"><time datetime="2026-10-09">9 Oct 2026</time> · <span class="reading-time"></span> · <span class="tags"><span class="tag">Open Source</span><span class="tag">Trading</span><span class="tag">SDKs</span></span></p>
+
+    <!-- ARTICLE BODY START -->
+    <p>Most of my trading work since 2019 has depended on other people's open source: broker SDKs, a crypto bot framework, pricing formulas. When those projects had gaps, I forked them, fixed what I needed, used the fork in my own tooling, and sent fixes upstream where I hit bugs. Alongside the forks I have open sourced two tools of my own. This post is an inventory of all of it, how to get started with each, and how to contribute if you use the same brokers.</p>
+
+    <p>A note on language. I say "forked and adapted" rather than "maintain" for most of these because that is what they are. The upstream projects have their own maintainers. My forks carry the changes I needed, and I keep them usable because I depend on them.</p>
+
+    <h2>Broker and platform SDKs</h2>
+
+    <h3>gokiteconnect: Zerodha Kite Connect in Go</h3>
+    <p>Kite Connect is Zerodha's trading API and the one I have used the longest. I wanted a Go client for a low-latency order service I was building, so I forked the Go SDK, adapted it to how I structure services, and used it as the order and market data layer in my own tooling. The things I touched were the parts you only notice under real use: reconnect behaviour on the ticker, error surfaces that were swallowed, and typed responses where the upstream returned loosely structured data.</p>
+
+    <p>Getting started looks like any Go module. Add the fork as a dependency, create a client with your API key, exchange the request token for a session, and you are placing orders.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">main.go</span></div>
+<pre><code><span class="c-teal">package</span> main
+
+<span class="c-teal">import</span> (
+    <span class="c-plum">"fmt"</span>
+    kiteconnect <span class="c-plum">"github.com/aadityatamrakar/gokiteconnect"</span>
+)
+
+<span class="c-teal">func</span> <span class="c-cobalt">main</span>() {
+    <span class="c-cobalt">kc</span> := kiteconnect.<span class="c-cobalt">New</span>(<span class="c-plum">"your_api_key"</span>)
+
+    <span class="c-mist">// requestToken comes back from the Kite login redirect</span>
+    <span class="c-cobalt">data</span>, <span class="c-cobalt">err</span> := <span class="c-cobalt">kc</span>.<span class="c-cobalt">GenerateSession</span>(<span class="c-cobalt">requestToken</span>, <span class="c-plum">"your_api_secret"</span>)
+    <span class="c-teal">if</span> <span class="c-cobalt">err</span> != <span class="c-teal">nil</span> {
+        <span class="c-cobalt">panic</span>(<span class="c-cobalt">err</span>)
+    }
+    <span class="c-cobalt">kc</span>.<span class="c-cobalt">SetAccessToken</span>(<span class="c-cobalt">data</span>.<span class="c-cobalt">AccessToken</span>)
+
+    <span class="c-cobalt">margins</span>, <span class="c-cobalt">err</span> := <span class="c-cobalt">kc</span>.<span class="c-cobalt">GetUserMargins</span>()
+    fmt.<span class="c-cobalt">Println</span>(<span class="c-cobalt">margins</span>, <span class="c-cobalt">err</span>)
+}</code></pre>
+    </div>
+
+    <h3>xts-interactive-nodeJS-api-v2: XTS in Node</h3>
+    <p>XTS is the API platform used by several Indian brokers. The official Node client works, but I needed it to behave inside a long-running process: survive socket disconnects, not leak listeners, and expose promises instead of callbacks in the places I called most. The v2 fork is that. If you are on a broker that uses XTS and you write JavaScript, it is the version I would start from.</p>
+
+    <h3>5paisa-js: 5paisa in Node</h3>
+    <p>5paisa's API had a JavaScript client that covered login and order placement but was thin on the pieces I needed around market data and session handling. I forked it, filled the gaps I hit, and used it in a small screener. It is the least developed of the three broker forks and the one I would most like help with.</p>
+
+    <h3>hbot-remote-client-py: a Hummingbot remote client in Python</h3>
+    <p>Hummingbot is an open source market making and arbitrage framework for crypto. Running it is fine; controlling it from outside its own console is the hard part. The remote client fork lets a separate Python process send commands to a running Hummingbot instance and read its state, which is how I wired it into my own monitoring. If you run more than one bot, something like this becomes necessary quickly.</p>
+
+    <h3>option-pricing: the CCP formulas</h3>
+    <p>This is a small repo of option pricing formulas. I use it to compute theoretical values and Greeks alongside the live chain, so I can see whether a premium is rich or cheap relative to a model. It is deliberately a formulas library and not a framework. You give it spot, strike, time, rate and volatility and get back a price. Here is the shape of a call to it, with a plain Black-Scholes style signature:</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">price.py</span></div>
+<pre><code><span class="c-teal">from</span> <span class="c-cobalt">option_pricing</span> <span class="c-teal">import</span> <span class="c-cobalt">call_price</span>, <span class="c-cobalt">put_price</span>, <span class="c-cobalt">greeks</span>
+
+<span class="c-cobalt">spot</span>, <span class="c-cobalt">strike</span> = <span class="c-rust">24500</span>, <span class="c-rust">24600</span>
+<span class="c-cobalt">t</span>     = <span class="c-rust">7</span> / <span class="c-rust">365</span>     <span class="c-mist"># years to expiry</span>
+<span class="c-cobalt">rate</span>  = <span class="c-rust">0.065</span>
+<span class="c-cobalt">vol</span>   = <span class="c-rust">0.14</span>
+
+<span class="c-cobalt">theo</span> = <span class="c-cobalt">call_price</span>(<span class="c-cobalt">spot</span>, <span class="c-cobalt">strike</span>, <span class="c-cobalt">t</span>, <span class="c-cobalt">rate</span>, <span class="c-cobalt">vol</span>)
+<span class="c-cobalt">g</span>    = <span class="c-cobalt">greeks</span>(<span class="c-cobalt">spot</span>, <span class="c-cobalt">strike</span>, <span class="c-cobalt">t</span>, <span class="c-cobalt">rate</span>, <span class="c-cobalt">vol</span>, <span class="c-cobalt">kind</span>=<span class="c-plum">"call"</span>)
+<span class="c-cobalt">print</span>(<span class="c-cobalt">theo</span>, <span class="c-cobalt">g</span>[<span class="c-plum">"delta"</span>], <span class="c-cobalt">g</span>[<span class="c-plum">"theta"</span>])</code></pre>
+    </div>
+
+    <h3>zenbot</h3>
+    <p>Earlier on I also forked zenbot, a Node crypto trading bot, to try strategies against exchange data. It is the oldest of the set and I do not actively use it any more, but the fork is still there for anyone who wants a starting point.</p>
+
+    <h2>Tools I open sourced</h2>
+
+    <h3>option_chain_analysis</h3>
+    <p>A Node app that fetches the NSE Nifty option chain on each visit and labels every strike as a long buildup, short buildup, short covering or long liquidation from the price change and the open interest change. It has an expiry selector, a FINNIFTY switch in <code>app.js</code>, and it uses cURL for the fetch because Node's HTTP clients were blocked by the exchange. I hosted it on Heroku in 2019. It is education only. At 106 stars and 77 forks it is the most used thing I have published, and I have written about <a class="text-link" href="/blog/nse-option-chain-analysis/">how it is built</a> and <a class="text-link" href="/blog/reading-open-interest-buildups/">how to read what it shows</a>.</p>
+
+    <h3>futures_spread_chart</h3>
+    <p>A Node and Express app that computes the daily cash versus futures spread for NSE stocks in <code>spreadData.js</code> and plots it at <code>/chart.html</code>. It exists because no broker UI I used would show the two prices as a difference over time. The <a class="text-link" href="/blog/cash-futures-spread-chart/">write-up</a> covers the design.</p>
+
+    <h2>How to get started with any of them</h2>
+    <p>Every repo follows the same shape, so the on-ramp is the same:</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">terminal</span></div>
+<pre><code><span class="c-mist"># pick a repo</span>
+git clone https://github.com/aadityatamrakar/<span class="c-cobalt">option_chain_analysis</span>
+cd option_chain_analysis
+
+<span class="c-mist"># Node projects</span>
+npm install
+node app.js            <span class="c-mist"># or: node server.js for futures_spread_chart</span>
+
+<span class="c-mist"># Go projects</span>
+go get github.com/aadityatamrakar/gokiteconnect
+
+<span class="c-mist"># Python projects</span>
+pip install -e .</code></pre>
+    </div>
+
+    <p>For the broker SDKs you will need API credentials from the broker, and for most of them a daily login step that produces a request token. Keep credentials in environment variables, never in the repo; every fork reads them from the environment or from a config file that is git-ignored.</p>
+
+    <h2>How to contribute</h2>
+    <p>These are small projects and I treat contributions the same way across all of them.</p>
+    <ul>
+      <li><strong>Open an issue first for anything beyond a typo.</strong> Broker APIs change under us, and half the time the fix is already in progress or the behaviour is intentional.</li>
+      <li><strong>Keep the data source behind a flag.</strong> If you add a new exchange or endpoint to <code>option_chain_analysis</code> or <code>futures_spread_chart</code>, add it alongside the existing one so both keep working.</li>
+      <li><strong>Match the upstream style in SDK forks.</strong> That makes it easier to send the change upstream later, which is where it should live if it is a general fix.</li>
+      <li><strong>No credentials, ever.</strong> Pull requests containing API keys, tokens or account IDs are closed without review.</li>
+      <li><strong>Tests where they exist, examples where they do not.</strong> Several of these repos have no test suite. A runnable example that shows the change working is an acceptable substitute.</li>
+      <li><strong>Say which broker and which API version you tested against.</strong> This matters more than anything else for SDK bugs.</li>
+    </ul>
+
+    <p>If you use the same brokers and you fix something, I would rather you send it than keep a private patch. Most of the useful changes in these forks came from me doing exactly that.</p>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li>Forking to fix a bug is a commitment. Once your tooling depends on the fork, you own keeping it current with the broker.</li>
+      <li>The most valuable contributions to an SDK are reconnect logic and error surfacing, not new endpoints.</li>
+      <li>Small tools with one clear job get forked and adapted far more than large ones. The option chain analyser is a few files and that is why it travelled.</li>
+      <li>Writing "education only" and "no credentials" in the README up front saves a great deal of email.</li>
+    </ul>
+
+    <p>Repos mentioned:
+      <a class="text-link" href="https://github.com/aadityatamrakar/gokiteconnect" target="_blank" rel="noopener">gokiteconnect</a>,
+      <a class="text-link" href="https://github.com/aadityatamrakar/xts-interactive-nodeJS-api-v2" target="_blank" rel="noopener">xts-interactive-nodeJS-api-v2</a>,
+      <a class="text-link" href="https://github.com/aadityatamrakar/5paisa-js" target="_blank" rel="noopener">5paisa-js</a>,
+      <a class="text-link" href="https://github.com/aadityatamrakar/hbot-remote-client-py" target="_blank" rel="noopener">hbot-remote-client-py</a>,
+      <a class="text-link" href="https://github.com/aadityatamrakar/option-pricing" target="_blank" rel="noopener">option-pricing</a>,
+      <a class="text-link" href="https://github.com/aadityatamrakar/option_chain_analysis" target="_blank" rel="noopener">option_chain_analysis</a>,
+      <a class="text-link" href="https://github.com/aadityatamrakar/futures_spread_chart" target="_blank" rel="noopener">futures_spread_chart</a>.
+    </p>
+
+    <p><a class="text-link" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">All repos on GitHub <span class="chev">&gt;</span></a></p>
+    <!-- ARTICLE BODY END -->
+
+    <nav class="post-nav" aria-label="More posts">
+      <a href="/blog/captcha-solver-scikit-learn/" rel="prev">&lt; Solving captchas with scikit-learn: a 99.7% pipeline</a>
+      <a href="/blog/cash-futures-spread-chart/" rel="next">Charting the cash vs futures spread for NSE stocks &gt;</a>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year">2026</span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="/#about">About</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/blog.js"></script>
+</body>
+</html>

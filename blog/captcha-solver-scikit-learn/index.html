@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solving captchas with scikit-learn: a 99.7% pipeline</title>
+  <meta name="description" content="How I built a text captcha solver with Pillow and scikit-learn: trim, split letters, rotate, resize, classify raw pixels, served through a PHP API.">
+  <meta name="author" content="Aaditya Tamrakar">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#303055">
+  <link rel="canonical" href="https://aadityatamrakar.github.io/blog/captcha-solver-scikit-learn/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Aaditya Tamrakar">
+  <meta property="og:title" content="Solving captchas with scikit-learn: a 99.7% pipeline">
+  <meta property="og:description" content="How I built a text captcha solver with Pillow and scikit-learn: trim, split letters, rotate, resize, classify raw pixels, served through a PHP API.">
+  <meta property="og:url" content="https://aadityatamrakar.github.io/blog/captcha-solver-scikit-learn/">
+  <meta property="og:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <meta property="article:published_time" content="2026-10-08">
+  <meta property="article:author" content="https://aadityatamrakar.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@t_aaditya">
+  <meta name="twitter:creator" content="@t_aaditya">
+  <meta name="twitter:title" content="Solving captchas with scikit-learn: a 99.7% pipeline">
+  <meta name="twitter:description" content="How I built a text captcha solver with Pillow and scikit-learn: trim, split letters, rotate, resize, classify raw pixels, served through a PHP API.">
+  <meta name="twitter:image" content="https://aadityatamrakar.github.io/assets/og.png">
+  <link rel="alternate" type="application/rss+xml" title="Aaditya Tamrakar · Blog" href="/feed.xml">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Solving captchas with scikit-learn: a 99.7% pipeline",
+    "description": "How I built a text captcha solver with Pillow and scikit-learn: trim, split letters, rotate, resize, classify raw pixels, served through a PHP API.",
+    "datePublished": "2026-10-08",
+    "dateModified": "2026-10-08",
+    "keywords": "captcha, scikit-learn, python, image processing, machine learning, PHP",
+    "image": "https://aadityatamrakar.github.io/assets/og.png",
+    "mainEntityOfPage": "https://aadityatamrakar.github.io/blog/captcha-solver-scikit-learn/",
+    "author": { "@type": "Person", "name": "Aaditya Tamrakar", "url": "https://aadityatamrakar.github.io/" },
+    "publisher": { "@type": "Person", "name": "Aaditya Tamrakar" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="/" class="brand"><span class="brand-mark">&gt;_</span> aaditya</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#journey">Journey</a>
+      <a href="/#skills">Skills</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <a class="console-btn" href="https://github.com/aadityatamrakar" target="_blank" rel="noopener">GitHub</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="post container">
+    <p class="eyebrow">ML</p>
+    <h1>Solving captchas with scikit-learn: a 99.7% pipeline</h1>
+    <p class="post-meta"><time datetime="2026-10-08">8 Oct 2026</time> · <span class="reading-time"></span> · <span class="tags"><span class="tag">ML</span><span class="tag">Python</span><span class="tag">scikit-learn</span></span></p>
+
+    <!-- ARTICLE BODY START -->
+    <p>A few years ago I needed to read text captchas automatically for a scraping job. The captchas were simple by modern standards: fixed-length strings of letters and digits on a noisy background, all rendered in the same font. I did not want to call a paid solving service for something that regular, so I built a small pipeline with Python, Pillow and scikit-learn, and wrapped it in a PHP API so the rest of the project could call it over HTTP. On that one captcha style it reached 99.7% accuracy.</p>
+
+    <p>That number needs a caveat up front. It was measured on a single captcha style, and the test set was small and not formally held out the way I would do it today. Treat it as "it worked well enough for the job", not as a benchmark. What I think is more useful is the pipeline itself, because the same shape applies to most old-school text captchas.</p>
+
+    <h2>What I built</h2>
+    <p>The repo is <code>captcha_ai</code>. It has three parts:</p>
+    <ul>
+      <li>A Python preprocessing and training pipeline that turns captcha images into feature vectors and fits a scikit-learn classifier, saved as <code>model.pkl</code>.</li>
+      <li>A PHP API endpoint that accepts an image and returns the predicted string by calling the Python predictor.</li>
+      <li>A plain HTML and jQuery front end to upload an image and see the result, mostly for testing.</li>
+    </ul>
+    <p>I used matplotlib while developing to look at intermediate images, which turned out to be the most important tool of the whole project. You cannot debug a vision pipeline without looking at what each stage produces.</p>
+
+    <h2>How it works</h2>
+    <p>The pipeline is a fixed sequence: trim the image, split it into individual letters, rotate each letter upright, remove padding and resize to a fixed box, flatten the pixels into a vector, and classify. Every step is deliberately simple. The whole point is that a classic classifier on raw pixels is enough once the letters are isolated and normalised.</p>
+
+    <h3>1. Trim</h3>
+    <p>The captcha images had a margin of background around the text. I converted to greyscale, thresholded to black and white, and cropped to the bounding box of the dark pixels. This removes the variable margin so that later steps see only the text.</p>
+
+    <h3>2. Split letters</h3>
+    <p>Because the captcha length was fixed and the font was monospaced-ish, I could split on vertical projection: sum the dark pixels in each column, and the gaps between letters show up as columns with near-zero ink. Where letters touched, I fell back to splitting the trimmed width into equal slices. This is the step most likely to break on a different captcha style.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">split.py</span></div>
+<pre><code><span class="c-teal">import</span> <span class="c-cobalt">numpy</span> <span class="c-teal">as</span> <span class="c-cobalt">np</span>
+
+<span class="c-teal">def</span> <span class="c-cobalt">split_letters</span>(<span class="c-cobalt">binary</span>, <span class="c-cobalt">expected</span>):
+    <span class="c-mist"># binary: 2D array, 1 = ink, 0 = background</span>
+    <span class="c-cobalt">cols</span> = <span class="c-cobalt">binary</span>.sum(axis=<span class="c-rust">0</span>)
+    <span class="c-cobalt">inked</span> = <span class="c-cobalt">cols</span> &gt; <span class="c-rust">0</span>
+    <span class="c-cobalt">runs</span>, <span class="c-cobalt">start</span> = [], <span class="c-teal">None</span>
+    <span class="c-teal">for</span> <span class="c-cobalt">x</span>, <span class="c-cobalt">on</span> <span class="c-teal">in</span> <span class="c-cobalt">enumerate</span>(<span class="c-cobalt">inked</span>):
+        <span class="c-teal">if</span> <span class="c-cobalt">on</span> <span class="c-teal">and</span> <span class="c-cobalt">start</span> <span class="c-teal">is</span> <span class="c-teal">None</span>:
+            <span class="c-cobalt">start</span> = <span class="c-cobalt">x</span>
+        <span class="c-teal">elif</span> <span class="c-teal">not</span> <span class="c-cobalt">on</span> <span class="c-teal">and</span> <span class="c-cobalt">start</span> <span class="c-teal">is not</span> <span class="c-teal">None</span>:
+            <span class="c-cobalt">runs</span>.append((<span class="c-cobalt">start</span>, <span class="c-cobalt">x</span>)); <span class="c-cobalt">start</span> = <span class="c-teal">None</span>
+    <span class="c-teal">if</span> <span class="c-cobalt">len</span>(<span class="c-cobalt">runs</span>) != <span class="c-cobalt">expected</span>:
+        <span class="c-mist"># letters touch: fall back to equal slices</span>
+        <span class="c-cobalt">w</span> = <span class="c-cobalt">binary</span>.shape[<span class="c-rust">1</span>] // <span class="c-cobalt">expected</span>
+        <span class="c-cobalt">runs</span> = [(<span class="c-cobalt">i</span> * <span class="c-cobalt">w</span>, (<span class="c-cobalt">i</span> + <span class="c-rust">1</span>) * <span class="c-cobalt">w</span>) <span class="c-teal">for</span> <span class="c-cobalt">i</span> <span class="c-teal">in</span> <span class="c-cobalt">range</span>(<span class="c-cobalt">expected</span>)]
+    <span class="c-teal">return</span> [<span class="c-cobalt">binary</span>[:, <span class="c-cobalt">a</span>:<span class="c-cobalt">b</span>] <span class="c-teal">for</span> <span class="c-cobalt">a</span>, <span class="c-cobalt">b</span> <span class="c-teal">in</span> <span class="c-cobalt">runs</span>]</code></pre>
+    </div>
+
+    <h3>3. Rotate, remove padding, resize</h3>
+    <p>The generator skewed each letter by a small random angle. I tried a handful of candidate rotations for each letter crop and kept the one with the narrowest bounding box, which is a cheap way to find "upright". Then I cropped the padding again and resized every letter to the same small square. After this step a letter is just a fixed-size grid of 0s and 1s, so the classifier never has to learn position or scale.</p>
+
+    <h3>4. Pixels to features</h3>
+    <p>Flatten the square into a one-dimensional vector. No edge detection, no histograms, no learned features. With normalised letters, raw pixels carry all the information a classifier needs, and the vector is small enough that training takes seconds.</p>
+
+    <h3>5. Train and save</h3>
+    <p>Each training captcha came with its label, so I had one labelled vector per letter. I tried a few scikit-learn classifiers with the same interface and kept the one that scored best on a held-back slice. The model is pickled to <code>model.pkl</code> and loaded once by the predictor.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">train.py</span></div>
+<pre><code><span class="c-teal">import</span> <span class="c-cobalt">pickle</span>
+<span class="c-teal">from</span> <span class="c-cobalt">sklearn.model_selection</span> <span class="c-teal">import</span> <span class="c-cobalt">train_test_split</span>
+<span class="c-teal">from</span> <span class="c-cobalt">sklearn.neighbors</span> <span class="c-teal">import</span> <span class="c-cobalt">KNeighborsClassifier</span>
+
+<span class="c-cobalt">X</span>, <span class="c-cobalt">y</span> = <span class="c-cobalt">load_letter_vectors</span>(<span class="c-plum">"data/labelled/"</span>)
+<span class="c-cobalt">X_tr</span>, <span class="c-cobalt">X_te</span>, <span class="c-cobalt">y_tr</span>, <span class="c-cobalt">y_te</span> = <span class="c-cobalt">train_test_split</span>(<span class="c-cobalt">X</span>, <span class="c-cobalt">y</span>, test_size=<span class="c-rust">0.2</span>, random_state=<span class="c-rust">1</span>)
+
+<span class="c-cobalt">clf</span> = <span class="c-cobalt">KNeighborsClassifier</span>(n_neighbors=<span class="c-rust">3</span>)
+<span class="c-cobalt">clf</span>.fit(<span class="c-cobalt">X_tr</span>, <span class="c-cobalt">y_tr</span>)
+<span class="c-cobalt">print</span>(<span class="c-plum">"letter accuracy:"</span>, <span class="c-cobalt">clf</span>.score(<span class="c-cobalt">X_te</span>, <span class="c-cobalt">y_te</span>))
+
+<span class="c-teal">with</span> <span class="c-cobalt">open</span>(<span class="c-plum">"model.pkl"</span>, <span class="c-plum">"wb"</span>) <span class="c-teal">as</span> <span class="c-cobalt">f</span>:
+    <span class="c-cobalt">pickle</span>.dump(<span class="c-cobalt">clf</span>, <span class="c-cobalt">f</span>)</code></pre>
+    </div>
+
+    <p>One detail worth noting: letter accuracy and captcha accuracy are different numbers. A captcha is only solved if every letter is right, so a 99% per-letter model on a six-letter captcha solves roughly 94% of captchas. When I quote 99.7% I am quoting the figure I recorded for whole captchas on that one style, on a small test set, so the per-letter rate was higher still. On a harder style I would expect both numbers to fall sharply.</p>
+
+    <h3>6. Serve it</h3>
+    <p>The consumer of this model was a PHP project, so the simplest integration was a PHP endpoint that saves the uploaded image to a temp file, shells out to the Python predictor, and returns JSON. It is not elegant, and a Flask service would be the better design, but it meant zero changes on the PHP side beyond one HTTP call.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-file">api/solve.php</span></div>
+<pre><code><span class="c-teal">&lt;?php</span>
+<span class="c-cobalt">$tmp</span> = <span class="c-cobalt">tempnam</span>(<span class="c-cobalt">sys_get_temp_dir</span>(), <span class="c-plum">'cap'</span>);
+<span class="c-cobalt">move_uploaded_file</span>(<span class="c-cobalt">$_FILES</span>[<span class="c-plum">'image'</span>][<span class="c-plum">'tmp_name'</span>], <span class="c-cobalt">$tmp</span>);
+
+<span class="c-cobalt">$out</span> = <span class="c-cobalt">shell_exec</span>(<span class="c-plum">'python3 predict.py '</span> . <span class="c-cobalt">escapeshellarg</span>(<span class="c-cobalt">$tmp</span>));
+<span class="c-cobalt">unlink</span>(<span class="c-cobalt">$tmp</span>);
+
+<span class="c-cobalt">header</span>(<span class="c-plum">'Content-Type: application/json'</span>);
+<span class="c-teal">echo</span> <span class="c-cobalt">json_encode</span>([<span class="c-plum">'text'</span> =&gt; <span class="c-cobalt">trim</span>(<span class="c-cobalt">$out</span>)]);</code></pre>
+    </div>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li>Preprocessing is the model. Almost all of the accuracy came from trimming, splitting and normalising well. The classifier choice mattered far less once the letters were clean.</li>
+      <li>Look at every intermediate image. Plotting a grid of split letters with matplotlib caught more bugs than any unit test.</li>
+      <li>Measure whole-captcha accuracy, not just per-letter accuracy, and keep a proper held-out set. My test set was small and informal, which is why I am careful about the 99.7% figure.</li>
+      <li>This approach does not generalise. It is tuned to one generator. Modern captchas with overlapping glyphs, variable length or image puzzles need a different approach entirely, and that is by design on their side.</li>
+      <li>A shell-out from PHP is fine for a prototype, but a long-lived Python process that loads <code>model.pkl</code> once is the right shape for anything with real traffic.</li>
+    </ul>
+
+    <p>The code is on GitHub. It is old and small, but the pipeline shape is still what I would start from for any fixed-style text captcha.</p>
+
+    <p><a class="text-link" href="https://github.com/aadityatamrakar/captcha_ai" target="_blank" rel="noopener">Source on GitHub <span class="chev">&gt;</span></a></p>
+    <!-- ARTICLE BODY END -->
+
+    <nav class="post-nav" aria-label="More posts">
+      <a href="/blog/fantasy-cricket-team-optimiser/" rel="prev">&lt; A fantasy cricket team optimiser is a constraint solver</a>
+      <a href="/blog/broker-sdks-open-source/" rel="next">What I built and maintain for the open source trading community &gt;</a>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="copy">© <span id="year">2026</span> Aaditya Tamrakar</span>
+    <div class="footer-links">
+      <a href="/#about">About</a>
+      <a href="/#projects">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/aadityatamrakar" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/aadityatamrakar/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+      <a href="https://x.com/t_aaditya" target="_blank" rel="noopener" aria-label="X">X</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/blog.js"></script>
+</body>
+</html>
