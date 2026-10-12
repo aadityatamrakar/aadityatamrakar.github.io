@@ -64,7 +64,7 @@ window.PORTFOLIO = {
       role: "Full Stack Developer",
       org: "Algo Maker LLP, Mumbai",
       type: "work",
-      notes: "80+ execution algorithms streaming ~10k orders a day under 30 ms for funds up to ₹200 crore. Angular + Express risk dashboard cut evaluation time by 50%, AWS near the broker for 20% faster execution."
+      notes: "80+ price action and indicator based strategies placing ~10k orders a day under 30 ms for funds up to ₹200 crore. Angular + Express risk dashboard cut evaluation time by 50%, AWS near the broker for 20% faster execution."
     },
     {
       when: "Apr — Sep 2018",
