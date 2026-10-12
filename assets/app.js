@@ -62,7 +62,7 @@
   ambient.push(function rotate() {
     const r = $('#rotator');
     if (!r) return;
-    const words = ['trading tools', 'ML pipelines', 'web products', 'broker SDKs', 'things that ship'];
+    const words = ['trade execution systems', 'market data pipelines', 'options analytics', 'Go microservices', 'broker SDKs'];
     let i = 0;
     setInterval(() => {
       const cur = r.querySelector('span:not(.out)');
@@ -87,7 +87,7 @@
   (function marquee() {
     const el = $('#marquee');
     if (!el) return;
-    const items = ['Node.js', 'React', 'TypeScript', 'Python', 'scikit-learn', 'Laravel', 'PHP', 'Go', 'Ionic', 'MySQL', 'MongoDB', 'Socket.io', 'Express', 'NSE data', 'Kite Connect', 'PWA'];
+    const items = ['Go', 'Python', 'TypeScript', 'C++', 'AWS', 'Snowflake', 'Airflow', 'Kafka', 'WebSockets', 'MongoDB', 'Redis', 'Docker', 'Kubernetes', 'NSE data', 'Kite Connect', 'Node.js', 'React', 'scikit-learn'];
     el.innerHTML = items.concat(items).map((n) => `<span>${esc(n)}</span>`).join('');
     ambient.push(() => el.classList.add('run'));
   })();
@@ -128,6 +128,13 @@
         `<rect class="box" x="${28 + i * 40}" y="34" width="32" height="52" rx="3" style="transition-delay:${0.6 + i * 0.1}s"/>
          <text class="glyph" x="${44 + i * 40}" y="76" text-anchor="middle" style="transform:rotate(${(i % 2 ? 1 : -1) * 18}deg);transform-origin:${44 + i * 40}px 60px;transition-delay:${i * 120}ms">${c}</text>`).join('')}</svg>`;
     },
+    futures_spread_chart: () => {
+      const cash = [60, 58, 62, 55, 50, 52, 46, 44, 48, 40, 38, 36];
+      const fut = [52, 50, 55, 47, 44, 45, 40, 36, 42, 33, 32, 28];
+      const pts = (arr) => arr.map((y, i) => `${14 + i * 19},${y + 20}`).join(' ');
+      const spread = cash.map((c, i) => `<rect class="bar" x="${10 + i * 19}" y="${110 - (c - fut[i]) * 3}" width="9" height="${(c - fut[i]) * 3}" rx="1" style="transition-delay:${i * 50}ms"/>`).join('');
+      return `<svg viewBox="0 0 240 120">${spread}<polyline class="line cash" points="${pts(cash)}"/><polyline class="line fut" points="${pts(fut)}"/></svg>`;
+    },
     'dream11-cricket-team-builder': () => {
       const pos = [[120, 18], [60, 40], [180, 40], [40, 70], [120, 60], [200, 70], [80, 95], [160, 95], [120, 100], [30, 105], [210, 105]];
       return `<svg viewBox="0 0 240 120"><ellipse class="pitch" cx="120" cy="62" rx="110" ry="54"/><rect class="pitch" x="110" y="30" width="20" height="64"/>${pos.map(([x, y], i) =>
@@ -136,7 +143,7 @@
   };
   const feat = $('#featured');
   if (feat) {
-    const picks = ['option_chain_analysis', 'captcha_ai', 'dream11-cricket-team-builder'];
+    const picks = ['option_chain_analysis', 'futures_spread_chart', 'dream11-cricket-team-builder'];
     feat.innerHTML = picks.map((r) => {
       const p = D.projects.find((x) => x.repo === r);
       return `<article class="feat" data-repo="${esc(p.repo)}" tabindex="0">
