@@ -404,17 +404,20 @@ kbd {
 .fact strong { color: var(--ink); font-weight: 600; font-size: 15px; }
 .fact span { color: var(--fog); font-size: 13px; line-height: 1.5; }
 
-/* Journey cards (horizontal, snap) */
-.journey-cards { list-style: none; margin: 0; padding: 4px 0 12px; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(230px, 1fr); gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; position: relative; }
-.journey-cards::before { content: ""; position: absolute; left: 0; right: 0; top: 36px; height: 1px; background: var(--lav); }
-.journey-cards li { scroll-snap-align: start; border: 1px solid var(--lav); border-radius: var(--r-lg); padding: 16px; background: var(--paper); position: relative; margin-top: 24px; }
-.journey-cards li::before { content: ""; position: absolute; top: -17px; left: 16px; width: 10px; height: 10px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
-.journey-cards li.now::before { background: var(--teal); border-color: var(--teal); }
+/* Journey: vertical timeline */
+.journey-cards { list-style: none; margin: 0; padding: 0; position: relative; max-width: 720px; }
+.journey-cards::before { content: ""; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 1px; background: var(--lav); }
+.journey-cards li { position: relative; padding: 0 0 24px 48px; }
+.journey-cards li:last-child { padding-bottom: 0; }
+.journey-cards li::before { content: ""; position: absolute; left: 6px; top: 22px; width: 11px; height: 11px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); box-sizing: border-box; z-index: 1; }
+.journey-cards li.now::before { background: var(--teal); border-color: var(--teal); box-shadow: 0 0 0 4px rgba(9,110,114,0.15); }
+.journey-cards .jcard { border: 1px solid var(--lav); border-radius: var(--r-lg); padding: 16px; background: var(--paper); display: grid; grid-template-columns: 28px 1fr; gap: 4px 12px; transition: border-color .2s, transform .2s; }
+.journey-cards li:hover .jcard { border-color: var(--ink); transform: translateX(4px); }
+.journey-cards .jicon { width: 22px; height: 22px; fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; grid-row: span 3; margin-top: 2px; }
 .journey-cards .when { font-family: var(--mono); font-size: 12px; color: var(--fog); }
-.journey-cards .role { font-weight: 600; color: var(--ink); font-size: 15px; margin-top: 4px; }
+.journey-cards .role { font-weight: 600; color: var(--ink); font-size: 15px; }
 .journey-cards .org { color: var(--slate); font-size: 13px; }
-.journey-cards .notes { color: var(--fog); font-size: 13px; line-height: 1.5; margin: 8px 0 0; }
-.journey-cards .jicon { width: 22px; height: 22px; fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 8px; }
+.journey-cards .notes { color: var(--fog); font-size: 13px; line-height: 1.5; margin: 6px 0 0; grid-column: 2; }
 
 /* Skill cloud */
 .cloud { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
@@ -462,7 +465,6 @@ kbd {
 
 @media (max-width: 900px) {
   .featured-grid, .facts, .post-cards { grid-template-columns: 1fr; }
-  .journey-cards { grid-auto-columns: 78%; }
   .contact-title { font-size: 26px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -471,3 +473,82 @@ kbd {
   .viz .bar, .viz .player, .tl-dot { transform: none; }
   .viz .glyph, .viz .box { opacity: 1; }
 }
+
+/* ==================================================================
+   v3.1: a bit of colour — accents + soft tints
+================================================================== */
+:root {
+  --plum-soft: #f1e9f7; --cobalt-soft: #e9eef8; --teal-soft: #e3f1f1; --rust-soft: #f6ebea;
+}
+/* Hero stats */
+.stat:nth-child(1) .stat-num { color: var(--cobalt); }
+.stat:nth-child(2) .stat-num { color: var(--teal); }
+.stat:nth-child(3) .stat-num { color: var(--rust); }
+.stat:nth-child(4) .stat-num { color: var(--plum); }
+.status-badge { background: var(--teal-soft); border-color: transparent; color: var(--teal); }
+.rotator { color: var(--cobalt); }
+/* Marquee */
+.marquee span:nth-child(4n+1) { color: var(--cobalt); }
+.marquee span:nth-child(4n+2) { color: var(--teal); }
+.marquee span:nth-child(4n+3) { color: var(--plum); }
+.marquee span:nth-child(4n+4) { color: var(--rust); }
+/* Featured */
+.feat:nth-child(1) .viz { background: var(--teal-soft); }
+.feat:nth-child(2) .viz { background: var(--plum-soft); }
+.feat:nth-child(3) .viz { background: var(--cobalt-soft); }
+.viz .bar { fill: var(--teal); opacity: .55; }
+.viz .bar.ink { fill: var(--rust); opacity: 1; }
+.viz .spot { stroke: var(--rust); }
+.viz .glyph { fill: var(--plum); }
+.viz .box { stroke: var(--plum); }
+.viz .player { fill: var(--cobalt); }
+.viz .player.sub { fill: var(--mist); }
+.viz .pitch { stroke: var(--cobalt); opacity: .4; }
+.feat:nth-child(1):hover { border-color: var(--teal); }
+.feat:nth-child(2):hover { border-color: var(--plum); }
+.feat:nth-child(3):hover { border-color: var(--cobalt); }
+/* Facts */
+.fact:nth-child(1) { background: var(--cobalt-soft); border-color: transparent; }
+.fact:nth-child(1) svg { stroke: var(--cobalt); }
+.fact:nth-child(2) { background: var(--teal-soft); border-color: transparent; }
+.fact:nth-child(2) svg { stroke: var(--teal); }
+.fact:nth-child(3) { background: var(--plum-soft); border-color: transparent; }
+.fact:nth-child(3) svg { stroke: var(--plum); }
+/* Journey */
+.journey-cards li.work::before { border-color: var(--cobalt); }
+.journey-cards li.work .jicon { stroke: var(--cobalt); }
+.journey-cards li.work:hover .jcard { border-color: var(--cobalt); }
+.journey-cards li.education::before { border-color: var(--plum); }
+.journey-cards li.education .jicon { stroke: var(--plum); }
+.journey-cards li.education:hover .jcard { border-color: var(--plum); }
+.journey-cards li.now::before { background: var(--teal); border-color: var(--teal); }
+.journey-cards li.now .jicon { stroke: var(--teal); }
+.journey-cards li.now .jcard { background: var(--teal-soft); border-color: transparent; }
+/* Skill cloud */
+.cloud .tag.s4 { background: var(--ink); }
+.cloud .tag.s3:nth-child(3n+1) { background: var(--cobalt-soft); color: var(--cobalt); }
+.cloud .tag.s3:nth-child(3n+2) { background: var(--teal-soft); color: var(--teal); }
+.cloud .tag.s3:nth-child(3n+3) { background: var(--plum-soft); color: var(--plum); }
+.cloud .tag:hover { background: var(--ink) !important; color: var(--paper) !important; }
+/* Timeline bars */
+.tl-dot.featured { background: var(--rust); }
+.tl-dot { background: var(--cobalt); opacity: .55; }
+.tl-dot.fork { background: var(--mist); }
+.tl-legend span:nth-child(1) i { background: var(--rust) !important; }
+.tl-legend span:nth-child(2) i { background: var(--cobalt) !important; opacity: .55; }
+/* Category chips + cards */
+.chip[data-cat="trading"].active { background: var(--teal-soft); color: var(--teal); }
+.chip[data-cat="ml"].active { background: var(--plum-soft); color: var(--plum); }
+.chip[data-cat="web"].active { background: var(--cobalt-soft); color: var(--cobalt); }
+.chip[data-cat="mobile"].active, .chip[data-cat="tools"].active { background: var(--rust-soft); color: var(--rust); }
+.card.featured { background: var(--paper); border-left: 3px solid var(--rust); }
+.badge { border-color: var(--rust); color: var(--rust); }
+/* Posts */
+.post-card:nth-child(1) .eyebrow { color: var(--teal); }
+.post-card:nth-child(2) .eyebrow { color: var(--cobalt); }
+.post-card:nth-child(3) .eyebrow { color: var(--plum); }
+.post-card:hover { border-color: var(--cobalt); }
+/* Contact */
+.contact-card { background: linear-gradient(135deg, var(--cobalt-soft), var(--plum-soft)); border-color: transparent; }
+.contact-card .text-link.big { color: var(--cobalt); }
+.progress { background: linear-gradient(90deg, var(--cobalt), var(--plum)); }
