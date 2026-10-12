@@ -28,7 +28,7 @@ window.PORTFOLIO = {
       role: "Freelance Quant Researcher & Developer",
       org: "Independent, remote",
       type: "work",
-      notes: "MT5 Expert Advisors for gold CFDs with recovery-factor based strategies at 80%+ accuracy. Intraday and positional Greeks-based strategies for Indian index options, automated end to end. Backtests on US and Indian options history across 20+ technical indicators."
+      notes: "50+ MT5 Expert Advisors for gold CFDs, production ones with recovery-factor based risk at 80%+ accuracy. Systematic Nifty straddle strategies: indicator signals on the ATM straddle premium, Greeks-based risk, automated via broker APIs. 300+ strategy variants backtested across 20+ indicators on US and Indian options history."
     },
     {
       when: "May 2023 — Dec 2025",
