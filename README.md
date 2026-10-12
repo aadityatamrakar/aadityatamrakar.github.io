@@ -2,7 +2,7 @@
 
 Personal portfolio of Aaditya Tamrakar: full stack engineer, machine learning and algorithmic trading projects, with every public repo since 2016 on an interactive timeline.
 
-Live: https://aadityatamrakar.github.io
+Live: https://aadityatamrakar.in (Cloudflare Pages, deploys from master)
 
 ## Stack
 
