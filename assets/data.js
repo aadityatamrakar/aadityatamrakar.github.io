@@ -8,7 +8,7 @@ window.PORTFOLIO = {
     handle: "aadityatamrakar",
     title: "Software Engineer · Quant Developer",
     tagline: "Software engineer and quant developer. Trade execution systems, market data pipelines and options analytics in Go, Python and TypeScript.",
-    location: "India / Boston, MA",
+    location: "India",
     email: "aaditya.span@gmail.com",
     links: {
       github: "https://github.com/aadityatamrakar",
@@ -71,7 +71,7 @@ window.PORTFOLIO = {
       role: "Software Engineer Intern",
       org: "Accio.ai, Mumbai",
       type: "work",
-      notes: "Data pipeline for 2 million events a day, REST API for ad payment reporting, searchable MongoDB analytics schema, AWS SDK automation."
+      notes: "Analytics ingestion for ad clicks, impressions and views (~60M events a month) into MongoDB, REST API for ad payment reporting, AWS SDK automation."
     },
     {
       when: "2016 — 2019",
