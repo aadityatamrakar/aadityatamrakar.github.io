@@ -8,6 +8,14 @@
 
   const state = { cat: 'all', year: null, q: '', sort: 'newest', expanded: false };
 
+  /* Ambient animations (typing, rotating word, marquee) start after the page has settled
+     or on first interaction, so the first paint is stable for Speed Index. */
+  const ambient = [];
+  let ambientStarted = false;
+  const startAmbient = () => { if (ambientStarted) return; ambientStarted = true; ambient.forEach((f) => f()); };
+  ['scroll', 'pointerdown', 'keydown', 'touchstart'].forEach((ev) => window.addEventListener(ev, startAmbient, { once: true, passive: true }));
+  setTimeout(startAmbient, 3000);
+
   /* ---------- typed terminal ---------- */
   const lines = [
     'npx aaditya --about',
@@ -16,7 +24,7 @@
     'python captcha_ai/predict.py',
     'echo "open to interesting problems"'
   ];
-  (function type() {
+  ambient.push(function type() {
     const el = $('#typed');
     if (!el) return;
     let li = 0, ci = 0, del = false;
@@ -29,7 +37,7 @@
       else { del = false; li = (li + 1) % lines.length; setTimeout(tick, 400); }
     };
     tick();
-  })();
+  });
 
   /* ---------- hero: line-by-line build, rotating word ---------- */
   (function buildHero() {
@@ -38,20 +46,20 @@
     const html = code.innerHTML.split('\n').map((l, i) => `<span class="line" style="animation-delay:${i * 90}ms">${l}</span>`).join('');
     code.innerHTML = html;
   })();
-  (function rotate() {
+  ambient.push(function rotate() {
     const r = $('#rotator');
     if (!r) return;
     const words = ['trading tools', 'ML pipelines', 'web products', 'broker SDKs', 'things that ship'];
     let i = 0;
     setInterval(() => {
-      const cur = r.firstElementChild;
-      cur.classList.add('out');
-      setTimeout(() => {
-        i = (i + 1) % words.length;
-        r.innerHTML = `<span>${esc(words[i])}</span>`;
-      }, 330);
+      const cur = r.querySelector('span:not(.out)');
+      i = (i + 1) % words.length;
+      const next = document.createElement('span');
+      next.textContent = words[i];
+      if (cur) { cur.classList.add('out'); setTimeout(() => cur.remove(), 400); }
+      r.appendChild(next);
     }, 2600);
-  })();
+  });
 
   /* ---------- marquee ---------- */
   (function marquee() {
@@ -59,6 +67,7 @@
     if (!el) return;
     const items = ['Node.js', 'React', 'TypeScript', 'Python', 'scikit-learn', 'Laravel', 'PHP', 'Go', 'Ionic', 'MySQL', 'MongoDB', 'Socket.io', 'Express', 'NSE data', 'Kite Connect', 'PWA'];
     el.innerHTML = items.concat(items).map((n) => `<span>${esc(n)}</span>`).join('');
+    ambient.push(() => el.classList.add('run'));
   })();
 
   /* ---------- scroll progress + reveal ---------- */

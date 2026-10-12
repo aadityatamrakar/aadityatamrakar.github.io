@@ -356,14 +356,15 @@ kbd {
 .rotator { display: inline-block; position: relative; font-weight: 600; color: var(--ink); min-width: 9ch; vertical-align: bottom; height: 1.65em; overflow: hidden; }
 .rotator > span { display: block; animation: rot-in .5s ease; }
 @keyframes rot-in { from { transform: translateY(100%); opacity: 0; } to { transform: none; opacity: 1; } }
-.rotator > span.out { animation: rot-out .35s ease forwards; }
+.rotator > span.out { position: absolute; left: 0; top: 0; animation: rot-out .35s ease forwards; }
 @keyframes rot-out { to { transform: translateY(-100%); opacity: 0; } }
 #hero-lines .line { display: block; opacity: 0; transform: translateX(-6px); animation: line-in .35s ease forwards; }
 @keyframes line-in { to { opacity: 1; transform: none; } }
 
 /* Marquee */
 .marquee-wrap { margin-top: 40px; border-top: 1px solid var(--lav); border-bottom: 1px solid var(--lav); overflow: hidden; }
-.marquee { display: flex; gap: 40px; width: max-content; padding: 12px 0; animation: marquee 40s linear infinite; }
+.marquee { display: flex; gap: 40px; width: max-content; padding: 12px 0; }
+.marquee.run { animation: marquee 40s linear infinite; }
 .marquee:hover { animation-play-state: paused; }
 .marquee span { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--fog); white-space: nowrap; }
 .marquee span::before { content: "·"; margin-right: 40px; color: var(--mist); }
