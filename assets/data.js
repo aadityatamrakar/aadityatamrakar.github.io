@@ -31,47 +31,47 @@ window.PORTFOLIO = {
       notes: "Working on my own trading tooling, broker SDKs and writing. Open to full time and contract roles."
     },
     {
-      when: "2023 — Dec 2025",
-      role: "Software Engineer",
-      org: "Viasat Inc.",
+      when: "May 2023 — Dec 2025",
+      role: "Software Engineer II",
+      org: "Viasat Inc., USA",
       type: "work",
-      notes: "Working to improve global connectivity for people. Full stack and platform engineering on large scale systems."
+      notes: "Golang microservice for in-flight monitoring servers, new API endpoints, Snowflake and Airflow changes, CloudFormation infrastructure for data monitoring."
     },
     {
       when: "Fall 2022 — Spring 2023",
-      role: "Teaching Fellow · CS240 Programming in C",
+      role: "Graduate Teaching Fellow · CS240 Programming in C",
       org: "University of Massachusetts, Boston",
       type: "education",
-      notes: "Taught a class of 75 students. Responsible for course content, evaluation and delivering in-person lectures. Course page: cs.umb.edu/~aaditya",
+      notes: "Two semesters, classes of 51 and 67 students. Course content, evaluation and in-person lectures.",
       link: "https://cs.umb.edu/~aaditya/"
     },
     {
-      when: "2022 · Internship",
+      when: "May — Aug 2022",
       role: "Software Engineer Intern",
-      org: "Viasat Inc.",
+      org: "Viasat Inc., USA",
       type: "work",
-      notes: "Deployed 7+ changes to production. Learned agile scrum, worked on frontend, backend and infra deployment tasks."
+      notes: "Deployed 7+ changes to production across frontend, backend and infra deployment; worked in agile scrum."
     },
     {
       when: "2021 — 2023",
-      role: "M.S. Computer Science",
+      role: "M.S. Computer Science · CGPA 3.7",
       org: "University of Massachusetts, Boston",
       type: "education",
-      notes: "Graduate coursework in UI design (CS615), systems and algorithms."
+      notes: "AI, Compilers, Computer Networks, OO Design, Software Development, UI Design, Theory of Computation."
     },
     {
-      when: "2019 — 2021",
-      role: "Quant Developer",
-      org: "Prop Trading Desk",
+      when: "Dec 2020 — Aug 2021",
+      role: "Full Stack Developer",
+      org: "Algo Maker LLP, Mumbai",
       type: "work",
-      notes: "Worked with a lot of real-time data and built a super-fast execution engine for basic operations. Lesson: keeping things simple yields the best result."
+      notes: "80+ trade execution algorithms over WebSockets, Angular + Express dashboard on MongoDB that cut risk evaluation time by 50%, AWS platform near the broker for 20% faster execution."
     },
     {
-      when: "Internship",
-      role: "Tech Intern",
-      org: "AI AdTech Startup",
+      when: "Apr — Sep 2018",
+      role: "Software Engineer Intern",
+      org: "Accio.ai, Mumbai",
       type: "work",
-      notes: "Learned how to work in a team and deliver pixel-perfect designs, and how to survive when the production server crashes."
+      notes: "Data pipeline for 2 million events a day, REST API for ad payment reporting, searchable MongoDB analytics schema, AWS SDK automation."
     },
     {
       when: "2016 — 2019",

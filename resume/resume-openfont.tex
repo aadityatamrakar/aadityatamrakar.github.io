@@ -1,0 +1,91 @@
+% Original resume source (resume-openfont class). Needs resume-openfont.cls from
+% https://github.com/ (your template) to compile; kept here as the reference copy.
+\documentclass[]{resume-openfont}
+
+\pagestyle{fancy}
+\resetHeaderAndFooter
+
+\newcommand{\resumeHeading}[4]{\runsubsection{\uppercase{#1}}\descript{ | #2}\hfill\location{#3 | #4}\fakeNewLine}
+\newcommand{\educationHeading}[4]{\runsubsection{#1}\hspace*{\fill}  \location{#3 | #4}\\
+\descript{#2}\fakeNewLine}
+\newcommand{\projectHeading}[3]{\Project{#1}{#2}
+\descript{#3}\\}
+\newcommand{\projectHeadingWithDate}[4]{\Project{#1}{#2}
+\descript{#3 | #4}\\}
+\newcommand{\courseWork}[1]{\textbf{Coursework:}#1}
+\newcommand{\teacherAssistant}[1]{\textbf{Teacher Assistant (TA):} #1}
+
+\begin{document}
+
+\newcommand{\yourName}{Aaditya Tamrakar}
+\newcommand{\yourWebsite}{aadityatamrakar.in}
+\newcommand{\yourWebsiteLink}{https://aadityatamrakar.in}
+\newcommand{\yourEmail}{aaditya.span@gmail.com}
+\newcommand{\yourPhone}{551-697-9945}
+\newcommand{\githubUserName}{aadityatamrakar}
+\newcommand{\linkedInUserName}{aadityatamrakar}
+\newcommand{\currentEducation}{Computer Science (MS), UMass Boston }
+
+\begin{center}
+    \Huge \scshape \latoRegular{\yourName} \\ \vspace{1pt}
+    \small \href{mailto:\yourEmail}{\underline{\yourEmail}}  $|$  \yourPhone \\
+    \href{https://www.linkedin.com/in/\linkedInUserName}{\underline{linkedIn/\linkedInUserName}} $|$
+    \href{https://github.com/\githubUserName}{\underline{github/\githubUserName}}
+    $|$ \href{\yourWebsiteLink}{\underline{\yourWebsite}}
+\end{center}
+
+\section{Education}
+\educationHeading{Master of Science: Computer Science}{University of Massachusetts, Boston}{CGPA: 3.7/4}{2021-2023}
+\begin{bullets}
+    \item{Course Work: }{Artificial Intelligence, Compilers, Computer Networks,  Object Oriented Design and Programming, Software Development, User Interface Design, Theory of Computation }
+    \item{Extracurricular: }{\textbf{Graduate Teaching Fellow - CS240  Programming in C}, for 2 semesters to a Class of 51 and 67 students}
+\end{bullets}
+
+\section{Work Experience}
+\sectionsep\resumeHeading{Viasat Inc.}{Software Engineer II}{Remote | Austin, US}{May 2023 – Dec 2025}
+\begin{bullets}
+    \item Improving inflight connectivity with the core-platform team.
+    \item Developed a \textbf{Golang} microservice for server deployed in airplanes for monitoring.
+    \item Added new \textbf{API} endpoints, changes to \textbf{Snowflake} database, and updated \textbf{Airflow} dags.
+    \item Modified \textbf{Cloudformation} stack to create new Infrastructure for data monitoring.
+\end{bullets}
+\sectionsep\resumeHeading{Viasat Inc.}{Software Engineer Intern}{Remote | Boston, US}{May 2022 – Aug 2022}
+\begin{bullets}
+    \item Consolidated functions into a common shared library for teams.
+    \item Achieved \textbf{100\%} code coverage in unit tests.
+    \item Modified cloud stack to create new infra for data monitoring.
+\end{bullets}
+\sectionsep
+\resumeHeading{AlgoMaker LLP}{Full Stack Developer}{Mumbai, IN}{Dec 2020 – Aug 2021}
+\begin{bullets}
+    \item Created and implemented \textbf{80+} efficient algorithms to execute trade orders from time/price based to advance market making using \textbf{WebSockets}, so it could scale to handle millions of funds.
+    \item Designed a dashboard using \textbf{Angular} and \textbf{ExpressJS} to visualize data stored in \textbf{MongoDB}, which reduced the time it takes to evaluate risk exposure and execute new orders by 50\%.
+    \item Set-up complete platform in \textbf{AWS}, closest to broker's servers, resulting in a 20\% faster execution of orders.
+\end{bullets}
+\sectionsep
+\resumeHeading{Accio.ai}{Software Engineer Intern}{Mumbai, IN}{Apr 2018 - Sep 2018}
+\begin{bullets}
+    \item Developed and implemented a data pipeline to process \textbf{2 million events/day}.
+    \item Designed \textbf{REST API} to query data for Ad payment and reporting.
+    \item Created a searchable schema in \textbf{MongoDB} on the raw analytics data (clicks, impressions, views).
+    \item Developed an automation script using the \textbf{AWS SDK}, which cut the time it took to upload each design from a few minutes to just a few seconds.
+\end{bullets}
+\sectionsep
+
+\section{Projects}
+\projectHeadingWithDate{UMB Trading App}{https://sites.google.com/view/umbtrading/home}{HTML5, Javascript | Figma, User Interface Design}{Dec 2021}
+\sectionsep
+\projectHeadingWithDate{Option Chain Analysis}{https://github.com/aadityatamrakar/option_chain_analysis}{NodeJs, REST API | \textbf{100}+ Stars on Github}{Nov 2019}
+\sectionsep
+\projectHeadingWithDate{ML Captcha Solver}{https://github.com/aadityatamrakar/captcha_ai}{Scikit-Learn, PHP}{Jan 2018}
+\sectionsep
+
+\section{Skills}
+\begin{bullets}
+    \item{\textbf{Languages:} Golang, Python, JavaScript, TypeScript, PHP, SQL, C, C++, Java}
+    \\
+    \item{\textbf{Technologies:} Linux, Git, AWS, Docker, Kubernetes, Redis, MongoDB, Snowflake, Apache Airflow, Kafka, Spark, Playwright}
+    \item{\textbf{Certifications:} Crash course of Python by Google (Coursera); HackerRank Certificates - Problem Solving, Javascript, Python, NodeJs, CSS, Rest API, SQL}
+\end{bullets}
+
+\end{document}

@@ -1,0 +1,91 @@
+% Aaditya Tamrakar — Resume
+% Compile: pdflatex resume.tex
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=0.65in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\definecolor{ink}{HTML}{303055}
+\hypersetup{colorlinks=true,urlcolor=ink,linkcolor=ink}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\titleformat{\section}{\large\scshape}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{8pt}{3pt}
+\setlist[itemize]{leftmargin=1.2em,itemsep=0pt,topsep=1pt}
+\newcommand{\job}[3]{\textbf{#1} \; \textit{#2} \hfill #3}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries Aaditya Tamrakar}\\[2pt]
+  Software Engineer \textperiodcentered{} Full Stack \textperiodcentered{} Data Platforms \textperiodcentered{} Algorithmic Trading\\[2pt]
+  \href{mailto:aaditya.span@gmail.com}{aaditya.span@gmail.com} \textperiodcentered{}
+  \href{https://aadityatamrakar.in}{aadityatamrakar.in} \textperiodcentered{}
+  \href{https://github.com/aadityatamrakar}{github.com/aadityatamrakar} \textperiodcentered{}
+  \href{https://www.linkedin.com/in/aadityatamrakar/}{linkedin.com/in/aadityatamrakar}
+\end{center}
+
+\section{Education}
+\textbf{Master of Science, Computer Science} \hfill CGPA 3.7/4 \textperiodcentered{} 2021 -- 2023\\
+\textit{University of Massachusetts, Boston}
+\begin{itemize}
+  \item Coursework: Artificial Intelligence, Compilers, Computer Networks, Object Oriented Design and Programming, Software Development, User Interface Design, Theory of Computation.
+  \item Graduate Teaching Fellow, CS240 Programming in C, for two semesters to classes of 51 and 67 students.
+\end{itemize}
+
+\section{Work Experience}
+\job{Viasat Inc.}{Software Engineer II}{Remote, Austin, US \textperiodcentered{} May 2023 -- Dec 2025}
+\begin{itemize}
+  \item Improved in-flight connectivity with the core platform team; developed a Golang microservice for a server deployed in airplanes for monitoring.
+  \item Added new API endpoints, changes to the Snowflake database, and updated Airflow DAGs.
+  \item Modified the CloudFormation stack to create new infrastructure for data monitoring.
+\end{itemize}
+
+\job{Viasat Inc.}{Software Engineer Intern}{Remote, Boston, US \textperiodcentered{} May -- Aug 2022}
+\begin{itemize}
+  \item Consolidated functions into a common shared library used across teams; achieved 100\% unit test coverage.
+  \item Modified the cloud stack to create new infrastructure for data monitoring; joined full time after graduation.
+\end{itemize}
+
+\job{Algo Maker LLP}{Full Stack Developer}{Mumbai, IN \textperiodcentered{} Dec 2020 -- Aug 2021}
+\begin{itemize}
+  \item Created and implemented 80+ efficient algorithms to execute trade orders, from time/price based to advanced market making using WebSockets, so it could scale to handle millions in funds.
+  \item Designed a dashboard using Angular and Express.js to visualise data stored in MongoDB, which reduced the time to evaluate risk exposure and execute new orders by 50\%.
+  \item Set up the complete platform in AWS, closest to the broker's servers, resulting in 20\% faster order execution.
+\end{itemize}
+
+\job{Accio.ai}{Software Engineer Intern}{Mumbai, IN \textperiodcentered{} Apr 2018 -- Sep 2018}
+\begin{itemize}
+  \item Developed and implemented a data pipeline to process 2 million events per day.
+  \item Designed a REST API to query data for ad payment and reporting.
+  \item Created a searchable schema in MongoDB on the raw analytics data (clicks, impressions, views).
+  \item Developed an automation script using the AWS SDK which cut the time to upload each design from minutes to seconds.
+\end{itemize}
+
+\job{Freelance}{Full Stack Developer}{2016 -- 2019}
+\begin{itemize}
+  \item Shipped PHP/Laravel backends, Node.js APIs and Ionic/AngularJS apps for small businesses: food delivery, fleet management, dealership reporting, accounting.
+\end{itemize}
+
+\section{Projects}
+\textbf{\href{https://github.com/aadityatamrakar/option_chain_analysis}{Option Chain Analysis}} \textperiodcentered{} Node.js, REST API \hfill 100+ stars on GitHub \textperiodcentered{} Nov 2019\\
+Fetches the live NSE Nifty option chain and classifies every strike by price and open interest change; used by 50+ developers.
+
+\textbf{\href{https://github.com/aadityatamrakar/umbtrading}{UMB Trading App}} \textperiodcentered{} HTML5, JavaScript, Figma, User Interface Design \textperiodcentered{} \href{https://sites.google.com/view/umbtrading/home}{project site} \hfill Dec 2021\\
+CS615 project: a simple interface where a beginner can trade options easily.
+
+\textbf{\href{https://github.com/aadityatamrakar/captcha_ai}{ML Captcha Solver}} \textperiodcentered{} scikit-learn, PHP \hfill Jan 2018\\
+Image pipeline and classifier that reads Amazon-style captchas, 99.7\% reported accuracy on that style.
+
+\section{Open Source}
+Forked, adapted and maintained broker SDKs for my own tooling: Kite Connect (Go), XTS Interactive v2 and 5paisa (Node.js), Hummingbot remote client (Python), option pricing formulas. Open sourced the option chain analyser, a futures spread chart and a Dream11 team builder.
+
+\section{Skills}
+\textbf{Languages:} Golang, Python, JavaScript, TypeScript, PHP, SQL, C, C++, Java\\
+\textbf{Technologies:} Linux, Git, AWS, Docker, Kubernetes, Redis, MongoDB, Snowflake, Apache Airflow, Kafka, Spark, Playwright, Node.js, Angular, Laravel\\
+\textbf{Certifications:} Crash Course on Python by Google (Coursera); HackerRank certificates in Problem Solving, JavaScript, Python, Node.js, CSS, REST API, SQL
+
+\end{document}
